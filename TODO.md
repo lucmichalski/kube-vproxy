@@ -7,6 +7,7 @@ Main Features:
 * API and command line tool.
 * Pluggable middlewares.
 * Dispatch batch requests to visual mining frameworks
+* Project requests into a text space for sub-requests dispatching
 * Support for canary deploys, realtime metrics and resiliency.
 
 
