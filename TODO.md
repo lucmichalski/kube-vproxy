@@ -146,8 +146,16 @@ Ideas fro playing with the text space:
 2. Keep the dispatching of batch http requests smart and contextualized to optimize the overhall CPUs/RAM usage for visual mining
 3. Chain the several webservices with the stability
 
+## 4. Visual Logging of matches/pattern discoveries
+* Visual logging/clustering (Extract the matching zone with the bounding boxes coordinates, log the dimension/ratio context)
+* False/Positives clustering with a knowledge graph (Predictive Learning) 
+* Training models with un-learning strategies: flase/positive detection
+* Log-forwarding to Kube-Vision ELK Cluster (QPS reporting for a set of chain of middlewares chained)
+ 
+### Current code:
 
-## 4. Leverage Kubernetes Deployment
-1. Load-Balance Visual Mining services
-2. Load-Balance Input and Output Transformation with contextual batch routing
-3. Automatic scaling of the VisualProxy middleware service
+
+### Goals:
+- Reduce the memory footprint of the visual logging (Asynchronous cross-loading to an Amazon S3 bucket)
+- Optimize the leverage of a Redis set of clusters to 
+- Load a dataset to launch http benchmarks with concurrent form multi-part reuqests with variable file input conditions
