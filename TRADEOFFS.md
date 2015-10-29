@@ -1,7 +1,7 @@
 # Goals of the KUBE VISION cluster
 
 ## Tradeoffs:
-
+```
 1. Related to the input received:
         - Continous flow of pictures of various size of pictures and type (color, grayscale)
                 - The processing needs to go fast
@@ -64,3 +64,4 @@
                                         a. Scene Mining
                                         b. Time Context
                                         c. Text Space projection
+```
