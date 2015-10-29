@@ -14,6 +14,7 @@ This Visual Proxy will be a middleware between pictures sent from a mobile devic
 - Define dynamic visual mining chains
 
 Results found:
+```
 [{'vmx1':
     {
         "Results":
@@ -50,15 +51,15 @@ Results found:
             "Code": 0
         }
 }]
-
+```
 ## Nothing found:
-
+```
 { "Results": [],
   "Status": {
        "Code": 400
   }
 }
-
+```
 ## Batch requests with several strategies
 
 ### Why ? 
