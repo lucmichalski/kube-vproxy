@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    app: kube-vproxy
+  name: kube-vproxy
+spec:
+  containers:
+  - command:
+    - /go/bin/vulcand
+    - -apiInterface=0.0.0.0
+    - -interface=0.0.0.0
+    - -etcdKey=vulcand
+    - -port=80
+    - -apiPort=8082
+    - --etcd=http://etcd-client:2379
+    image: lucmichalski/kube-vproxy:feature_middleware
+    name: kube-vproxy
+    ports:
+    - containerPort: 81
+      name: middleware
+      protocol: TCP
+    - containerPort: 8081
+      name: api
+      protocol: TCP
+    - containerPort: 8082
+      name: server
+      protocol: TCP
+  restartPolicy: Always

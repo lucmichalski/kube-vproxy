@@ -1,0 +1,109 @@
+{
+	"ImportPath": "github.com/blippar/kube-vproxy-plugins/kube-query-expansion",
+	"GoVersion": "go1.5.1",
+	"Packages": [
+		"./...."
+	],
+	"Deps": [
+		{
+			"ImportPath": "github.com/blippar/kube-vproxy-plugins/kube-middlewares/kubeDispatcher",
+			"Rev": "5040ee3ca3fd69cca51ec3cb9c903093524fa604"
+		},
+		{
+			"ImportPath": "github.com/blippar/kube-vproxy-plugins/kube-middlewares/kubeOCR",
+			"Rev": "5040ee3ca3fd69cca51ec3cb9c903093524fa604"
+		},
+		{
+			"ImportPath": "github.com/codahale/hdrhistogram",
+			"Rev": "9208b142303c12d8899bae836fd524ac9338b4fd"
+		},
+		{
+			"ImportPath": "github.com/codegangsta/cli",
+			"Comment": "1.2.0-62-gbf4a526",
+			"Rev": "bf4a526f48af7badd25d2cb02d587e1b01be3b50"
+		},
+		{
+			"ImportPath": "github.com/couchbaselabs/logg",
+			"Rev": "e6f120c4776c895f569890df47552d93ab679f3b"
+		},
+		{
+			"ImportPath": "github.com/davidkbainbridge/jsonq",
+			"Rev": "11f07dda0b6c56e71810e5f0081e2fd0d3e12287"
+		},
+		{
+			"ImportPath": "github.com/disintegration/imaging",
+			"Rev": "3ab6ec550f20d497d2755ed3c48a3e45ad6b7eb9"
+		},
+		{
+			"ImportPath": "github.com/koyachi/go-nude",
+			"Comment": "v0.0.1-14-g699a88f",
+			"Rev": "699a88f33605865928ccd8cdd39bbce80fb1aaef"
+		},
+		{
+			"ImportPath": "github.com/lepidosteus/golang-http-batch/batch",
+			"Rev": "c0aa97615eb48c9c237d889ae04abfae47079d7d"
+		},
+		{
+			"ImportPath": "github.com/mailgun/log",
+			"Rev": "44874009257d4d47ba9806f1b7f72a32a015e4d8"
+		},
+		{
+			"ImportPath": "github.com/mailgun/minheap",
+			"Rev": "7c28d80e2ada649fc8ab1a37b86d30a2633bd47c"
+		},
+		{
+			"ImportPath": "github.com/mailgun/oxy/cbreaker",
+			"Rev": "7d13b3eab8e6392740c375f298557d1a01014aa4"
+		},
+		{
+			"ImportPath": "github.com/mailgun/oxy/connlimit",
+			"Rev": "7d13b3eab8e6392740c375f298557d1a01014aa4"
+		},
+		{
+			"ImportPath": "github.com/mailgun/oxy/memmetrics",
+			"Rev": "7d13b3eab8e6392740c375f298557d1a01014aa4"
+		},
+		{
+			"ImportPath": "github.com/mailgun/oxy/ratelimit",
+			"Rev": "7d13b3eab8e6392740c375f298557d1a01014aa4"
+		},
+		{
+			"ImportPath": "github.com/mailgun/oxy/trace",
+			"Rev": "7d13b3eab8e6392740c375f298557d1a01014aa4"
+		},
+		{
+			"ImportPath": "github.com/mailgun/oxy/utils",
+			"Rev": "7d13b3eab8e6392740c375f298557d1a01014aa4"
+		},
+		{
+			"ImportPath": "github.com/mailgun/predicate",
+			"Rev": "cb0bff91a7ab7cf7571e661ff883fc997bc554a3"
+		},
+		{
+			"ImportPath": "github.com/mailgun/timetools",
+			"Rev": "7e6055773c5137efbeb3bd2410d705fe10ab6bfd"
+		},
+		{
+			"ImportPath": "github.com/mailgun/ttlmap",
+			"Rev": "51994f8e1aad271eb214e725379dde8bd4c90acf"
+		},
+		{
+			"ImportPath": "github.com/mailgun/vulcand/plugin",
+			"Comment": "v0.8.0-beta.3-46-g791285c",
+			"Rev": "791285c97cbf28f8eac1ef7222e103990c2d0b08"
+		},
+		{
+			"ImportPath": "github.com/mailgun/vulcand/service",
+			"Comment": "v0.8.0-beta.3-46-g791285c",
+			"Rev": "791285c97cbf28f8eac1ef7222e103990c2d0b08"
+		},
+		{
+			"ImportPath": "golang.org/x/image/bmp",
+			"Rev": "baddd3465a05d84a6d8d3507547a91cb188c81ea"
+		},
+		{
+			"ImportPath": "golang.org/x/image/tiff",
+			"Rev": "baddd3465a05d84a6d8d3507547a91cb188c81ea"
+		}
+	]
+}
