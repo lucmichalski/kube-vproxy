@@ -150,5 +150,4 @@ Ideas fro playing with the text space:
 ## 4. Leverage Kubernetes Deployment
 1. Load-Balance Visual Mining services
 2. Load-Balance Input and Output Transformation with contextual batch routing
-3. 
-
+3. Automatic scaling of the VisualProxy middleware service
