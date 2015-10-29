@@ -2,7 +2,15 @@
 
 This Visual Proxy will be a middleware between pictures sent from a mobile device to extract and match some content registered in a database through any chain of visual mining.
 
-## Make that a middleware can write a JSON Response without connecting to the backend and follow the chain define for the frontends
+Main Features:
+* Uses Etcd as a configuration backend.
+* API and command line tool.
+* Pluggable middlewares.
+* Dispatch batch requests to visual mining frameworks
+* Support for canary deploys, realtime metrics and resiliency.
+
+
+## 1. Make that a middleware can write a JSON Response without connecting to the backend and follow the chain define for the frontends
 
 ### Current code:
 - https://github.com/lucmichalski/kube-vproxy/blob/master/kube-query-expansion/Godeps/_workspace/src/github.com/blippar/kube-vproxy-plugins/kube-middlewares/kubeDispatcher/kubeDispatcher.go#L373
@@ -60,7 +68,8 @@ Results found:
   }
 }
 ```
-## Batch requests with several strategies
+
+## 2. Batch requests with several strategies
 
 ### Why ? 
 - Some sub-routines will have a longer output time
@@ -130,6 +139,15 @@ Ideas fro playing with the text space:
 - Dynamic rebalancing of frontends
 - Optimize the performances of the continious flow of media inputs 
 
+## 3. Optimize the Visual Proxy the code and lock the code best pratices
+1. Keep the on-the-fly image processing as light as possible
+	- https://github.com/lucmichalski/kube-vproxy/blob/master/kube-query-expansion/Godeps/_workspace/src/github.com/blippar/kube-vproxy-plugins/kube-middlewares/kubeDispatcher/kubeDispatcher.go#L108
+2. Keep the dispatching of batch http requests smart and contextualized to optimize the overhall CPUs/RAM usage for visual mining
+3. Chain the several webservices with the stability
 
 
+## 4. Leverage Kubernetes Deployment
+1. Load-Balance Visual Mining services
+2. Load-Balance Input and Output Transformation with contextual batch routing
+3. 
 
