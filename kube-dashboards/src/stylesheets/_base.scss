@@ -1,0 +1,21 @@
+a {
+  color: #616161;
+}
+
+a.active,
+a:active,
+a:focus,
+a:hover {
+  color: rgb(220, 75, 53);
+  outline: none;
+  text-decoration: none;
+}
+
+::-webkit-input-placeholder {
+  color: #ccc;
+}
+
+.v-table-value {
+  width: 150px;
+  text-align: right;
+}
