@@ -12,17 +12,16 @@ import (
 	"encoding/base64"
 	"encoding/json"
 	"fmt"
-	"github.com/mailgun/vulcand/Godeps/_workspace/src/github.com/codegangsta/cli"
-	"github.com/davidkbainbridge/jsonq"
-	"github.com/disintegration/imaging"
+	"github.com/davidkbainbridge/jsonq" 
 	"github.com/koyachi/go-nude"
 	"github.com/lepidosteus/golang-http-batch/batch"
-	"github.com/mailgun/oxy/utils"
-	"github.com/mailgun/vulcand/plugin"
+	"github.com/vulcand/vulcand/Godeps/_workspace/src/github.com/codegangsta/cli"
+	"github.com/vulcand/vulcand/Godeps/_workspace/src/github.com/vulcand/oxy/utils"
+	"github.com/vulcand/vulcand/plugin"
+	"github.com/disintegration/imaging"	
 	"image"
+	"github.com/vulcand/vulcand/Godeps/_workspace/src/github.com/mailgun/log"
 	"image/jpeg"
-	"io"
-	"log"
 	"net/http"
 	"strconv"
 	"strings"
@@ -74,6 +73,11 @@ type KubeDispatcherHandler struct {
 	next http.Handler
 }
 
+type Profile struct {
+  Name    string
+  Hobbies []string
+}
+
 // This function will be called each time the request hits the location with this middleware activated
 func (a *KubeDispatcherHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
@@ -82,14 +86,14 @@ func (a *KubeDispatcherHandler) ServeHTTP(w http.ResponseWriter, r *http.Request
 	file, _, err := r.FormFile("file")
 	if err != nil {
 		log.Println(err)
-		http.Error(w, http.StatusText(http.StatusBadRequest), http.StatusBadRequest)
+		//http.Error(w, http.StatusText(http.StatusBadRequest), http.StatusBadRequest)
 		return
 	}
 
 	img, _, err := image.Decode(file)
 	if err != nil {
 		log.Println(err)
-		http.Error(w, http.StatusText(http.StatusUnsupportedMediaType), http.StatusUnsupportedMediaType)
+		//http.Error(w, http.StatusText(http.StatusUnsupportedMediaType), http.StatusUnsupportedMediaType)
 		return
 	}
 
@@ -222,9 +226,9 @@ func (a *KubeDispatcherHandler) ServeHTTP(w http.ResponseWriter, r *http.Request
 			//      dstImage = imaging.Overlay(backgroundImage, srcImage, image.Pt(strconv.ParseFloat(cmds[1], 64), strconv.ParseFloat(cmds[2], 64)), strconv.ParseFloat(cmds[3], 64))
 			//}
 			if cmds[0] == "Clone" {
-				copiedImg := imaging.Clone(img)
+				//copiedImg := imaging.Clone(img)
 				if a.cfg.Debug == 1 {
-					fmt.Printf("Content-Type: %T\n", copiedImg)
+					fmt.Printf("Content-Type: %T\n", dstImage)
 				}
 			}
 			if cmds[0] == "Rotate" && cmds[1] == "180" {
@@ -247,12 +251,11 @@ func (a *KubeDispatcherHandler) ServeHTTP(w http.ResponseWriter, r *http.Request
 		fmt.Println(err)
 		return
 	}
-
+ 
 	imgStr := "data:image/jpeg;base64," + base64.StdEncoding.EncodeToString(buf.Bytes())
 
 	if a.cfg.Debug == 1 {
 		fmt.Printf("Base64: %d\n", imgStr)
-		fmt.Printf("isNudeDetectMode = %s\n", a.cfg.Nudity)
 		fmt.Printf("isNudeDetectMode = %s\n", a.cfg.Nudity)
 	}
 
@@ -265,7 +268,6 @@ func (a *KubeDispatcherHandler) ServeHTTP(w http.ResponseWriter, r *http.Request
 		}
 		if isNude && a.cfg.Nudity == "block" {
 			fmt.Printf("Techat detected: %d\n", isNude)
-			w.Write([]byte("Nudity detected"))
 			return
 		}
 	}
@@ -362,25 +364,26 @@ func (a *KubeDispatcherHandler) ServeHTTP(w http.ResponseWriter, r *http.Request
 		b.Run()
 	}
 
-	test := Output{200, []string{"markerId", "keywords"}}
-	output, err := json.Marshal(test)
-	if err != nil {
-		fmt.Printf("Delivering the lookup output / Fail %s\n", a.cfg.Chained)
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-
 	if a.cfg.Chained == 0 {
 		if a.cfg.Debug == 1 {
 			fmt.Printf("Chained:%s\n", a.cfg.Chained)
 		}
-		io.WriteString(w, string(output))
-		w.WriteHeader(200)
+		profile := Profile{"Alex", []string{"snowboarding", "programming"}}
+		js, err := json.Marshal(profile)
+		if err != nil {
+		    http.Error(w, err.Error(), http.StatusInternalServerError)
+		    return
+		}
+		fmt.Printf("Output %s\n", js)
+		w.Header().Set("Content-Type", "application/json")
+		w.Write(js)
+		//blipparutils.BlipparDefaultHandler.ServeHTTP(w, r)
 		return
 	} else {
 		if a.cfg.Debug == 1 {
 			fmt.Printf("Passing the output to the next middleware, as chained %s\n", a.cfg.Chained)
 		}
+		a.next.ServeHTTP(w, r)
 	}
 
 	// Pass the request to the next middleware in chain

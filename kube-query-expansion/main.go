@@ -2,8 +2,8 @@ package main
 
 import (
 	"fmt"
-	"github.com/blippar/kube-vproxy-plugins/kube-query-expansion/registry"
-	"github.com/mailgun/vulcand/service"
+	"github.com/blippar/kube-vproxy/kube-query-expansion/registry"
+	"github.com/vulcand/vulcand/service"
 	"os"
 )
 

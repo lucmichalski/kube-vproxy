@@ -3,17 +3,33 @@ MAINTAINER Luc Michalski <luc.michalski@blippar.com>
 ENV GOPATH /go:/go/src/app/kube-query-expansion/Godeps/_workspace
 ENV PATH $PATH:$GOPATH/bin
 COPY . /go/src/app
-WORKDIR /Users/lucmichalski/.go/src/github.com/blippar/kube-vproxy-plugins/
+WORKDIR /Users/lucmichalski/.go/src/github.com/blippar/kube-vproxy/
 
 RUN     ls -l /go && \
-	go get github.com/mailgun/log && \
-	go get github.com/mailgun/vulcand/Godeps/_workspace/src/github.com/codegangsta/cli && \	
-        go get github.com/mailgun/vulcand/vbundle && \
+	go get github.com/vulcand/vulcand/Godeps/_workspace/src/github.com/vulcand/oxy/utils &&\
+	go get github.com/vulcand/vulcand/Godeps/_workspace/src/github.com/codegangsta/cli && \
+        go get github.com/vulcand/vulcand/Godeps/_workspace/src/github.com/coreos/go-etcd/etcd && \
+	go get github.com/vulcand/vulcand/Godeps/_workspace/src/github.com/mailgun/log && \
+        go get github.com/vulcand/vulcand/vbundle && \
         go get github.com/tools/godep && \
+	go get github.com/vulcand/oxy/forward && \
+	go get github.com/vulcand/oxy/cbreaker && \	
+        go get github.com/vulcand/oxy/connlimit && \
+        go get github.com/vulcand/oxy/forward && \
+        go get github.com/vulcand/oxy/memmetrics && \
+        go get github.com/vulcand/oxy/ratelimit && \
+        go get github.com/vulcand/oxy/roundrobin && \
+        go get github.com/vulcand/oxy/stream && \
+        go get github.com/vulcand/oxy/trace && \
+        go get github.com/vulcand/oxy/utils && \
 	cd /go/src/ && \
-        git clone https://github.com/mailgun/vulcand && \
+        git clone https://github.com/vulcand/vulcand && \
 	cd vulcand && \
 	make install && \
+	mkdir -p /go/src/github.com/blippar/kube-vproxy/kube-query-expansion/registry && \
+        mkdir -p /go/src/github.com/blippar/kube-vproxy/kube-middlewares && \
+        cp -Rf /go/src/app/kube-query-expansion/registry/registry.go /go/src/github.com/blippar/kube-vproxy/kube-query-expansion/registry/registry.go && \
+	cp -Rf /go/src/app/kube-middlewares /go/src/github.com/blippar/kube-vproxy/ && \
         cd /go/src/app/kube-query-expansion && \
         rm main.go && \
         mv main.initial.go main.go && \
@@ -21,8 +37,8 @@ RUN     ls -l /go && \
         go build . && \
         cd .. && \
 	ls -l && \
-        vbundle init --middleware=github.com/blippar/kube-vproxy-plugins/kube-middlewares/kubeDispatcher \
-                 --middleware=github.com/blippar/kube-vproxy-plugins/kube-middlewares/kubeOCR && \	
+        vbundle init --middleware=github.com/blippar/kube-vproxy/kube-middlewares/kubeDispatcher \
+                 --middleware=github.com/blippar/kube-vproxy/kube-middlewares/kubeOCR && \	
         go build -v -o ./kube-vproxy . && \
         cp -f patch/fix.go vctl/main.go && \
         ls -l && \	

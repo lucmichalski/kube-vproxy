@@ -1,3 +1,4 @@
+# Start the key value stroe for the visual proxy
 etcd2:
   name: etcd2
   image: anapsix/etcd
@@ -50,6 +51,7 @@ openocr:
     - "9292:9292"
   command: "/opt/open-ocr/open-ocr-httpd -amqp_uri amqp://admin:Phaish9ohbaidei6oole@rabbitmq/ -http_port 9292"
 
+# Start the Visual Proxy dispatcher
 kube-vproxy:
   build: .
   hostname: kube-vproxy
@@ -60,6 +62,7 @@ kube-vproxy:
     - "81:80"
   command: "-apiInterface=0.0.0.0 -interface=0.0.0.0 -etcd=http://etcd2:4001 -etcdKey=vulcand -port=80 -apiPort=8182"
 
+# Start the ETCD2 - Web UI browser
 etcd-browser:
   image: denverdino/etcdbrowser
   name: etcd-browser
@@ -70,11 +73,12 @@ etcd-browser:
     - "8000:8000"
   command: ""
 
-kube-cache:
-  build: kube-cache
+# Start the redis store for caching visual logs
+svc_kube_storage_cache:
+  build: svc_kube_storage_cache
   links:
     - kube-vproxy
-  hostname: kube-cache
+  hostname: svc_kube_storage_cache
   expose:
     - "7000:7000"
     - "7001:7001"

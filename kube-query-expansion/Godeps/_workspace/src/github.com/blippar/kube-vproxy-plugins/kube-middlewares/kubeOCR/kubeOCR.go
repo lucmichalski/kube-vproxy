@@ -9,22 +9,20 @@ package kubeOCR
 // Note that I import the versions bundled with kube vproxy. That will make our lives easier, as we'll use exactly the same versions used
 // by kube Vproxy. We are escaping dependency management troubles thanks to Godep.
 import (
-	"bufio"
-	"bytes"
-	"encoding/json"
 	"fmt"
-	"github.com/mailgun/vulcand/Godeps/_workspace/src/github.com/codegangsta/cli"
-	"github.com/couchbaselabs/logg"
+	"github.com/vulcand/vulcand/Godeps/_workspace/src/github.com/codegangsta/cli"
+	"github.com/vulcand/vulcand/Godeps/_workspace/src/github.com/vulcand/oxy/utils"
+	"github.com/lepidosteus/golang-http-batch/batch"
 	"github.com/disintegration/imaging"
-	"github.com/mailgun/vulcand/plugin"
-	"image"
+	"github.com/vulcand/vulcand/plugin"
 	"io"
-	"io/ioutil"
-	"log"
-	"mime/multipart"
+	"github.com/vulcand/vulcand/Godeps/_workspace/src/github.com/mailgun/log"
+	"image"
+	"encoding/json"
+	"bytes"
+	"image/jpeg"
+	"encoding/base64"
 	"net/http"
-	"net/textproto"
-	"os"
 	"strconv"
 	"strings"
 )
@@ -40,7 +38,11 @@ func GetSpec() *plugin.MiddlewareSpec {
 	}
 }
 
-var filename, target string
+type Options struct {
+		Quality int
+}
+
+var part1, part2, ocrImg, contentType, apiUrl string
 
 // KubeOCRMiddleware struct holds configuration parameters and is used to
 // serialize/deserialize the configuration from storage engines.
@@ -68,32 +70,39 @@ type KubeOCRHandler struct {
 	next http.Handler
 }
 
-type OcrRequest struct {
-	EngineType        string                 `json:"engine"`
-	PreprocessorChain []string               `json:"preprocessors"`
-	PreprocessorArgs  map[string]interface{} `json:"preprocessor-args"`
-}
-
 type Output struct {
 	Status int
 	Result string
 }
 
+type nopCloser struct { 
+    io.Reader 
+}
+
+type Profile struct {
+  Name    string
+  Hobbies []string
+}
+
+func (nopCloser) Close() error { return nil } 
+
 // This function will be called each time the request hits the location with this middleware activated
 func (a *KubeOCRHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+
+	contentType, err := utils.ParseAuthHeader(r.Header.Get("Content-Type"))
 
 	file, _, err := r.FormFile("file")
 	if err != nil {
 		log.Println(err)
 		http.Error(w, http.StatusText(http.StatusBadRequest), http.StatusBadRequest)
-		return
+		//return
 	}
 
 	img, _, err := image.Decode(file)
 	if err != nil {
 		log.Println(err)
 		http.Error(w, http.StatusText(http.StatusUnsupportedMediaType), http.StatusUnsupportedMediaType)
-		return
+		//return
 	}
 
 	if a.cfg.Debug == 1 {
@@ -106,6 +115,7 @@ func (a *KubeOCRHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		fmt.Printf("Detect Darkness in Pictures: %s\n", a.cfg.DetectDarkness)
 		fmt.Printf("Entities Discovery: %s\n", a.cfg.EntitiesDiscovery)
 		fmt.Printf("Entities Extractor: %s\n", a.cfg.EntitiesExtractor)
+		fmt.Printf("ContentType: %s\n", contentType)
 	}
 
 	dstImage := img
@@ -228,9 +238,9 @@ func (a *KubeOCRHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			//      dstImage = imaging.Overlay(backgroundImage, srcImage, image.Pt(strconv.ParseFloat(cmds[1], 64), strconv.ParseFloat(cmds[2], 64)), strconv.ParseFloat(cmds[3], 64))
 			//}
 			if cmds[0] == "Clone" {
-				copiedImg := imaging.Clone(img)
+				//copiedImg := imaging.Clone(img)
 				if a.cfg.Debug == 1 {
-					fmt.Printf("Content-Type: %T\n", copiedImg)
+					//fmt.Printf("Content-Type: %T\n", dstImage)
 				}
 			}
 			if cmds[0] == "Rotate" && cmds[1] == "180" {
@@ -247,104 +257,54 @@ func (a *KubeOCRHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			}
 		}
 	}
-	fmt.Printf("%s", dstImage)
-	// "0" -- white text on a black background
-	// "1" -- black text on a white background (default)
-	testJson := `{"engine":"tesseract", "preprocessors":["stroke-width-transform"], "preprocessor-args":{"stroke-width-transform":"1"}}`
-	ocrRequest := OcrRequest{}
-	json.Unmarshal([]byte(testJson), &ocrRequest)
 
-	filename := "../kube-assets/ocr_text/ocrimage.png"
-	apiUrl := "http://192.168.99.100:9292/ocr-file-upload"
-
-	// create JSON for POST request
-	jsonBytes, err := json.Marshal(ocrRequest)
-	if err != nil {
-		fmt.Printf("%s", err)
+	buf := bytes.NewBuffer(nil)
+	if err := jpeg.Encode(buf, dstImage, nil); err != nil {
+		fmt.Println(err)
+		return
 	}
+ 
+	imgStr := "data:image/jpeg;base64," + base64.StdEncoding.EncodeToString(buf.Bytes())
 
-	body := &bytes.Buffer{}
-	writer := multipart.NewWriter(body)
+	fmt.Println("apiUrl: %s", apiUrl)
 
-	mimeHeader := textproto.MIMEHeader{}
-	mimeHeader.Set("Content-Type", "application/json")
+	b := batch.New()
+	b.SetMaxConcurrent(a.cfg.Concurrency)
 
-	part, err := writer.CreatePart(mimeHeader)
-	if err != nil {
-		fmt.Printf("Unable to create json multipart part")
-	}
+	b.AddEntry("http://192.168.99.100:9292/ocr-file-upload", "POST", "tessaract,transform=1", imgStr, batch.Callback(func(url string, method string, jsonPayload string, vengine string, body string, data batch.CallbackData, err error) {
+		fmt.Printf("Result from: %s\n", url)
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
+		fmt.Printf("Text extracted: %d\n", len(body))
+		fmt.Printf("Cumulated Characters Length (With Spaces): %d\n", len(body))
+	}))
 
-	_, err = part.Write(jsonBytes)
-	if err != nil {
-		logg.LogError(err)
-	}
+	b.RunMultiRelated()
 
-	partHeaders := textproto.MIMEHeader{}
-
-	// TODO: pass these vals in instead of hardcoding
-	partHeaders.Set("Content-Type", "image/jpeg")
-	partHeaders.Set("Content-Disposition", "attachment; filename=\"attachment.txt\".")
-
-	partAttach, err := writer.CreatePart(partHeaders)
-	if err != nil {
-		fmt.Printf("Unable to create image multipart part")
-	}
-
-	f, err := os.Open(filename)
-	if err != nil {
-		fmt.Printf("Error closing writer: %v", err)
-	}
-	defer f.Close()
-	//imageReader, _, err := image.Decode(bufio.NewReader(f))
-	_, err = io.Copy(partAttach, bufio.NewReader(f))
-	if err != nil {
-		fmt.Printf("Unable to write image multipart part")
-	}
-
-	err = writer.Close()
-	if err != nil {
-		fmt.Printf("Error closing writer")
-	}
-
-	// create a client
-	client := &http.Client{}
-
-	// create POST request
-	req, err := http.NewRequest("POST", apiUrl, bytes.NewReader(body.Bytes()))
-	if err != nil {
-		logg.LogError(err)
-		fmt.Printf("Error creating POST request")
-	}
-
-	// set content type
-	contentType := fmt.Sprintf("multipart/related; boundary=%q", writer.Boundary())
-	req.Header.Set("Content-Type", contentType)
-
-	// send POST request
-	resp, err := client.Do(req)
-	if err != nil {
-		fmt.Printf("Error sending POST request")
-	}
-	defer resp.Body.Close()
-	if resp.StatusCode >= 400 {
-		fmt.Printf("Got error status response: %d", resp.StatusCode)
-	}
-	contents, err := ioutil.ReadAll(resp.Body)
 	if a.cfg.Chained == 0 {
 		if a.cfg.Debug == 1 {
 			fmt.Printf("Chained:%s\n", a.cfg.Chained)
 		}
-		io.WriteString(w, string(contents))
-		w.WriteHeader(200)
+		profile := Profile{"Alex", []string{"snowboarding", "programming"}}
+		js, err := json.Marshal(profile)
+		if err != nil {
+		    http.Error(w, err.Error(), http.StatusInternalServerError)
+		    return
+		}
+		fmt.Printf("Output %s\n", js)
+		w.Header().Set("Content-Type", "application/json")
+		w.Write(js)
+		//blipparutils.BlipparDefaultHandler.ServeHTTP(w, r)
 		return
 	} else {
 		if a.cfg.Debug == 1 {
 			fmt.Printf("Passing the output to the next middleware, as chained %s\n", a.cfg.Chained)
 		}
+		a.next.ServeHTTP(w, r)
 	}
 
-	// Pass the request to the next middleware in chain
-	a.next.ServeHTTP(w, r)
 }
 
 // Parse command line parameters; faster than regex

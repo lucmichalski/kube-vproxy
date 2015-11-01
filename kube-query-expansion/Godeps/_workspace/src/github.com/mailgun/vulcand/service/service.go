@@ -17,14 +17,14 @@ import (
 	"github.com/mailgun/manners"
 	"github.com/mailgun/metrics"
 	"github.com/mailgun/scroll"
-	"github.com/mailgun/vulcand/api"
-	"github.com/mailgun/vulcand/engine"
-	"github.com/mailgun/vulcand/engine/etcdng"
-	"github.com/mailgun/vulcand/plugin"
-	"github.com/mailgun/vulcand/proxy"
-	"github.com/mailgun/vulcand/secret"
-	"github.com/mailgun/vulcand/stapler"
-	"github.com/mailgun/vulcand/supervisor"
+	"github.com/vulcand/vulcand/api"
+	"github.com/vulcand/vulcand/engine"
+	"github.com/vulcand/vulcand/engine/etcdng"
+	"github.com/vulcand/vulcand/plugin"
+	"github.com/vulcand/vulcand/proxy"
+	"github.com/vulcand/vulcand/secret"
+	"github.com/vulcand/vulcand/stapler"
+	"github.com/vulcand/vulcand/supervisor"
 )
 
 func Run(registry *plugin.Registry) error {

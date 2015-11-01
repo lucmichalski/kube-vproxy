@@ -83,16 +83,16 @@ etcdctl rm --recursive --dir /vulcand
 #exit
 
 # Generate the Mac OSX executable
-vbundle init --middleware=github.com/blippar/kube-vproxy-plugins/kube-middlewares/kubeDispatcher \
-	     --middleware=github.com/blippar/kube-vproxy-plugins/kube-middlewares/kubeOCR
+vbundle init --middleware=github.com/blippar/kube-vproxy/kube-middlewares/kubeDispatcher \
+	     --middleware=github.com/blippar/kube-vproxy/kube-middlewares/kubeOCR
 
 VPROXYMAC=$(go build -v -o $MIDDLEWARE_SETUP-osx .)
 cp -f patch/fix.go vctl/main.go
 pushd vctl/ && go build -o vctl && popd
 
 # Generate the Linux executable
-vbundle init --middleware=github.com/blippar/kube-vproxy-plugins/kube-middlewares/kubeDispatcher \
-             --middleware=github.com/blippar/kube-vproxy-plugins/kube-middlewares/kubeOCR
+vbundle init --middleware=github.com/blippar/kube-vproxy/kube-middlewares/kubeDispatcher \
+             --middleware=github.com/blippar/kube-vproxy/kube-middlewares/kubeOCR
 
 VPROXYLINUX=$(GOOS=linux CGO_ENABLED=0 go build -v -a -installsuffix cgo -o $MIDDLEWARE_SETUP-linux .)
 cp -f patch/fix.go vctl/main.go

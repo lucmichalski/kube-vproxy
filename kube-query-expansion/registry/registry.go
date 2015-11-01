@@ -1,21 +1,21 @@
 package registry
 
 import (
-	"github.com/mailgun/vulcand/plugin"
+	"github.com/vulcand/vulcand/plugin"
 	
-	"github.com/mailgun/vulcand/plugin/connlimit"
+	"github.com/vulcand/vulcand/plugin/connlimit"
 	
-	"github.com/mailgun/vulcand/plugin/ratelimit"
+	"github.com/vulcand/vulcand/plugin/ratelimit"
 	
-	"github.com/mailgun/vulcand/plugin/rewrite"
+	"github.com/vulcand/vulcand/plugin/rewrite"
 	
-	"github.com/mailgun/vulcand/plugin/cbreaker"
+	"github.com/vulcand/vulcand/plugin/cbreaker"
 	
-	"github.com/mailgun/vulcand/plugin/trace"
+	"github.com/vulcand/vulcand/plugin/trace"
 	
-	"github.com/blippar/kube-vproxy-plugins/kube-middlewares/kubeDispatcher"
+	"github.com/blippar/kube-vproxy/kube-middlewares/kubeDispatcher"
 	
-	"github.com/blippar/kube-vproxy-plugins/kube-middlewares/kubeOCR"
+	"github.com/blippar/kube-vproxy/kube-middlewares/kubeOCR"
 	
 )
 

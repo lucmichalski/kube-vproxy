@@ -9,21 +9,18 @@ package kubeOCR
 // Note that I import the versions bundled with kube vproxy. That will make our lives easier, as we'll use exactly the same versions used
 // by kube Vproxy. We are escaping dependency management troubles thanks to Godep.
 import (
-	"bytes"	
 	"fmt"
+	"github.com/vulcand/vulcand/Godeps/_workspace/src/github.com/codegangsta/cli"
+	"github.com/vulcand/vulcand/Godeps/_workspace/src/github.com/vulcand/oxy/utils"
+	"github.com/lepidosteus/golang-http-batch/batch"
 	"github.com/disintegration/imaging"
-	"github.com/mailgun/vulcand/Godeps/_workspace/src/github.com/codegangsta/cli"
-	"github.com/mailgun/vulcand/plugin"
+	"github.com/vulcand/vulcand/plugin"
+	"io"
 	"image"
 	"encoding/json"
-	"bufio"
-	"io"
-	"io/ioutil"
-	"mime/multipart"
-	"net/textproto"
-	"os"
-	"github.com/couchbaselabs/logg"
-	"log"
+	"bytes"
+	"image/jpeg"
+	"encoding/base64"
 	"net/http"
 	"strconv"
 	"strings"
@@ -40,7 +37,11 @@ func GetSpec() *plugin.MiddlewareSpec {
 	}
 }
 
-var filename, target string
+type Options struct {
+		Quality int
+}
+
+var part1, part2, ocrImg, contentType, apiUrl string
 
 // KubeOCRMiddleware struct holds configuration parameters and is used to
 // serialize/deserialize the configuration from storage engines.
@@ -53,7 +54,7 @@ type KubeOCRMiddleware struct {
 	Timeout           int
 	Transformation    string
 	Chained           int
-	Concurrency	  int
+	Concurrency       int
 	DetectDarkness    int
 	OcrEngine         string
 	OcrPreProcessors  string
@@ -68,32 +69,39 @@ type KubeOCRHandler struct {
 	next http.Handler
 }
 
-type OcrRequest struct {
-        EngineType        string      `json:"engine"`
-        PreprocessorChain []string               `json:"preprocessors"`
-        PreprocessorArgs  map[string]interface{} `json:"preprocessor-args"`
+type Output struct {
+	Status int
+	Result string
 }
 
-type Output struct {
-  Status    int
-  Result    string
+type nopCloser struct { 
+    io.Reader 
 }
+
+type Profile struct {
+  Name    string
+  Hobbies []string
+}
+
+func (nopCloser) Close() error { return nil } 
 
 // This function will be called each time the request hits the location with this middleware activated
 func (a *KubeOCRHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
+	contentType, err := utils.ParseAuthHeader(r.Header.Get("Content-Type"))
+
 	file, _, err := r.FormFile("file")
 	if err != nil {
-		log.Println(err)
+		fmt.Println(err)
 		http.Error(w, http.StatusText(http.StatusBadRequest), http.StatusBadRequest)
-		return
+		//return
 	}
 
 	img, _, err := image.Decode(file)
 	if err != nil {
-		log.Println(err)
+		fmt.Println(err)
 		http.Error(w, http.StatusText(http.StatusUnsupportedMediaType), http.StatusUnsupportedMediaType)
-		return
+		//return
 	}
 
 	if a.cfg.Debug == 1 {
@@ -106,6 +114,7 @@ func (a *KubeOCRHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		fmt.Printf("Detect Darkness in Pictures: %s\n", a.cfg.DetectDarkness)
 		fmt.Printf("Entities Discovery: %s\n", a.cfg.EntitiesDiscovery)
 		fmt.Printf("Entities Extractor: %s\n", a.cfg.EntitiesExtractor)
+		fmt.Printf("ContentType: %s\n", contentType)
 	}
 
 	dstImage := img
@@ -228,9 +237,9 @@ func (a *KubeOCRHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			//      dstImage = imaging.Overlay(backgroundImage, srcImage, image.Pt(strconv.ParseFloat(cmds[1], 64), strconv.ParseFloat(cmds[2], 64)), strconv.ParseFloat(cmds[3], 64))
 			//}
 			if cmds[0] == "Clone" {
-				copiedImg := imaging.Clone(img)
+				//copiedImg := imaging.Clone(img)
 				if a.cfg.Debug == 1 {
-					fmt.Printf("Content-Type: %T\n", copiedImg)
+					//fmt.Printf("Content-Type: %T\n", dstImage)
 				}
 			}
 			if cmds[0] == "Rotate" && cmds[1] == "180" {
@@ -247,107 +256,55 @@ func (a *KubeOCRHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			}
 		}
 	}
-               fmt.Printf("%s",dstImage)
-        // "0" -- white text on a black background
-        // "1" -- black text on a white background (default)
-        testJson := `{"engine":"tesseract", "preprocessors":["stroke-width-transform"], "preprocessor-args":{"stroke-width-transform":"1"}}`
-        ocrRequest := OcrRequest{}
-        json.Unmarshal([]byte(testJson), &ocrRequest);
 
-        filename := "../kube-assets/ocr_text/ocrimage.png"
-        apiUrl := "http://192.168.99.100:9292/ocr-file-upload"
-
-        // create JSON for POST request
-        jsonBytes, err := json.Marshal(ocrRequest)
-        if err != nil {
-               fmt.Printf("%s",err)
-        }
-
-	body := &bytes.Buffer{}
-	writer := multipart.NewWriter(body)
-
-	mimeHeader := textproto.MIMEHeader{}
-	mimeHeader.Set("Content-Type", "application/json")
-
-	part, err := writer.CreatePart(mimeHeader)
-	if err != nil {
-		fmt.Printf("Unable to create json multipart part")
+	buf := bytes.NewBuffer(nil)
+	if err := jpeg.Encode(buf, dstImage, nil); err != nil {
+		fmt.Println(err)
+		return
 	}
+ 
+	imgStr := "data:image/jpeg;base64," + base64.StdEncoding.EncodeToString(buf.Bytes())
 
-	_, err = part.Write(jsonBytes)
-	if err != nil {
-                logg.LogError(err)
-	}
+	fmt.Println("apiUrl: %s", apiUrl)
 
-	partHeaders := textproto.MIMEHeader{}
+	b := batch.New()
+	b.SetMaxConcurrent(a.cfg.Concurrency)
 
-	// TODO: pass these vals in instead of hardcoding
-	partHeaders.Set("Content-Type", "image/jpeg")
-	partHeaders.Set("Content-Disposition", "attachment; filename=\"attachment.txt\".")
+	b.AddEntry("http://192.168.99.100:9292/ocr-file-upload", "POST", "tessaract,transform=1", imgStr, batch.Callback(func(url string, method string, jsonPayload string, vengine string, body string, data batch.CallbackData, err error) {
+		fmt.Printf("Result from: %s\n", url)
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
+		fmt.Printf("Text extracted: %d\n", len(body))
+		fmt.Printf("Cumulated Characters Length (With Spaces): %d\n", len(body))
+	}))
 
-	partAttach, err := writer.CreatePart(partHeaders)
-	if err != nil {
-		fmt.Printf("Unable to create image multipart part")
-	}
+	b.RunMultiRelated()
 
-	f, err := os.Open(filename)
-	if err != nil {
-		fmt.Printf("Error closing writer: %v", err)
-	}
-	defer f.Close()
-    	//imageReader, _, err := image.Decode(bufio.NewReader(f))
-	_, err = io.Copy(partAttach, bufio.NewReader(f))
-	if err != nil {
-		fmt.Printf("Unable to write image multipart part")
-	}
-
-	err = writer.Close()
-	if err != nil {
-		fmt.Printf("Error closing writer")
-	}
-
-	// create a client
-	client := &http.Client{}
-
-	// create POST request
-	req, err := http.NewRequest("POST", apiUrl, bytes.NewReader(body.Bytes()))
-	if err != nil {
-                logg.LogError(err)
-		fmt.Printf("Error creating POST request")
-	}
-
-	// set content type
-	contentType := fmt.Sprintf("multipart/related; boundary=%q", writer.Boundary())
-	req.Header.Set("Content-Type", contentType)
-
-	// send POST request
-	resp, err := client.Do(req)
-	if err != nil {
-                fmt.Printf("Error sending POST request")
-	}
-	defer resp.Body.Close()
-	if resp.StatusCode >= 400 {
-		fmt.Printf("Got error status response: %d", resp.StatusCode)
-	}
-        contents, err := ioutil.ReadAll(resp.Body)
 	if a.cfg.Chained == 0 {
 		if a.cfg.Debug == 1 {
 			fmt.Printf("Chained:%s\n", a.cfg.Chained)
 		}
-		w.WriteHeader(200)
-		io.WriteString(w, "treasure")
+		profile := Profile{"Alex", []string{"snowboarding", "programming"}}
+		js, err := json.Marshal(profile)
+		if err != nil {
+		    http.Error(w, err.Error(), http.StatusInternalServerError)
+		    return
+		}
+		fmt.Printf("Output %s\n", js)
+		w.Header().Set("Content-Type", "application/json")
+		w.Write(js)
+		//blipparutils.BlipparDefaultHandler.ServeHTTP(w, r)
 		return
 	} else {
 		if a.cfg.Debug == 1 {
 			fmt.Printf("Passing the output to the next middleware, as chained %s\n", a.cfg.Chained)
 		}
+		a.next.ServeHTTP(w, r)
 	}
 
-	// Pass the request to the next middleware in chain
-	a.next.ServeHTTP(w, r)
 }
-
-
 
 // Parse command line parameters; faster than regex
 func StrExtract(sExper, sAdelim, sCdelim string, nOccur int) string {
@@ -406,7 +363,7 @@ func CliFlags() []cli.Flag {
 		cli.IntFlag{"height", 240, "Thumb Height", ""},
 		cli.IntFlag{"timeout", 250, "timeout for the OCR processing", ""},
 		cli.StringFlag{"transformation", "", "Contrast=20,Brightness=20,Gamma=0.75,Sharpen=0.5,Blur=0.5,Invert,GrayScale", ""},
-                cli.IntFlag{"chained", 0, "Continue the chain of middlewares", ""},
+		cli.IntFlag{"chained", 0, "Continue the chain of middlewares", ""},
 		cli.IntFlag{"concurrency", 50, "Max Concurrent Requests", ""},
 		cli.IntFlag{"detectDarkness", 0, "Detect dark pictures, dark backgrounds", ""},
 		cli.StringFlag{"ocrPreProcessors", "stroke-width-transform=1", "Pre-processing the scene for black background images (0,1 or auto)", ""},

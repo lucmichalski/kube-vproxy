@@ -14,8 +14,8 @@ $ mkdir $GOPATH/src/github.com/layardev && cd $GOPATH/src/github.com/layardev &&
 
 ### Install the vctl and vbundle cli-tools
 ```
-$ go get github.com/mailgun/vulcand/vctl
-$ go get github.com/mailgun/vulcand/vbundle
+$ go get github.com/vulcand/vulcand/vctl
+$ go get github.com/vulcand/vulcand/vbundle
 ```
 
 ### Create a folder in your GOPATH environment that will be used for your version of Vulcand with the new middleware.

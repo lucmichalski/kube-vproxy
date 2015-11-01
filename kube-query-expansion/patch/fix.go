@@ -2,8 +2,8 @@ package main
 
 import (
         "github.com/mailgun/log"
-        "github.com/mailgun/vulcand/vctl/command"
-        "github.com/blippar/kube-vproxy-plugins/kube-query-expansion/registry"
+        "github.com/vulcand/vulcand/vctl/command"
+        "github.com/blippar/kube-vproxy/kube-query-expansion/registry"
         "os"
 )
 
