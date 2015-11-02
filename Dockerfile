@@ -12,6 +12,7 @@ RUN     ls -l /go && \
 	go get github.com/vulcand/vulcand/Godeps/_workspace/src/github.com/mailgun/log && \
         go get github.com/vulcand/vulcand/vbundle && \
         go get github.com/tools/godep && \
+	go get github.com/hyperboloide/pipe && \
 	go get github.com/vulcand/oxy/forward && \
 	go get github.com/vulcand/oxy/cbreaker && \	
         go get github.com/vulcand/oxy/connlimit && \

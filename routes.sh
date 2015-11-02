@@ -76,7 +76,7 @@ curl -s -X POST -H "Content-Type: application/json" http://192.168.99.100:8182/v
 	-d "{\"Middleware\": {
          \"Id\": \"front_kubeFactor\",
          \"Priority\":1,
-	     \"Type\": \"kubeDispatcher\",
+	     \"Type\": \"kubeDispatcher_VMX\",
          \"Middleware\":{
 	        \"Template\": \""$TEMPLATE"\",
 	        \"Queue\": \""$QUEUE"\",
@@ -103,7 +103,7 @@ curl -s -X POST -H "Content-Type: application/json" http://192.168.99.100:8182/v
 
 curl -s -X POST -H "Content-Type: application/json" http://192.168.99.100:8182/v2/frontends/front_kubeFactor/middlewares \
      -d '{"Middleware": { 
-         "Id": "front_kubeFactor",
+         "Id": "front_kubeFactor_OCR",
          "Priority":2,
 	     "Type": "kubeOCR",
          	"Middleware":{

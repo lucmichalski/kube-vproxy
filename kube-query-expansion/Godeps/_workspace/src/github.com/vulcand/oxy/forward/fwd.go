@@ -8,8 +8,10 @@ import (
 	"net/url"
 	"os"
 	"strconv"
+	"fmt"
+	"log"
 	"time"
-
+    "net/http/httputil"
 	"github.com/vulcand/vulcand/Godeps/_workspace/src/github.com/vulcand/oxy/utils"
 )
 
@@ -25,6 +27,14 @@ func PassHostHeader(b bool) optSetter {
 		f.passHost = b
 		return nil
 	}
+}
+
+func debug(data []byte, err error) {
+    if err == nil {
+        fmt.Printf("%s\n\n", data)
+    } else {
+        log.Fatalf("%s\n\n", err)
+    }
 }
 
 func RoundTripper(r http.RoundTripper) optSetter {
@@ -91,6 +101,22 @@ func New(setters ...optSetter) (*Forwarder, error) {
 }
 
 func (f *Forwarder) ServeHTTP(w http.ResponseWriter, req *http.Request) {
+
+    debug(httputil.DumpRequestOut(req, true))
+//    debug(httputil.DumpResponse(w, true))
+
+    /*
+	if req.TLS != nil {
+		utils.CopyHeaders(w.Header(), response.Header)
+		w.WriteHeader(response.StatusCode)
+		written, _ := io.Copy(w, response.Body)
+		if written != 0 {
+			w.Header().Set(ContentLength, strconv.FormatInt(written, 10))
+		}
+		response.Body.Close()
+	}
+	*/
+
 	start := time.Now().UTC()
 	response, err := f.roundTripper.RoundTrip(f.copyRequest(req, req.URL))
 	if err != nil {

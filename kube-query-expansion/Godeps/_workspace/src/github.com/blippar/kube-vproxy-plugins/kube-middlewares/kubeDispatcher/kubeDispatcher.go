@@ -20,7 +20,7 @@ import (
 	"github.com/vulcand/vulcand/plugin"
 	"github.com/disintegration/imaging"	
 	"image"
-	"github.com/vulcand/vulcand/Godeps/_workspace/src/github.com/mailgun/log"
+	"log"
 	"image/jpeg"
 	"net/http"
 	"strconv"
@@ -85,26 +85,26 @@ func (a *KubeDispatcherHandler) ServeHTTP(w http.ResponseWriter, r *http.Request
 
 	file, _, err := r.FormFile("file")
 	if err != nil {
-		log.Println(err)
-		//http.Error(w, http.StatusText(http.StatusBadRequest), http.StatusBadRequest)
+		log.Println("error:\n", err)
+		http.Error(w, http.StatusText(http.StatusBadRequest), http.StatusBadRequest)
 		return
 	}
 
 	img, _, err := image.Decode(file)
 	if err != nil {
-		log.Println(err)
-		//http.Error(w, http.StatusText(http.StatusUnsupportedMediaType), http.StatusUnsupportedMediaType)
+		log.Println("error: %v", err)
+		http.Error(w, http.StatusText(http.StatusUnsupportedMediaType), http.StatusUnsupportedMediaType)
 		return
 	}
 
 	if a.cfg.Debug == 1 {
-		fmt.Printf("BlippId: %s\n", a.cfg.BlippId)
-		fmt.Printf("MarkerId: %s\n", a.cfg.MarkerId)
-		fmt.Printf("Context: %s\n", a.cfg.Context)
-		fmt.Printf("Thumb Width: %s\n", a.cfg.Width)
-		fmt.Printf("Thumb Height: %s\n", a.cfg.Height)
-		fmt.Printf("Learning Mode: %s\n", a.cfg.Learn)
-		fmt.Printf("Queue endpoints: %s\n", a.cfg.Queue)
+		log.Println("BlippId: %s\n", a.cfg.BlippId)
+		log.Println("MarkerId: %s\n", a.cfg.MarkerId)
+		log.Println("Context: %s\n", a.cfg.Context)
+		log.Println("Thumb Width: %s\n", a.cfg.Width)
+		log.Println("Thumb Height: %s\n", a.cfg.Height)
+		log.Println("Learning Mode: %s\n", a.cfg.Learn)
+		log.Println("Queue endpoints: %s\n", a.cfg.Queue)
 	}
 	dstImage := img
 	if a.cfg.Transformation != "" || (a.cfg.Width > 0 || a.cfg.Height > 0) {
@@ -115,7 +115,7 @@ func (a *KubeDispatcherHandler) ServeHTTP(w http.ResponseWriter, r *http.Request
 			if cmds[0] == "Blur" {
 				sigma, err := strconv.ParseFloat(cmds[1], 64)
 				if err != nil {
-					fmt.Println("Error while decoding sigma: ", err)
+					log.Println("Error while decoding sigma: ", err)
 					continue
 				}
 				dstImage = imaging.Blur(img, sigma)
@@ -123,7 +123,7 @@ func (a *KubeDispatcherHandler) ServeHTTP(w http.ResponseWriter, r *http.Request
 			if cmds[0] == "Sharpen" {
 				sigma, err := strconv.ParseFloat(cmds[1], 64)
 				if err != nil {
-					fmt.Println("Error while decoding sigma: ", err)
+					log.Println("Error while decoding sigma: ", err)
 					continue
 				}
 				dstImage = imaging.Sharpen(img, sigma)
@@ -131,7 +131,7 @@ func (a *KubeDispatcherHandler) ServeHTTP(w http.ResponseWriter, r *http.Request
 			if cmds[0] == "AdjustGamma" {
 				sigma, err := strconv.ParseFloat(cmds[1], 64)
 				if err != nil {
-					fmt.Println("Error while decoding sigma: ", err)
+					log.Println("Error while decoding sigma: ", err)
 					continue
 				}
 				dstImage = imaging.AdjustGamma(img, sigma)
@@ -139,7 +139,7 @@ func (a *KubeDispatcherHandler) ServeHTTP(w http.ResponseWriter, r *http.Request
 			if cmds[0] == "AdjustContrast" {
 				sigma, err := strconv.ParseFloat(cmds[1], 64)
 				if err != nil {
-					fmt.Println("Error while decoding sigma: ", err)
+					log.Println("Error while decoding sigma: ", err)
 					continue
 				}
 				dstImage = imaging.AdjustContrast(img, sigma)
@@ -147,7 +147,7 @@ func (a *KubeDispatcherHandler) ServeHTTP(w http.ResponseWriter, r *http.Request
 			if cmds[0] == "AdjustBrightness" {
 				sigma, err := strconv.ParseFloat(cmds[1], 64)
 				if err != nil {
-					fmt.Println("Error while decoding sigma: ", err)
+					log.Println("Error while decoding sigma: ", err)
 					continue
 				}
 				dstImage = imaging.AdjustBrightness(img, sigma)
@@ -155,12 +155,12 @@ func (a *KubeDispatcherHandler) ServeHTTP(w http.ResponseWriter, r *http.Request
 			if cmds[0] == "AdjustSigmoid" {
 				midpoint, err := strconv.ParseFloat(cmds[1], 64)
 				if err != nil {
-					fmt.Println("Error while decoding sigma: ", err)
+					log.Println("Error while decoding sigma: ", err)
 					continue
 				}
 				factor, err := strconv.ParseFloat(cmds[2], 64)
 				if err != nil {
-					fmt.Println("Error while decoding sigma: ", err)
+					log.Println("Error while decoding sigma: ", err)
 					continue
 				}
 				dstImage = imaging.AdjustSigmoid(img, midpoint, factor)
@@ -180,22 +180,22 @@ func (a *KubeDispatcherHandler) ServeHTTP(w http.ResponseWriter, r *http.Request
 			if cmds[0] == "Crop" {
 				x0, err := strconv.ParseInt(cmds[1], 0, 32)
 				if err != nil {
-					fmt.Println("Error while decoding x0 coordinates: ", err)
+					log.Println("Error while decoding x0 coordinates: ", err)
 					continue
 				}
 				y0, err := strconv.ParseInt(cmds[2], 0, 32)
 				if err != nil {
-					fmt.Println("Error while decoding y0 coordinates: ", err)
+					log.Println("Error while decoding y0 coordinates: ", err)
 					continue
 				}
 				x1, err := strconv.ParseInt(cmds[3], 0, 32)
 				if err != nil {
-					fmt.Println("Error while decoding x1 coordinates: ", err)
+					log.Println("Error while decoding x1 coordinates: ", err)
 					continue
 				}
 				y1, err := strconv.ParseInt(cmds[4], 0, 32)
 				if err != nil {
-					fmt.Println("Error while decoding the y1 coordinates: ", err)
+					log.Println("Error while decoding the y1 coordinates: ", err)
 					continue
 				}
 				dstImage = imaging.Crop(img, image.Rect(int(x0), int(y0), int(x1), int(y1)))
@@ -203,12 +203,12 @@ func (a *KubeDispatcherHandler) ServeHTTP(w http.ResponseWriter, r *http.Request
 			if cmds[0] == "CropCenter" {
 				width, err := strconv.ParseInt(cmds[1], 0, 32)
 				if err != nil {
-					fmt.Println("Error while decoding the width value: ", err)
+					log.Println("Error while decoding the width value: ", err)
 					continue
 				}
 				height, err := strconv.ParseInt(cmds[1], 0, 32)
 				if err != nil {
-					fmt.Println("Error while decoding the height value: ", err)
+					log.Println("Error while decoding the height value: ", err)
 					continue
 				}
 				dstImage = imaging.CropCenter(img, int(width), int(height))
@@ -228,7 +228,7 @@ func (a *KubeDispatcherHandler) ServeHTTP(w http.ResponseWriter, r *http.Request
 			if cmds[0] == "Clone" {
 				//copiedImg := imaging.Clone(img)
 				if a.cfg.Debug == 1 {
-					fmt.Printf("Content-Type: %T\n", dstImage)
+					log.Println("Content-Type: %T\n", dstImage)
 				}
 			}
 			if cmds[0] == "Rotate" && cmds[1] == "180" {
@@ -248,15 +248,15 @@ func (a *KubeDispatcherHandler) ServeHTTP(w http.ResponseWriter, r *http.Request
 
 	buf := bytes.NewBuffer(nil)
 	if err := jpeg.Encode(buf, dstImage, nil); err != nil {
-		fmt.Println(err)
+		log.Println(err)
 		return
 	}
  
 	imgStr := "data:image/jpeg;base64," + base64.StdEncoding.EncodeToString(buf.Bytes())
 
 	if a.cfg.Debug == 1 {
-		fmt.Printf("Base64: %d\n", imgStr)
-		fmt.Printf("isNudeDetectMode = %s\n", a.cfg.Nudity)
+//		log.Println("Base64:\n", imgStr)
+		log.Println("isNudeDetectMode = ", a.cfg.Nudity)
 	}
 
 	if a.cfg.Nudity == "detect" || a.cfg.Nudity == "block" {
@@ -267,7 +267,7 @@ func (a *KubeDispatcherHandler) ServeHTTP(w http.ResponseWriter, r *http.Request
 			return
 		}
 		if isNude && a.cfg.Nudity == "block" {
-			fmt.Printf("Techat detected: %d\n", isNude)
+			log.Println("Techat detected: ", isNude)
 			return
 		}
 	}
@@ -275,22 +275,22 @@ func (a *KubeDispatcherHandler) ServeHTTP(w http.ResponseWriter, r *http.Request
 	// Condition for Payloads
 	payLoad, err := base64.StdEncoding.DecodeString(a.cfg.Template)
 	payLoadString := string(payLoad[:])
-	fmt.Printf("Content-Type: %d\n", contentType)
+	log.Println("Content-Type: %d\n", contentType)
 	payLoaded := strings.Replace(payLoadString, "ImageBase64", imgStr, 1)
 
 	if a.cfg.Learn == 1 {
 		payLoaded = strings.Replace(payLoaded, "learn_mode\":false", "learn_mode\":true", 1)
 		if a.cfg.Debug == 1 {
-			fmt.Printf("Learning mode activated for VMX 1.x and 2.x engines: %d\n", a.cfg.Learn)
+			log.Println("Learning mode activated for VMX 1.x and 2.x engines: %d\n", a.cfg.Learn)
 		}
 	}
 
 	if a.cfg.Debug == 1 {
-		fmt.Printf("JSOn Payload: %d\n", payLoaded)
-		fmt.Printf("Max Concurrency: %s\n", a.cfg.Concurrency)
-		fmt.Printf("parseScore global rules: %s\n", a.cfg.ParseScore)
-		fmt.Printf("parseMeta global rules: %s\n", a.cfg.ParseMeta)
-		fmt.Printf("parseBB global rules: %s\n", a.cfg.ParseBB)
+		log.Println("JSON Payload:\n", payLoaded)
+		log.Println("Max Concurrency:", a.cfg.Concurrency)
+		log.Println("parseScore global rules:", a.cfg.ParseScore)
+		log.Println("parseMeta global rules:", a.cfg.ParseMeta)
+		log.Println("parseBB global rules:", a.cfg.ParseBB)
 	}
 
 	if a.cfg.Discovery == "BATCH" {
@@ -300,27 +300,27 @@ func (a *KubeDispatcherHandler) ServeHTTP(w http.ResponseWriter, r *http.Request
 		for _, endpoint := range endpoints {
 			ep := strings.Split(endpoint, ":")
 			if a.cfg.Debug == 1 {
-				fmt.Printf("Endpoint Protocol: %s\n", ep[0])
-				fmt.Printf("Endpoint Type: %s\n", ep[1])
-				fmt.Printf("Endpoint Url: %s\n", ep[2])
-				fmt.Printf("Endpoint Port: %s\n", ep[3])
-				fmt.Printf("Re-composed endpoint: http:%s:%s %s\n", ep[0], ep[1], ep[2], ep[3])
-			}
-			b.AddEntry(string("http:"+ep[2]+":"+ep[3]), string(ep[0]), string(payLoaded), string(ep[1]), batch.Callback(func(url string, method string, jsonPayload string, vengine string, body string, data batch.CallbackData, err error) {
+				log.Println("Endpoint Protocol:", ep[0])
+				log.Println("Endpoint Type:", ep[1])
+				log.Println("Endpoint Url:", ep[2])
+				log.Println("Endpoint Port:", ep[3])
+				fmt.Printf("Re-composed endpoint: http:%s:%s %s", ep[0], ep[1], ep[2], ep[3])
+			} 
+			b.AddEntry(string("http:"+ep[2]+":"+ep[3]), string(ep[0]), string(ep[1]), string(payLoaded), batch.Callback(func(url string, method string, vengine string, payload string, body string, data batch.CallbackData, err error) {
 				if err != nil {
-					fmt.Printf("Body Err: %s\n", err)
+					log.Println("Body Err: %s\n", err)
 				}
 				if a.cfg.Debug == 1 {
-					fmt.Printf("Body OK: %s\n", body)
-					fmt.Printf("BodyLength: %s\n", len(body))
+					log.Println("Body OK:\n", body)
+					log.Println("BodyLength: ", len(body))
 				}
 				scoreParse := StrExtract(a.cfg.ParseScore, vengine+"=", "|", 1)
 				metaParse := StrExtract(a.cfg.ParseMeta, vengine+"=", "|", 1)
 				bbParse := StrExtract(a.cfg.ParseBB, vengine+"=", "|", 1)
 				if a.cfg.Debug == 1 {
-					fmt.Printf("scoreParse:%s\n", scoreParse)
-					fmt.Printf("metaParse:%s\n", metaParse)
-					fmt.Printf("bbParse:%s\n", bbParse)
+					log.Println("scoreParse: ", scoreParse)
+					log.Println("metaParse: ", metaParse)
+					log.Println("bbParse: ", bbParse)
 				}
 				ret := map[string]interface{}{}
 				dec := json.NewDecoder(strings.NewReader(body))
@@ -328,35 +328,35 @@ func (a *KubeDispatcherHandler) ServeHTTP(w http.ResponseWriter, r *http.Request
 				jq := jsonq.NewQuery(ret)
 				score, error := jq.Float(scoreParse)
 				if error != nil {
-					fmt.Printf("error:%s\n", error)
+					log.Println("error: \n", error)
 				}
 				if a.cfg.Debug == 1 {
-					fmt.Printf("Score:%f\n", score)
+					log.Println("Score: \n", score)
 				}
 				bb, error := jq.Array(bbParse)
 				if error != nil {
-					fmt.Printf("error:%s\n", error)
+					log.Println("error: \n", error)
 				} else {
 					if a.cfg.Debug == 1 {
-						fmt.Printf("Bounding Box:%s\n", bb)
+						log.Println("Bounding Box: ", bb)
 					}
 				}
 				meta, error := jq.String(metaParse)
 				if error != nil {
-					fmt.Printf("err:%s\n", error)
+					log.Println("error: \n", error)
 				} else {
 					if a.cfg.Debug == 1 {
-						fmt.Printf("Meta:%s\n", meta)
+						log.Println("Meta:\n", meta)
 					}
 				}
 				if score > a.cfg.MinScore {
 					if a.cfg.Debug == 1 {
-						fmt.Printf("Endpoint:%s\n", url)
-						fmt.Printf("EngineType:%s\n", vengine)
-						fmt.Printf("Model:%s\n", meta)
-						fmt.Printf("Score:%f\n", score)
-						fmt.Printf("Output:%s\n", body)
-						fmt.Printf("bb:%s\n", bb)
+						log.Println("Endpoint: ", url)
+						log.Println("EngineType: ", vengine)
+						log.Println("Model: ", meta)
+						log.Println("Score: ", score)
+						log.Println("Output: ", body)
+						log.Println("bb: ", bb)
 					}
 				}
 			}))
@@ -366,22 +366,39 @@ func (a *KubeDispatcherHandler) ServeHTTP(w http.ResponseWriter, r *http.Request
 
 	if a.cfg.Chained == 0 {
 		if a.cfg.Debug == 1 {
-			fmt.Printf("Chained:%s\n", a.cfg.Chained)
+			log.Println("Chained: ", a.cfg.Chained)
 		}
+
+		/*
+
+		{
+			 "Status": {
+			   "Code": 400
+			 }
+		}
+
+		{	"Results": output,
+			"Status": {	
+				"Code": 0
+			}
+		}	
+
+		*/
+
 		profile := Profile{"Alex", []string{"snowboarding", "programming"}}
 		js, err := json.Marshal(profile)
 		if err != nil {
 		    http.Error(w, err.Error(), http.StatusInternalServerError)
 		    return
 		}
-		fmt.Printf("Output %s\n", js)
+		log.Println("Output %s\n", js)
 		w.Header().Set("Content-Type", "application/json")
 		w.Write(js)
 		//blipparutils.BlipparDefaultHandler.ServeHTTP(w, r)
 		return
 	} else {
 		if a.cfg.Debug == 1 {
-			fmt.Printf("Passing the output to the next middleware, as chained %s\n", a.cfg.Chained)
+			log.Println("Passing the output to the next middleware, as chained", a.cfg.Chained)
 		}
 		a.next.ServeHTTP(w, r)
 	}

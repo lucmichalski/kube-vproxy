@@ -16,7 +16,7 @@ import (
 	"github.com/disintegration/imaging"
 	"github.com/vulcand/vulcand/plugin"
 	"io"
-	"github.com/vulcand/vulcand/Godeps/_workspace/src/github.com/mailgun/log"
+	"log"
 	"image"
 	"encoding/json"
 	"bytes"
@@ -95,27 +95,27 @@ func (a *KubeOCRHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Println(err)
 		http.Error(w, http.StatusText(http.StatusBadRequest), http.StatusBadRequest)
-		//return
+		return
 	}
 
 	img, _, err := image.Decode(file)
 	if err != nil {
 		log.Println(err)
 		http.Error(w, http.StatusText(http.StatusUnsupportedMediaType), http.StatusUnsupportedMediaType)
-		//return
+		return
 	}
 
 	if a.cfg.Debug == 1 {
-		fmt.Printf("BlippId: %s\n", a.cfg.BlippId)
-		fmt.Printf("MarkerId: %s\n", a.cfg.MarkerId)
-		fmt.Printf("Context: %s\n", a.cfg.Context)
-		fmt.Printf("Timeout limit: %s\n", a.cfg.Timeout)
-		fmt.Printf("Thumb Width: %s\n", a.cfg.Width)
-		fmt.Printf("Thumb Height: %s\n", a.cfg.Height)
-		fmt.Printf("Detect Darkness in Pictures: %s\n", a.cfg.DetectDarkness)
-		fmt.Printf("Entities Discovery: %s\n", a.cfg.EntitiesDiscovery)
-		fmt.Printf("Entities Extractor: %s\n", a.cfg.EntitiesExtractor)
-		fmt.Printf("ContentType: %s\n", contentType)
+		log.Println("BlippId: %s\n", a.cfg.BlippId)
+		log.Println("MarkerId: %s\n", a.cfg.MarkerId)
+		log.Println("Context: %s\n", a.cfg.Context)
+		log.Println("Timeout limit: %s\n", a.cfg.Timeout)
+		log.Println("Thumb Width: %s\n", a.cfg.Width)
+		log.Println("Thumb Height: %s\n", a.cfg.Height)
+		log.Println("Detect Darkness in Pictures: %s\n", a.cfg.DetectDarkness)
+		log.Println("Entities Discovery: %s\n", a.cfg.EntitiesDiscovery)
+		log.Println("Entities Extractor: %s\n", a.cfg.EntitiesExtractor)
+		log.Println("ContentType: %s\n", contentType)
 	}
 
 	dstImage := img
@@ -127,7 +127,7 @@ func (a *KubeOCRHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			if cmds[0] == "Blur" {
 				sigma, err := strconv.ParseFloat(cmds[1], 64)
 				if err != nil {
-					fmt.Println("Error while decoding sigma: ", err)
+					log.Println("Error while decoding sigma: ", err)
 					continue
 				}
 				dstImage = imaging.Blur(img, sigma)
@@ -135,7 +135,7 @@ func (a *KubeOCRHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			if cmds[0] == "Sharpen" {
 				sigma, err := strconv.ParseFloat(cmds[1], 64)
 				if err != nil {
-					fmt.Println("Error while decoding sigma: ", err)
+					log.Println("Error while decoding sigma: ", err)
 					continue
 				}
 				dstImage = imaging.Sharpen(img, sigma)
@@ -143,7 +143,7 @@ func (a *KubeOCRHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			if cmds[0] == "AdjustGamma" {
 				sigma, err := strconv.ParseFloat(cmds[1], 64)
 				if err != nil {
-					fmt.Println("Error while decoding sigma: ", err)
+					log.Println("Error while decoding sigma: ", err)
 					continue
 				}
 				dstImage = imaging.AdjustGamma(img, sigma)
@@ -151,7 +151,7 @@ func (a *KubeOCRHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			if cmds[0] == "AdjustContrast" {
 				sigma, err := strconv.ParseFloat(cmds[1], 64)
 				if err != nil {
-					fmt.Println("Error while decoding sigma: ", err)
+					log.Println("Error while decoding sigma: ", err)
 					continue
 				}
 				dstImage = imaging.AdjustContrast(img, sigma)
@@ -159,7 +159,7 @@ func (a *KubeOCRHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			if cmds[0] == "AdjustBrightness" {
 				sigma, err := strconv.ParseFloat(cmds[1], 64)
 				if err != nil {
-					fmt.Println("Error while decoding sigma: ", err)
+					log.Println("Error while decoding sigma: ", err)
 					continue
 				}
 				dstImage = imaging.AdjustBrightness(img, sigma)
@@ -167,12 +167,12 @@ func (a *KubeOCRHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			if cmds[0] == "AdjustSigmoid" {
 				midpoint, err := strconv.ParseFloat(cmds[1], 64)
 				if err != nil {
-					fmt.Println("Error while decoding sigma: ", err)
+					log.Println("Error while decoding sigma: ", err)
 					continue
 				}
 				factor, err := strconv.ParseFloat(cmds[2], 64)
 				if err != nil {
-					fmt.Println("Error while decoding sigma: ", err)
+					log.Println("Error while decoding sigma: ", err)
 					continue
 				}
 				dstImage = imaging.AdjustSigmoid(img, midpoint, factor)
@@ -192,22 +192,22 @@ func (a *KubeOCRHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			if cmds[0] == "Crop" {
 				x0, err := strconv.ParseInt(cmds[1], 0, 32)
 				if err != nil {
-					fmt.Println("Error while decoding x0 coordinates: ", err)
+					log.Println("Error while decoding x0 coordinates: ", err)
 					continue
 				}
 				y0, err := strconv.ParseInt(cmds[2], 0, 32)
 				if err != nil {
-					fmt.Println("Error while decoding y0 coordinates: ", err)
+					log.Println("Error while decoding y0 coordinates: ", err)
 					continue
 				}
 				x1, err := strconv.ParseInt(cmds[3], 0, 32)
 				if err != nil {
-					fmt.Println("Error while decoding x1 coordinates: ", err)
+					log.Println("Error while decoding x1 coordinates: ", err)
 					continue
 				}
 				y1, err := strconv.ParseInt(cmds[4], 0, 32)
 				if err != nil {
-					fmt.Println("Error while decoding the y1 coordinates: ", err)
+					log.Println("Error while decoding the y1 coordinates: ", err)
 					continue
 				}
 				dstImage = imaging.Crop(img, image.Rect(int(x0), int(y0), int(x1), int(y1)))
@@ -215,12 +215,12 @@ func (a *KubeOCRHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			if cmds[0] == "CropCenter" {
 				width, err := strconv.ParseInt(cmds[1], 0, 32)
 				if err != nil {
-					fmt.Println("Error while decoding the width value: ", err)
+					log.Println("Error while decoding the width value: ", err)
 					continue
 				}
 				height, err := strconv.ParseInt(cmds[1], 0, 32)
 				if err != nil {
-					fmt.Println("Error while decoding the height value: ", err)
+					log.Println("Error while decoding the height value: ", err)
 					continue
 				}
 				dstImage = imaging.CropCenter(img, int(width), int(height))
@@ -240,7 +240,7 @@ func (a *KubeOCRHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			if cmds[0] == "Clone" {
 				//copiedImg := imaging.Clone(img)
 				if a.cfg.Debug == 1 {
-					//fmt.Printf("Content-Type: %T\n", dstImage)
+					//log.Println("Content-Type: %T\n", dstImage)
 				}
 			}
 			if cmds[0] == "Rotate" && cmds[1] == "180" {
@@ -260,47 +260,64 @@ func (a *KubeOCRHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	buf := bytes.NewBuffer(nil)
 	if err := jpeg.Encode(buf, dstImage, nil); err != nil {
-		fmt.Println(err)
+		log.Println(err)
 		return
 	}
  
 	imgStr := "data:image/jpeg;base64," + base64.StdEncoding.EncodeToString(buf.Bytes())
 
-	fmt.Println("apiUrl: %s", apiUrl)
+	log.Println("apiUrl: %s", apiUrl)
 
 	b := batch.New()
 	b.SetMaxConcurrent(a.cfg.Concurrency)
 
-	b.AddEntry("http://192.168.99.100:9292/ocr-file-upload", "POST", "tessaract,transform=1", imgStr, batch.Callback(func(url string, method string, jsonPayload string, vengine string, body string, data batch.CallbackData, err error) {
-		fmt.Printf("Result from: %s\n", url)
+	b.AddEntry("http://192.168.99.100:9292/ocr-file-upload", "POST", "tessaract,transform=1", imgStr, batch.Callback(func(url string, method string, vengine string, payload string, body string, data batch.CallbackData, err error) {
+		log.Println("Result from: %s\n", url)
 		if err != nil {
-			fmt.Println(err)
+			log.Println(err)
 			return
 		}
-		fmt.Printf("Text extracted: %d\n", len(body))
-		fmt.Printf("Cumulated Characters Length (With Spaces): %d\n", len(body))
+		log.Println("Text extracted: %d\n", len(body))
+		log.Println("Cumulated Characters Length (With Spaces): %d\n", len(body))
 	}))
 
 	b.RunMultiRelated()
 
 	if a.cfg.Chained == 0 {
 		if a.cfg.Debug == 1 {
-			fmt.Printf("Chained:%s\n", a.cfg.Chained)
+			log.Println("Chained:%s\n", a.cfg.Chained)
 		}
+
+		/*
+
+		{
+			 "Status": {
+			   "Code": 400
+			 }
+		}
+
+		{	"Results": output,
+			"Status": {	
+				"Code": 0
+			}
+		}	
+
+		*/
+
 		profile := Profile{"Alex", []string{"snowboarding", "programming"}}
 		js, err := json.Marshal(profile)
 		if err != nil {
 		    http.Error(w, err.Error(), http.StatusInternalServerError)
 		    return
 		}
-		fmt.Printf("Output %s\n", js)
+		log.Println("Output %s\n", js)
 		w.Header().Set("Content-Type", "application/json")
 		w.Write(js)
 		//blipparutils.BlipparDefaultHandler.ServeHTTP(w, r)
 		return
 	} else {
 		if a.cfg.Debug == 1 {
-			fmt.Printf("Passing the output to the next middleware, as chained %s\n", a.cfg.Chained)
+			log.Println("Passing the output to the next middleware, as chained %s\n", a.cfg.Chained)
 		}
 		a.next.ServeHTTP(w, r)
 	}

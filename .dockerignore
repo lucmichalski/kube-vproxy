@@ -1,0 +1,9 @@
+kube-assets/
+kube-benchmarks/
+kube-dahsboards/
+kube-scripts/
+svc_*
+logstash/
+data/
+default.etcd/
+docs/

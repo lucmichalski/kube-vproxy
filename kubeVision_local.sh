@@ -1,14 +1,9 @@
 #!/bin/bash
-#openssl req -x509  -batch -nodes -newkey rsa:2048 \
-#-keyout svc_kube_metrics_logstash/conf/logstash-forwarder.key \
-#-out svc_kube_metrics_logstash/conf/logstash-forwarder.crt \
-#-subj /CN=svc_kube_metrics_logstash
-#cp -f ./svc_kube_metrics_logstash/conf/logstash-forwarder.crt ./svc_kube_metrics_forwarder/ssl/logstash-forwarder.crt
-#cp -f ./svc_kube_metrics_logstash/conf/logstash-forwarder.key ./svc_kube_metrics_forwarder/ssl/logstash-forwarder.key
+
 docker rm $(docker ps -a -q)
 docker rmi $(docker images | grep "^<none>" | awk '{print $3}')
 docker-compose -f cluster_kubeVision.docker-compose.yml stop
-docker-compose -f cluster_kubeVision.docker-compose.yml rm -f svc_kube_discovery_vproxy_1
+docker-compose -f cluster_kubeVision.docker-compose.yml rm -f
 docker-compose -f cluster_kubeVision.docker-compose.yml build
 docker-compose -f cluster_kubeVision.docker-compose.yml up -d
 
@@ -50,10 +45,6 @@ BACKEND_PORT=3003
 ASSETS=../kube-assets/
 CONTEXT="Mixed visual analysis"
 
-# Default ports and clients for the local version
-etcd&
-rm -f ./bin/$MIDDLEWARE_SETUP-*
-
 # Will be fck gangsta more dynamic soon ! Chaaaaataaaa !
 TEMPLATE=$(cat ./kube-query-expansion/templates/vmx1.json | base64)
 cat ./kube-query-expansion/templates/vmx1.json | jq .
@@ -66,7 +57,6 @@ do
 done
 QUEUE=$(echo -n $ENDPOINTS | sed "s/\(.*\).\{1\}/\1/")
 
-
 SESSIONS=`curl http://$VMX2_HOSTNAME:$VMX2_PORT/sessions | jq -r '.data[] .id'`
 ENDPOINTS=""
 for i in $(echo $SESSIONS | tr " " "\n")
@@ -75,17 +65,17 @@ do
   # process
 done
 QUEUE+="|"
-QUEUE=$(echo -n $ENDPOINTS | sed "s/\(.*\).\{1\}/\1/")
+QUEUE+=$(echo -n $ENDPOINTS | sed "s/\(.*\).\{1\}/\1/")
 
 curl -X POST -H "Content-Type: application/json" -d "{\"Backend\": {\"Id\":\"bck_"$MODEL"\",\"Type\":\"http\"}}" http://192.168.99.100:8182/v2/backends | jq .
 
-curl -X POST -H "Content-Type: application/json" -d "{\"Server\": {\"Id\":\"srv_"$MODEL"\",\"URL\":\"http://192.168.99.100:81\"}}" "http://192.168.99.100:8182/v2/backends/bck_$MODEL/servers"  | jq .
+curl -X POST -H "Content-Type: application/json" -d "{\"Server\": {\"Id\":\"srv_"$MODEL"\",\"URL\":\"http://kube-master.blippar-vision.com\"}}" "http://192.168.99.100:8182/v2/backends/bck_$MODEL/servers"  | jq .
 
 curl -X POST -H "Content-Type: application/json" -d "{\"Frontend\": {\"Id\":\"front_"$MODEL"\",\"Type\":\"http\",\"BackendId\": \"bck_"$MODEL"\",\"Route\": \"PathRegexp(\\\"$ENDPOINT_MIDDLEWARE.*\\\")\"}}" http://192.168.99.100:8182/v2/frontends  | jq .
 
-curl -X POST -H "Content-Type: application/json" http://192.168.99.100:8182/v2/frontends/front_kubeFactor/middlewares\
+curl -X POST -H "Content-Type: application/json" http://192.168.99.100:8182/v2/frontends/front_kubeFactor/middlewares \
 	-d "{\"Middleware\": {
-         \"Id\": \"front_kubeFactor\",
+         \"Id\": \"front_kubeFactor_VMX\",
          \"Priority\":1,
 	     \"Type\": \"kubeDispatcher\",
          \"Middleware\":{
@@ -100,14 +90,14 @@ curl -X POST -H "Content-Type: application/json" http://192.168.99.100:8182/v2/f
 	        \"Width\": 320,
 	        \"Height\": 240,
 	        \"Learn\": 0,
-	        \"Concurrency\": 50,
+	        \"Concurrency\": 150,
 	        \"Transformation\": \"\",
-	        \"Nudity\": \"detect\",
+	        \"Nudity\": \"\",
 	        \"Chained\": 1,
-	        \"MinScore\": 0,
+	        \"MinScore\": 0.2,
 	        \"Discovery\": \"BATCH\",
 	        \"ActiveEngines\": \"vmx2,vmx1\",
-			\"Debug\": 1
+			\"Debug\": 0
         }
     }
 }" | jq .
@@ -115,7 +105,7 @@ curl -X POST -H "Content-Type: application/json" http://192.168.99.100:8182/v2/f
 
  curl -X POST -H "Content-Type: application/json" http://192.168.99.100:8182/v2/frontends/front_kubeFactor/middlewares \
      -d '{"Middleware": {
-         "Id": "front_kubeFactor",
+         "Id": "front_kubeFactor_OCR",
          "Priority":2,
 	     "Type": "kubeOCR",
          "Middleware":{
@@ -125,7 +115,7 @@ curl -X POST -H "Content-Type: application/json" http://192.168.99.100:8182/v2/f
 	        "Width": 320,
 	        "Height": 240,
 	        "Timeout": 250,
-	        "Concurrency": 50,
+	        "Concurrency": 150,
 	        "Transformation": "",
 	        "DetectDarkness": 0,
 	        "Chained": 0,
@@ -133,18 +123,25 @@ curl -X POST -H "Content-Type: application/json" http://192.168.99.100:8182/v2/f
 	        "OcrEngine": "engine=tesseract",
 	        "EntitiesExtractor": "kube-aida",
 	        "EntitiesDiscovery": 0,
-	        "Debug": 1
+	        "Debug": 0
         }
     }
 }'  | jq .
 
-#curl -XPUT localhost:9200/_template/aws_billing -d "`cat ./kube-templates/svc_kube_aws-billing-es-template.json`"
-#docker-compose -f cluster_kubeVision.docker-compose.yml logs
-files="$(find -L "./kube-assets/ocr_text/" -type f)"
+sleep 6
+
+files="$(find -L "./kube-assets" -type f)"
 echo "Count: $(echo -n "$files" | wc -l)"
 SESSIONID="KUBE-QUERY-EXPANSION"
 echo "$files" | while read file; do
   echo "$file"
-  ./upload-local-file.sh $file
-  curl -v -X POST -F "file"=@$file -F "region"="us" -F "sessionId"="$SESSIONID" http://192.168.99.100:81/api/v1/middleware/kubeFactor
+  curl -s -X POST -F "file"=@$file -F "region"="us" -F "sessionId"="$SESSIONID" http://192.168.99.100:81/api/v1/middleware/kubeFactor
+done
+
+files="$(find -L "./kube-assets/ocr_text" -type f)"
+echo "Count: $(echo -n "$files" | wc -l)"
+SESSIONID="KUBE-QUERY-EXPANSION"
+echo "$files" | while read file; do
+  echo "$file"
+  curl -s -X POST -F "file"=@$file -F "region"="us" -F "sessionId"="$SESSIONID" http://192.168.99.100:81/api/v1/middleware/kubeFactor
 done
