@@ -92,14 +92,6 @@ func (b *batch) Run() {
 	}
 }
 
-func debug(data []byte, err error) {
-    if err == nil {
-        fmt.Printf("%s\n\n", data)
-    } else {
-        log.Fatalf("%s\n\n", err)
-    }
-}
-
 type OcrRequest struct {
 	EngineType        string          		 `json:"engine"`
 	PreprocessorArgs  map[string]interface{} `json:"preprocessor-args"`

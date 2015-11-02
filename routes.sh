@@ -63,7 +63,7 @@ do
   # process
 done
 QUEUE+="|"
-QUEUE=$(echo -n $ENDPOINTS | sed "s/\(.*\).\{1\}/\1/")
+QUEUE+=$(echo -n $ENDPOINTS | sed "s/\(.*\).\{1\}/\1/")
 
 curl -s -X POST -H "Content-Type: application/json" -d "{\"Backend\": {\"Id\":\"bck_"$MODEL"\",\"Type\":\"http\"}}" http://192.168.99.100:8182/v2/backends | jq .
 
@@ -101,36 +101,12 @@ curl -s -X POST -H "Content-Type: application/json" http://192.168.99.100:8182/v
     }
 }" | jq .
 
-curl -s -X POST -H "Content-Type: application/json" http://192.168.99.100:8182/v2/frontends/front_kubeFactor/middlewares \
-     -d '{"Middleware": { 
-         "Id": "front_kubeFactor_OCR",
-         "Priority":2,
-	     "Type": "kubeOCR",
-         	"Middleware":{
-	        "MarkerId": 1234,
-	        "BlippId": 4321,
-	        "Context": "test Max Factor mentions on labels",
-	        "Width": 320,
-	        "Height": 240,
-	        "Timeout": 250,
-	        "Concurrency": 50,
-	        "Transformation": "",
-	        "DetectDarkness": 0,
-	        "Chained": 0,
-		"OcrPreProcessors": "stroke-width-transform=1",
-	        "OcrEngine": "engine=tesseract",
-	        "EntitiesExtractor": "kube-aida",
-	        "EntitiesDiscovery": 0,
-	        "Debug": 1
-        }
-    }
-}'  | jq .
 
-files="$(find -L "./kube-assets/ocr_text/" -type f)"
+files="$(find -L "./kube-assets" -type f)"
 echo "Count: $(echo -n "$files" | wc -l)"
 SESSIONID="KUBE-QUERY-EXPANSION"
 echo "$files" | while read file; do
   echo "$file"
   #./upload-local-file.sh $file
-  curl -v -X POST -F "file"=@$file -F "region"="us" -F "sessionId"="$SESSIONID" http://192.168.99.100:81/api/v1/middleware/kubeFactor
+  #curl -v -X POST -F "file"=@$file -F "region"="us" -F "sessionId"="$SESSIONID" http://192.168.99.100:81/api/v1/middleware/kubeFactor
 done

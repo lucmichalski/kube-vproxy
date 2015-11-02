@@ -21,6 +21,7 @@ import (
 	"github.com/disintegration/imaging"	
 	"image"
 	"log"
+	"io"
 	"image/jpeg"
 	"net/http"
 	"strconv"
@@ -73,11 +74,6 @@ type KubeDispatcherHandler struct {
 	next http.Handler
 }
 
-type Profile struct {
-  Name    string
-  Hobbies []string
-}
-
 // This function will be called each time the request hits the location with this middleware activated
 func (a *KubeDispatcherHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
@@ -85,22 +81,22 @@ func (a *KubeDispatcherHandler) ServeHTTP(w http.ResponseWriter, r *http.Request
 
 	file, _, err := r.FormFile("file")
 	if err != nil {
-		log.Println("error:", err)
-		w.Write([]byte(`{"vision": "No input file provided"}`))
-		//w.Body.Close()
+		w.WriteHeader(http.StatusForbidden)
+		io.WriteString(w, "Forbidden")
+		return
 	}
 
 	img, formatImg, err := image.Decode(file)
 	if err != nil {
-		log.Println("error:", err)
-		w.Write([]byte(`{"vision": "Cannot decode image from file"}`))
-		//w.Body.Close()
+		w.WriteHeader(http.StatusForbidden)
+		io.WriteString(w, "Forbidden")
+		return
 	}
 
 	if formatImg != "jpeg" {
-		log.Println("Formatdifferent of JPEG so skipping for the moment: ", formatImg)
-		w.Write([]byte(`{"vision": "Formatdifferent of JPEG"}`))
-		//w.Body.Close() 
+		w.WriteHeader(http.StatusForbidden)
+		io.WriteString(w, "Forbidden")
+		return 
 	} else {
 		log.Println("Go for processing")		
 	}
@@ -336,16 +332,17 @@ func (a *KubeDispatcherHandler) ServeHTTP(w http.ResponseWriter, r *http.Request
 				jq := jsonq.NewQuery(ret)
 				score, error := jq.Float(scoreParse)
 				if error != nil {
-					log.Println("error score: \n", error)
+					w.WriteHeader(http.StatusForbidden)
+					io.WriteString(w, "Forbidden")
 					return
 				}
 				if a.cfg.Debug == 1 {
 					log.Println("Score: \n", score)
-					return
 				}
 				bb, error := jq.Array(bbParse)
 				if error != nil {
-					log.Println("error bb: \n", error)
+					w.WriteHeader(http.StatusForbidden)
+					io.WriteString(w, "Forbidden")
 					return
 				} else {
 					if a.cfg.Debug == 1 {
@@ -354,7 +351,8 @@ func (a *KubeDispatcherHandler) ServeHTTP(w http.ResponseWriter, r *http.Request
 				}
 				meta, error := jq.String(metaParse)
 				if error != nil {
-					log.Println("error meta: \n", error)
+					w.WriteHeader(http.StatusForbidden)
+					io.WriteString(w, "Forbidden")
 					return
 				} else {
 					if a.cfg.Debug == 1 {
@@ -373,7 +371,7 @@ func (a *KubeDispatcherHandler) ServeHTTP(w http.ResponseWriter, r *http.Request
 					if a.cfg.Chained == 1 {
 						a.next.ServeHTTP(w, r)
 					} else {
-						io.Write([]byte(`{"vmx": "1"}`))
+						io.WriteString(w, "Done - Dispatcher")
 						return
 					}
 				}
@@ -381,7 +379,6 @@ func (a *KubeDispatcherHandler) ServeHTTP(w http.ResponseWriter, r *http.Request
 		}
 		b.Run()
 	}
-	a.next.ServeHTTP(w, r)
 }
 
 // Parse command line parameters; faster than regex

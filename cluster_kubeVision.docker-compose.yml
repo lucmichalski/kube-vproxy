@@ -74,17 +74,17 @@ svc_kube_storage_etcd_browser:
   command: ""
 
 # Start the redis store for caching visual logs
-svc_kube_storage_cache:
-  build: svc_kube_storage_cache
-  links:
-    - svc_kube_discovery_vproxy
-  hostname: svc_kube_storage_cache
-  expose:
-    - "7000:7000"
-    - "7001:7001"
-    - "7002:7002"
-    - "7003:7003"
-    - "7004:7004"
-    - "7005:7005"
-    - "7006:7006"
-    - "7007:7007"
+#svc_kube_storage_cache:
+#  build: svc_kube_storage_cache
+#  links:
+#    - svc_kube_discovery_vproxy
+#  hostname: svc_kube_storage_cache
+#  expose:
+#    - "7000:7000"
+#    - "7001:7001"
+#    - "7002:7002"
+#    - "7003:7003"
+#    - "7004:7004"
+#    - "7005:7005"
+#    - "7006:7006"
+#    - "7007:7007"

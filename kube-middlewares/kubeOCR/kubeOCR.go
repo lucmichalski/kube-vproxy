@@ -74,17 +74,6 @@ type Output struct {
 	Result string
 }
 
-type nopCloser struct { 
-    io.Reader 
-}
-
-type Profile struct {
-  Name    string
-  Hobbies []string
-}
-
-func (nopCloser) Close() error { return nil } 
-
 // This function will be called each time the request hits the location with this middleware activated
 func (a *KubeOCRHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
@@ -92,23 +81,23 @@ func (a *KubeOCRHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	file, _, err := r.FormFile("file")
 	if err != nil {
-		w.Header().Set("Content-Type", "application/json")
-		w.Write([]byte(`{"error": "No file picture found"}`))
-		//w.Body.Close()
+		w.WriteHeader(http.StatusForbidden)
+		io.WriteString(w, "Forbidden")
+		return
 	}
 
 	img, formatImg, err := image.Decode(file)
 	if err != nil {
-		w.Header().Set("Content-Type", "application/json")
-		w.Write([]byte(`{"error": "Picture not decoded"}`))
-		//w.Body.Close()
+		w.WriteHeader(http.StatusForbidden)
+		io.WriteString(w, "Forbidden")
+		return
 	}
 
 	if formatImg != "jpeg" {
 		log.Println("Format different of JPEG so skipping for the moment: ", formatImg)
-		w.Header().Set("Content-Type", "application/json")
-		w.Write([]byte(`{"error": "Format different of JPEG so skipping for the moment"}`))
-		//w.Body.Close() 
+		w.WriteHeader(http.StatusForbidden)
+		io.WriteString(w, "Forbidden")
+		return
 	} else {
 		log.Println("Go for processing")		
 	}
@@ -270,9 +259,9 @@ func (a *KubeOCRHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	buf := bytes.NewBuffer(nil)
 	if err := jpeg.Encode(buf, dstImage, nil); err != nil {
 		log.Println("Problem while trying to encode")
-		w.Header().Set("Content-Type", "application/json")
-		w.Write([]byte(`{"error": "Problem while trying to encode"}`))
-		//w.Body.Close()
+		w.WriteHeader(http.StatusForbidden)
+		io.WriteString(w, "Forbidden")
+		return
 	}
  
 	imgStr := base64.StdEncoding.EncodeToString(buf.Bytes())
@@ -284,10 +273,9 @@ func (a *KubeOCRHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	b.AddEntry("http://192.168.99.100:9292/ocr-file-upload", "POST", "tessaract", imgStr, batch.Callback(func(url string, method string, vengine string, payload string, body string, data batch.CallbackData, err error) {
 		if err != nil {
-			fmt.Println(err)
-			w.Header().Set("Content-Type", "application/json")
-			w.Write([]byte(`{"error": "Problem while getting to query the engine"}`))
-			//w.Body.Close()
+			w.WriteHeader(http.StatusForbidden)
+			io.WriteString(w, "Forbidden")
+			return
 		}
 		if len(body) > 5 {
 			if a.cfg.Debug == 1 {
@@ -298,13 +286,12 @@ func (a *KubeOCRHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			if a.cfg.Chained == 1 {
 				a.next.ServeHTTP(w, r)
 			} else {
-				io.Write([]byte(`{"ocr": "1"}`))
+				io.WriteString(w, "Done - OCR")
 				return
 			}
 		}
 	}))
 	b.Run()
-	a.next.ServeHTTP(w, r)
 }
 
 // Parse command line parameters; faster than regex
