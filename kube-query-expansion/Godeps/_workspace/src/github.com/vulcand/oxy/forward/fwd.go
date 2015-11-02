@@ -11,7 +11,7 @@ import (
 	"fmt"
 	"log"
 	"time"
-    "net/http/httputil"
+//    "net/http/httputil"
 	"github.com/vulcand/vulcand/Godeps/_workspace/src/github.com/vulcand/oxy/utils"
 )
 
@@ -76,6 +76,7 @@ type Forwarder struct {
 
 func New(setters ...optSetter) (*Forwarder, error) {
 	f := &Forwarder{}
+
 	for _, s := range setters {
 		if err := s(f); err != nil {
 			return nil, err
@@ -101,10 +102,7 @@ func New(setters ...optSetter) (*Forwarder, error) {
 }
 
 func (f *Forwarder) ServeHTTP(w http.ResponseWriter, req *http.Request) {
-
-    debug(httputil.DumpRequestOut(req, true))
 //    debug(httputil.DumpResponse(w, true))
-
     /*
 	if req.TLS != nil {
 		utils.CopyHeaders(w.Header(), response.Header)
@@ -116,6 +114,8 @@ func (f *Forwarder) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 		response.Body.Close()
 	}
 	*/
+
+	f.log.Infof("Forwarding to %v", req.URL)
 
 	start := time.Now().UTC()
 	response, err := f.roundTripper.RoundTrip(f.copyRequest(req, req.URL))
@@ -136,7 +136,6 @@ func (f *Forwarder) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 		f.log.Infof("Round trip: %v, code: %v, duration: %v",
 			req.URL, response.StatusCode, time.Now().UTC().Sub(start))
 	}
-
 	utils.CopyHeaders(w.Header(), response.Header)
 	w.WriteHeader(response.StatusCode)
 	written, _ := io.Copy(w, response.Body)

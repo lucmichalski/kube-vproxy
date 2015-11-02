@@ -309,6 +309,7 @@ func (a *KubeDispatcherHandler) ServeHTTP(w http.ResponseWriter, r *http.Request
 				log.Println("Endpoint Url:", ep[2])
 				log.Println("Endpoint Port:", ep[3])
 			} 
+
 			b.AddEntry(string("http:"+ep[2]+":"+ep[3]), string(ep[0]), string(ep[1]), string(payLoaded), batch.Callback(func(url string, method string, vengine string, payload string, body string, data batch.CallbackData, err error) {
 				if err != nil {
 					fmt.Println(err)
@@ -368,17 +369,14 @@ func (a *KubeDispatcherHandler) ServeHTTP(w http.ResponseWriter, r *http.Request
 						log.Println("Output: ", body)
 						log.Println("bb: ", bb)
 					}
-					if a.cfg.Chained == 1 {
-						a.next.ServeHTTP(w, r)
-					} else {
-						io.WriteString(w, "Done - Dispatcher")
-						return
-					}
 				}
 			}))
 		}
 		b.Run()
 	}
+	w.WriteHeader(http.StatusForbidden)
+	w.WriteString(w, "Forbidden")
+	//a.next.ServeHTTP(w, r)
 }
 
 // Parse command line parameters; faster than regex

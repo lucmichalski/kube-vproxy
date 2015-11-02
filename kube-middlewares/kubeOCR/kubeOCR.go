@@ -283,15 +283,10 @@ func (a *KubeOCRHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 				log.Println("Text extracted:", len(body))
 				log.Println("Cumulated Characters Length (With Spaces):\n", body)
 			}
-			if a.cfg.Chained == 1 {
-				a.next.ServeHTTP(w, r)
-			} else {
-				io.WriteString(w, "Done - OCR")
-				return
-			}
 		}
 	}))
 	b.Run()
+	a.next.ServeHTTP(w, r)
 }
 
 // Parse command line parameters; faster than regex

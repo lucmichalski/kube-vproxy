@@ -69,7 +69,7 @@ QUEUE+=$(echo -n $ENDPOINTS | sed "s/\(.*\).\{1\}/\1/")
 
 curl -X POST -H "Content-Type: application/json" -d "{\"Backend\": {\"Id\":\"bck_"$MODEL"\",\"Type\":\"http\"}}" http://192.168.99.100:8182/v2/backends | jq .
 
-curl -X POST -H "Content-Type: application/json" -d "{\"Server\": {\"Id\":\"srv_"$MODEL"\",\"URL\":\"http://kube-master.blippar-vision.com\"}}" "http://192.168.99.100:8182/v2/backends/bck_$MODEL/servers"  | jq .
+curl -X POST -H "Content-Type: application/json" -d "{\"Server\": {\"Id\":\"srv_"$MODEL"\",\"URL\":\"http://127.0.0.1:8080\"}}" "http://192.168.99.100:8182/v2/backends/bck_$MODEL/servers"  | jq .
 
 curl -X POST -H "Content-Type: application/json" -d "{\"Frontend\": {\"Id\":\"front_"$MODEL"\",\"Type\":\"http\",\"BackendId\": \"bck_"$MODEL"\",\"Route\": \"PathRegexp(\\\"$ENDPOINT_MIDDLEWARE.*\\\")\"}}" http://192.168.99.100:8182/v2/frontends  | jq .
 
@@ -90,43 +90,17 @@ curl -X POST -H "Content-Type: application/json" http://192.168.99.100:8182/v2/f
 	        \"Width\": 320,
 	        \"Height\": 240,
 	        \"Learn\": 0,
-	        \"Concurrency\": 20,
+	        \"Concurrency\": 10,
 	        \"Transformation\": \"\",
 	        \"Nudity\": \"\",
 	        \"Chained\": 1,
 	        \"MinScore\": 0.2,
 	        \"Discovery\": \"BATCH\",
-	        \"ActiveEngines\": \"vmx2,vmx1\",
+	        \"ActiveEngines\": \"vmx1\",
 			\"Debug\": 0
         }
     }
 }" | jq .
-
-
- curl -X POST -H "Content-Type: application/json" http://192.168.99.100:8182/v2/frontends/front_kubeFactor/middlewares \
-     -d '{"Middleware": {
-         "Id": "front_kubeFactor_OCR",
-         "Priority":2,
-	     "Type": "kubeOCR",
-         "Middleware":{
-	        "MarkerId": 1234,
-	        "BlippId": 4321,
-	        "Context": "test Max Factor mentions on labels",
-	        "Width": 320,
-	        "Height": 240,
-	        "Timeout": 250,
-	        "Concurrency": 20,
-	        "Transformation": "",
-	        "DetectDarkness": 0,
-	        "Chained": 0,
-			"OcrPreProcessors": "stroke-width-transform=1",
-	        "OcrEngine": "engine=tesseract",
-	        "EntitiesExtractor": "kube-aida",
-	        "EntitiesDiscovery": 0,
-	        "Debug": 0
-        }
-    }
-}'  | jq .
 
 sleep 6
 
