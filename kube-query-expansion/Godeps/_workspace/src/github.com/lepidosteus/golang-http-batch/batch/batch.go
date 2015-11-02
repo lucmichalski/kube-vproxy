@@ -171,12 +171,12 @@ func process(queue chan *entry, waiters chan bool, thread_num int) {
 			req.Header.Set("Content-Type", contentType)
 			// send POST request
 			response, err := client.Do(req)
+			defer response.Body.Close()
 			if err != nil {
 				//log.Println("Error sending POST request")
 	            entry.callback(entry.url, entry.method, entry.vengine, entry.payload, "", entry.data, err)
 				continue
 			}
-			defer response.Body.Close()
 			if response.StatusCode >= 400 {
 				//log.Println("Got error status response: %d", response.StatusCode)
 	            entry.callback(entry.url, entry.method, entry.vengine, entry.payload, "", entry.data, err)
@@ -207,12 +207,12 @@ func process(queue chan *entry, waiters chan bool, thread_num int) {
 			request.Header.Set("Content-Type", "application/json")
 			client := &http.Client{}
 			response, err := client.Do(request)
+			defer response.Body.Close()
 			if err != nil {
 				log.Println("Error sending POST request")
 	            entry.callback(entry.url, entry.method, entry.vengine, entry.payload, "", entry.data, err)
 				continue
 			}
-			defer response.Body.Close()
 			contents, err := ioutil.ReadAll(response.Body)
 			if err != nil {
 				//log.Println("Error reading response")

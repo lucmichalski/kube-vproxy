@@ -373,10 +373,9 @@ func (a *KubeDispatcherHandler) ServeHTTP(w http.ResponseWriter, r *http.Request
 			}))
 		}
 		b.Run()
+		//b.Clear()
 	}
-	w.WriteHeader(http.StatusForbidden)
-	w.WriteString(w, "Forbidden")
-	//a.next.ServeHTTP(w, r)
+	a.next.ServeHTTP(w, r)
 }
 
 // Parse command line parameters; faster than regex
