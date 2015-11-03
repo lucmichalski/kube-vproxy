@@ -15,7 +15,7 @@ import (
 	"github.com/lepidosteus/golang-http-batch/batch"
 	"github.com/disintegration/imaging"
 	"github.com/vulcand/vulcand/plugin"
-	"io"
+//	"io"
 	"log"
 	"image"
 	"bytes"
@@ -77,26 +77,28 @@ type Output struct {
 // This function will be called each time the request hits the location with this middleware activated
 func (a *KubeOCRHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
+	if a.cfg.Chained == 0 {
+		a.next.ServeHTTP(w, r)
+		return
+	}
+
 	contentType, err := utils.ParseAuthHeader(r.Header.Get("Content-Type"))
 
 	file, _, err := r.FormFile("file")
 	if err != nil {
-		w.WriteHeader(http.StatusForbidden)
-		io.WriteString(w, "Forbidden")
+		a.next.ServeHTTP(w, r)
 		return
 	}
 
 	img, formatImg, err := image.Decode(file)
 	if err != nil {
-		w.WriteHeader(http.StatusForbidden)
-		io.WriteString(w, "Forbidden")
+		a.next.ServeHTTP(w, r)
 		return
 	}
 
 	if formatImg != "jpeg" {
 		log.Println("Format different of JPEG so skipping for the moment: ", formatImg)
-		w.WriteHeader(http.StatusForbidden)
-		io.WriteString(w, "Forbidden")
+		a.next.ServeHTTP(w, r)
 		return
 	} else {
 		log.Println("Go for processing")		
@@ -121,12 +123,12 @@ func (a *KubeOCRHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		transformations := strings.Split(a.cfg.Transformation, ",")
 		for _, transform := range transformations {
 			cmds := strings.Split(string(transform), "=")
-			//dstImage := imaging.New(a.cfg.Width, a.cfg.Height, color.NRGBA{0, 0, 0, 0})
 			if cmds[0] == "Blur" {
 				sigma, err := strconv.ParseFloat(cmds[1], 64)
 				if err != nil {
 					log.Println("Error while decoding sigma: ", err)
-					continue
+					a.next.ServeHTTP(w, r)
+					return
 				}
 				dstImage = imaging.Blur(img, sigma)
 			}
@@ -134,7 +136,8 @@ func (a *KubeOCRHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 				sigma, err := strconv.ParseFloat(cmds[1], 64)
 				if err != nil {
 					log.Println("Error while decoding sigma: ", err)
-					continue
+					a.next.ServeHTTP(w, r)
+					return
 				}
 				dstImage = imaging.Sharpen(img, sigma)
 			}
@@ -142,7 +145,8 @@ func (a *KubeOCRHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 				sigma, err := strconv.ParseFloat(cmds[1], 64)
 				if err != nil {
 					log.Println("Error while decoding sigma: ", err)
-					continue
+					a.next.ServeHTTP(w, r)
+					return
 				}
 				dstImage = imaging.AdjustGamma(img, sigma)
 			}
@@ -150,7 +154,8 @@ func (a *KubeOCRHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 				sigma, err := strconv.ParseFloat(cmds[1], 64)
 				if err != nil {
 					log.Println("Error while decoding sigma: ", err)
-					continue
+					a.next.ServeHTTP(w, r)
+					return
 				}
 				dstImage = imaging.AdjustContrast(img, sigma)
 			}
@@ -158,7 +163,8 @@ func (a *KubeOCRHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 				sigma, err := strconv.ParseFloat(cmds[1], 64)
 				if err != nil {
 					log.Println("Error while decoding sigma: ", err)
-					continue
+					a.next.ServeHTTP(w, r)
+					return
 				}
 				dstImage = imaging.AdjustBrightness(img, sigma)
 			}
@@ -166,12 +172,14 @@ func (a *KubeOCRHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 				midpoint, err := strconv.ParseFloat(cmds[1], 64)
 				if err != nil {
 					log.Println("Error while decoding sigma: ", err)
-					continue
+					a.next.ServeHTTP(w, r)
+					return
 				}
 				factor, err := strconv.ParseFloat(cmds[2], 64)
 				if err != nil {
 					log.Println("Error while decoding sigma: ", err)
-					continue
+					a.next.ServeHTTP(w, r)
+					return
 				}
 				dstImage = imaging.AdjustSigmoid(img, midpoint, factor)
 			}
@@ -191,22 +199,26 @@ func (a *KubeOCRHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 				x0, err := strconv.ParseInt(cmds[1], 0, 32)
 				if err != nil {
 					log.Println("Error while decoding x0 coordinates: ", err)
-					continue
+					a.next.ServeHTTP(w, r)
+					return
 				}
 				y0, err := strconv.ParseInt(cmds[2], 0, 32)
 				if err != nil {
 					log.Println("Error while decoding y0 coordinates: ", err)
-					continue
+					a.next.ServeHTTP(w, r)
+					return
 				}
 				x1, err := strconv.ParseInt(cmds[3], 0, 32)
 				if err != nil {
 					log.Println("Error while decoding x1 coordinates: ", err)
-					continue
+					a.next.ServeHTTP(w, r)
+					return
 				}
 				y1, err := strconv.ParseInt(cmds[4], 0, 32)
 				if err != nil {
 					log.Println("Error while decoding the y1 coordinates: ", err)
-					continue
+					a.next.ServeHTTP(w, r)
+					return
 				}
 				dstImage = imaging.Crop(img, image.Rect(int(x0), int(y0), int(x1), int(y1)))
 			}
@@ -214,12 +226,14 @@ func (a *KubeOCRHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 				width, err := strconv.ParseInt(cmds[1], 0, 32)
 				if err != nil {
 					log.Println("Error while decoding the width value: ", err)
-					continue
+					a.next.ServeHTTP(w, r)
+					return
 				}
 				height, err := strconv.ParseInt(cmds[1], 0, 32)
 				if err != nil {
 					log.Println("Error while decoding the height value: ", err)
-					continue
+					a.next.ServeHTTP(w, r)
+					return
 				}
 				dstImage = imaging.CropCenter(img, int(width), int(height))
 			}
@@ -259,8 +273,7 @@ func (a *KubeOCRHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	buf := bytes.NewBuffer(nil)
 	if err := jpeg.Encode(buf, dstImage, nil); err != nil {
 		log.Println("Problem while trying to encode")
-		w.WriteHeader(http.StatusForbidden)
-		io.WriteString(w, "Forbidden")
+		a.next.ServeHTTP(w, r)
 		return
 	}
  
@@ -273,8 +286,7 @@ func (a *KubeOCRHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	b.AddEntry("http://192.168.99.100:9292/ocr-file-upload", "POST", "tessaract", imgStr, batch.Callback(func(url string, method string, vengine string, payload string, body string, data batch.CallbackData, err error) {
 		if err != nil {
-			w.WriteHeader(http.StatusForbidden)
-			io.WriteString(w, "Forbidden")
+			a.next.ServeHTTP(w, r)
 			return
 		}
 		if len(body) > 5 {
@@ -282,6 +294,9 @@ func (a *KubeOCRHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 				log.Println("Result from: ", url)
 				log.Println("Text extracted:", len(body))
 				log.Println("Cumulated Characters Length (With Spaces):\n", body)
+				w.WriteHeader(444)
+				w.Header().Set("KubeVisionOCR.score", len(body))
+				w.Write(w, "===OCR===\r\n"+body+"===OCR===\r\n")				
 			}
 		}
 	}))

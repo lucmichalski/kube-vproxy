@@ -2,8 +2,8 @@ package registry
 
 import (
 	"time"
-
-	"github.com/vulcand/vulcand/Godeps/_workspace/src/github.com/mailgun/log"
+	"github.com/mailgun/scroll/vulcan"
+	"github.com/vulcand/vulcand/Godeps/_workspace/src/github.com/mailgun/scroll/vulcan"
 	"github.com/vulcand/vulcand/Godeps/_workspace/src/github.com/mailgun/scroll/vulcan/middleware"
 )
 

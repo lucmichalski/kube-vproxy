@@ -13,7 +13,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/davidkbainbridge/jsonq" 
-	"github.com/koyachi/go-nude"
+//	"github.com/koyachi/go-nude"
 	"github.com/lepidosteus/golang-http-batch/batch"
 	"github.com/vulcand/vulcand/Godeps/_workspace/src/github.com/codegangsta/cli"
 	"github.com/vulcand/vulcand/Godeps/_workspace/src/github.com/vulcand/oxy/utils"
@@ -21,7 +21,7 @@ import (
 	"github.com/disintegration/imaging"	
 	"image"
 	"log"
-	"io"
+//	"io"
 	"image/jpeg"
 	"net/http"
 	"strconv"
@@ -77,26 +77,29 @@ type KubeDispatcherHandler struct {
 // This function will be called each time the request hits the location with this middleware activated
 func (a *KubeDispatcherHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
+	if a.cfg.Chained == 0 {
+		a.next.ServeHTTP(w, r)
+		return
+	}
+
+	// Check that mor ein depth
 	contentType, err := utils.ParseAuthHeader(r.Header.Get("Content-Type"))
 
 	file, _, err := r.FormFile("file")
 	if err != nil {
-		w.WriteHeader(http.StatusForbidden)
-		io.WriteString(w, "Forbidden")
+		a.next.ServeHTTP(w, r)
 		return
 	}
 
 	img, formatImg, err := image.Decode(file)
 	if err != nil {
-		w.WriteHeader(http.StatusForbidden)
-		io.WriteString(w, "Forbidden")
+		a.next.ServeHTTP(w, r)
 		return
 	}
 
 	if formatImg != "jpeg" {
-		w.WriteHeader(http.StatusForbidden)
-		io.WriteString(w, "Forbidden")
-		return 
+		a.next.ServeHTTP(w, r)
+		return
 	} else {
 		log.Println("Go for processing")		
 	}
@@ -122,7 +125,8 @@ func (a *KubeDispatcherHandler) ServeHTTP(w http.ResponseWriter, r *http.Request
 				sigma, err := strconv.ParseFloat(cmds[1], 64)
 				if err != nil {
 					log.Println("Error while decoding sigma: ", err)
-					continue
+					a.next.ServeHTTP(w, r)
+					return
 				}
 				dstImage = imaging.Blur(img, sigma)
 			}
@@ -130,7 +134,8 @@ func (a *KubeDispatcherHandler) ServeHTTP(w http.ResponseWriter, r *http.Request
 				sigma, err := strconv.ParseFloat(cmds[1], 64)
 				if err != nil {
 					log.Println("Error while decoding sigma: ", err)
-					continue
+					a.next.ServeHTTP(w, r)
+					return
 				}
 				dstImage = imaging.Sharpen(img, sigma)
 			}
@@ -138,7 +143,8 @@ func (a *KubeDispatcherHandler) ServeHTTP(w http.ResponseWriter, r *http.Request
 				sigma, err := strconv.ParseFloat(cmds[1], 64)
 				if err != nil {
 					log.Println("Error while decoding sigma: ", err)
-					continue
+					a.next.ServeHTTP(w, r)
+					return
 				}
 				dstImage = imaging.AdjustGamma(img, sigma)
 			}
@@ -146,7 +152,8 @@ func (a *KubeDispatcherHandler) ServeHTTP(w http.ResponseWriter, r *http.Request
 				sigma, err := strconv.ParseFloat(cmds[1], 64)
 				if err != nil {
 					log.Println("Error while decoding sigma: ", err)
-					continue
+					a.next.ServeHTTP(w, r)
+					return
 				}
 				dstImage = imaging.AdjustContrast(img, sigma)
 			}
@@ -154,7 +161,8 @@ func (a *KubeDispatcherHandler) ServeHTTP(w http.ResponseWriter, r *http.Request
 				sigma, err := strconv.ParseFloat(cmds[1], 64)
 				if err != nil {
 					log.Println("Error while decoding sigma: ", err)
-					continue
+					a.next.ServeHTTP(w, r)
+					return
 				}
 				dstImage = imaging.AdjustBrightness(img, sigma)
 			}
@@ -162,12 +170,14 @@ func (a *KubeDispatcherHandler) ServeHTTP(w http.ResponseWriter, r *http.Request
 				midpoint, err := strconv.ParseFloat(cmds[1], 64)
 				if err != nil {
 					log.Println("Error while decoding sigma: ", err)
-					continue
+					a.next.ServeHTTP(w, r)
+					return
 				}
 				factor, err := strconv.ParseFloat(cmds[2], 64)
 				if err != nil {
 					log.Println("Error while decoding sigma: ", err)
-					continue
+					a.next.ServeHTTP(w, r)
+					return
 				}
 				dstImage = imaging.AdjustSigmoid(img, midpoint, factor)
 			}
@@ -187,22 +197,25 @@ func (a *KubeDispatcherHandler) ServeHTTP(w http.ResponseWriter, r *http.Request
 				x0, err := strconv.ParseInt(cmds[1], 0, 32)
 				if err != nil {
 					log.Println("Error while decoding x0 coordinates: ", err)
-					continue
+					a.next.ServeHTTP(w, r)
+					return
 				}
 				y0, err := strconv.ParseInt(cmds[2], 0, 32)
 				if err != nil {
 					log.Println("Error while decoding y0 coordinates: ", err)
-					continue
+					a.next.ServeHTTP(w, r)
+					return
 				}
 				x1, err := strconv.ParseInt(cmds[3], 0, 32)
 				if err != nil {
-					log.Println("Error while decoding x1 coordinates: ", err)
-					continue
+					a.next.ServeHTTP(w, r)
+					return
 				}
 				y1, err := strconv.ParseInt(cmds[4], 0, 32)
 				if err != nil {
 					log.Println("Error while decoding the y1 coordinates: ", err)
-					continue
+					a.next.ServeHTTP(w, r)
+					return
 				}
 				dstImage = imaging.Crop(img, image.Rect(int(x0), int(y0), int(x1), int(y1)))
 			}
@@ -210,12 +223,14 @@ func (a *KubeDispatcherHandler) ServeHTTP(w http.ResponseWriter, r *http.Request
 				width, err := strconv.ParseInt(cmds[1], 0, 32)
 				if err != nil {
 					log.Println("Error while decoding the width value: ", err)
-					continue
+					a.next.ServeHTTP(w, r)
+					return
 				}
 				height, err := strconv.ParseInt(cmds[1], 0, 32)
 				if err != nil {
 					log.Println("Error while decoding the height value: ", err)
-					continue
+					a.next.ServeHTTP(w, r)
+					return
 				}
 				dstImage = imaging.CropCenter(img, int(width), int(height))
 			}
@@ -254,12 +269,13 @@ func (a *KubeDispatcherHandler) ServeHTTP(w http.ResponseWriter, r *http.Request
 
 	buf := bytes.NewBuffer(nil)
 	if err := jpeg.Encode(buf, dstImage, nil); err != nil {
-		w.Write([]byte(`{"vision": "jpeg decode failed"}`))
-		//w.Body.Close()
+		a.next.ServeHTTP(w, r)
+		return
 	}
  
 	imgStr := "data:image/jpeg;base64," + base64.StdEncoding.EncodeToString(buf.Bytes())
 
+	/*
 	if a.cfg.Debug == 1 {
 		log.Println("isNudeDetectMode = ", a.cfg.Nudity)
 	}
@@ -267,15 +283,15 @@ func (a *KubeDispatcherHandler) ServeHTTP(w http.ResponseWriter, r *http.Request
 	if a.cfg.Nudity == "detect" || a.cfg.Nudity == "block" {
 		isNude, err := nude.IsImageNude(img)
 		if err != nil {
-			w.Write([]byte(`{"vision": "nudity detection problem"}`))
-			//w.Body.Close()
+			a.next.ServeHTTP(w, r)
+			return
 		}
 		if isNude && a.cfg.Nudity == "block" {
-			log.Println("Techat detected: ", isNude)
-			w.Write([]byte(`{"vision": "nudity blocked"}`))
-			//w.Body.Close()
+			a.next.ServeHTTP(w, r)
+			return
 		}
 	}
+	*/
 
 	// Condition for Payloads
 	payLoad, err := base64.StdEncoding.DecodeString(a.cfg.Template)
@@ -312,7 +328,6 @@ func (a *KubeDispatcherHandler) ServeHTTP(w http.ResponseWriter, r *http.Request
 
 			b.AddEntry(string("http:"+ep[2]+":"+ep[3]), string(ep[0]), string(ep[1]), string(payLoaded), batch.Callback(func(url string, method string, vengine string, payload string, body string, data batch.CallbackData, err error) {
 				if err != nil {
-					fmt.Println(err)
 					return
 				}
 				if a.cfg.Debug == 1 {
@@ -333,17 +348,13 @@ func (a *KubeDispatcherHandler) ServeHTTP(w http.ResponseWriter, r *http.Request
 				jq := jsonq.NewQuery(ret)
 				score, error := jq.Float(scoreParse)
 				if error != nil {
-					w.WriteHeader(http.StatusForbidden)
-					io.WriteString(w, "Forbidden")
 					return
 				}
 				if a.cfg.Debug == 1 {
-					log.Println("Score: \n", score)
+					log.Println("Score: ", score)
 				}
 				bb, error := jq.Array(bbParse)
 				if error != nil {
-					w.WriteHeader(http.StatusForbidden)
-					io.WriteString(w, "Forbidden")
 					return
 				} else {
 					if a.cfg.Debug == 1 {
@@ -352,12 +363,10 @@ func (a *KubeDispatcherHandler) ServeHTTP(w http.ResponseWriter, r *http.Request
 				}
 				meta, error := jq.String(metaParse)
 				if error != nil {
-					w.WriteHeader(http.StatusForbidden)
-					io.WriteString(w, "Forbidden")
 					return
 				} else {
 					if a.cfg.Debug == 1 {
-						log.Println("Meta:\n", meta)
+						log.Println("Meta: ", meta)
 					}
 				}
 				if score > a.cfg.MinScore {
@@ -368,12 +377,15 @@ func (a *KubeDispatcherHandler) ServeHTTP(w http.ResponseWriter, r *http.Request
 						log.Println("Score: ", score)
 						log.Println("Output: ", body)
 						log.Println("bb: ", bb)
+						w.WriteHeader(444)
+						w.Header().Set("KubeVisionOCR.score", len(body))
+						w.Write(w, "===OCR===\r\n"+body+"===OCR===\r\n")
 					}
 				}
 			}))
 		}
 		b.Run()
-		//b.Clear()
+		b.Clear()
 	}
 	a.next.ServeHTTP(w, r)
 }

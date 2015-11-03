@@ -1,0 +1,11 @@
+[include]
+./src/
+
+[ignore]
+./package.json
+.*/app/assets/*
+
+[libs]
+./support/flow
+
+[options]

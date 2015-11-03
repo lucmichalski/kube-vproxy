@@ -1,9 +1,7 @@
 #!/bin/bash
 
-#docker rm $(docker ps -a -q)
-#docker rmi $(docker images | grep "^<none>" | awk '{print $3}')
 docker-compose -f cluster_kubeVision.docker-compose.yml stop
-docker-compose -f cluster_kubeVision.docker-compose.yml rm -f
+yes | docker-compose -f cluster_kubeVision.docker-compose.yml rm svc_kube_discovery_vproxy
 docker-compose -f cluster_kubeVision.docker-compose.yml build
 docker-compose -f cluster_kubeVision.docker-compose.yml up -d
 
@@ -67,13 +65,13 @@ done
 QUEUE+="|"
 QUEUE+=$(echo -n $ENDPOINTS | sed "s/\(.*\).\{1\}/\1/")
 
-curl -X POST -H "Content-Type: application/json" -d "{\"Backend\": {\"Id\":\"bck_"$MODEL"\",\"Type\":\"http\"}}" http://192.168.99.100:8182/v2/backends | jq .
+curl -s -X POST -H "Content-Type: application/json" -d "{\"Backend\": {\"Id\":\"bck_"$MODEL"\",\"Type\":\"http\"}, \"BackendSettings\": {\"Id\": \"\"} }" http://192.168.99.100:8182/v2/backends | jq .
 
-curl -X POST -H "Content-Type: application/json" -d "{\"Server\": {\"Id\":\"srv_"$MODEL"\",\"URL\":\"http://127.0.0.1:8080\"}}" "http://192.168.99.100:8182/v2/backends/bck_$MODEL/servers"  | jq .
+curl -s -X POST -H "Content-Type: application/json" -d "{\"Server\": {\"Id\":\"srv_"$MODEL"\",\"URL\":\"http://kube-master.blippar-vision.com\"}}" "http://192.168.99.100:8182/v2/backends/bck_$MODEL/servers"  | jq .
 
-curl -X POST -H "Content-Type: application/json" -d "{\"Frontend\": {\"Id\":\"front_"$MODEL"\",\"Type\":\"http\",\"BackendId\": \"bck_"$MODEL"\",\"Route\": \"PathRegexp(\\\"$ENDPOINT_MIDDLEWARE.*\\\")\"}}" http://192.168.99.100:8182/v2/frontends  | jq .
+curl -s -X POST -H "Content-Type: application/json" -d "{\"Frontend\": {\"Id\":\"front_"$MODEL"\",\"Type\":\"http\",\"BackendId\": \"bck_"$MODEL"\",\"Route\": \"PathRegexp(\\\"$ENDPOINT_MIDDLEWARE.*\\\")\"}}" http://192.168.99.100:8182/v2/frontends  | jq .
 
-curl -X POST -H "Content-Type: application/json" http://192.168.99.100:8182/v2/frontends/front_kubeFactor/middlewares \
+curl -s -X POST -H "Content-Type: application/json" http://192.168.99.100:8182/v2/frontends/front_kubeFactor/middlewares \
 	-d "{\"Middleware\": {
          \"Id\": \"front_kubeFactor_VMX\",
          \"Priority\":1,
@@ -90,17 +88,73 @@ curl -X POST -H "Content-Type: application/json" http://192.168.99.100:8182/v2/f
 	        \"Width\": 320,
 	        \"Height\": 240,
 	        \"Learn\": 0,
-	        \"Concurrency\": 10,
+	        \"Concurrency\": 50,
 	        \"Transformation\": \"\",
 	        \"Nudity\": \"\",
 	        \"Chained\": 1,
 	        \"MinScore\": 0.2,
 	        \"Discovery\": \"BATCH\",
-	        \"ActiveEngines\": \"vmx1\",
+	        \"ActiveEngines\": \"vmx2,vmx1\",
 			\"Debug\": 0
         }
     }
 }" | jq .
+
+ curl -s -X POST -H "Content-Type: application/json" http://192.168.99.100:8182/v2/frontends/front_kubeFactor/middlewares \
+     -d '{"Middleware": {
+         "Id": "front_kubeFactor_OCR",
+         "Priority":2,
+	     "Type": "kubeOCR",
+         "Middleware":{
+	        "MarkerId": 1234,
+	        "BlippId": 4321,
+	        "Context": "test Max Factor mentions on labels",
+	        "Width": 320,
+	        "Height": 240,
+	        "Timeout": 250,
+	        "Concurrency": 0,
+	        "Transformation": "",
+	        "DetectDarkness": 0,
+	        "Chained": 1,
+			"OcrPreProcessors": "stroke-width-transform=1",
+	        "OcrEngine": "engine=tesseract",
+	        "EntitiesExtractor": "kube-aida",
+	        "EntitiesDiscovery": 0,
+	        "Debug": 0
+        }
+    }
+}'  | jq .
+
+curl -s -X POST -H "Content-Type: application/json" http://192.168.99.100:8182/v2/frontends/front_kubeFactor/middlewares \
+     -d '{"Middleware": {
+         "Id": "front_kubeFactor_Connect",
+         "Priority": 3,
+	     "Type": "kubeConnect",
+		 "Middleware":{
+		    "Status":503,
+		    "BodyWithHeaders": "Content-Type: application/json\n\n{\"status\":\"KubeStatus\",\"result\":[\"KubeResults\"] }"
+		}
+	}}' | jq .
+
+curl -s -X POST -H "Content-Type: application/json" http://192.168.99.100:8182/v2/frontends/front_kubeFactor/middlewares \
+     -d '{"Middleware": {
+             "Id":"front_kubeFactor_CircuitBreaker",
+             "Priority": 4,
+             "Type":"cbreaker",
+             "Middleware":{
+                "Condition":"NetworkErrorRatio() > 0.5",
+                "Fallback":{
+                   "Type": "response",
+                   "Action": {"Status": 400, "Result": []}
+                },
+                "FallbackDuration": 120,
+                "RecoveryDuration": 360,
+                "CheckPeriod": 360
+             }
+           }
+        }' | jq .
+
+exit 1
 
 sleep 6
 

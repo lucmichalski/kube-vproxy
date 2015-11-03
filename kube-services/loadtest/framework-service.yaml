@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    name: framework
+  name: framework
+  namespace: default
+spec:
+  ports:
+  - nodePort: 0
+    port: 9080
+    protocol: TCP
+    targetPort: 9080
+  selector:
+    name: framework
+  sessionAffinity: None
+  type: ClusterIP

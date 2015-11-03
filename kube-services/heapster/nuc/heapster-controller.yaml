@@ -1,0 +1,49 @@
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  labels:
+    k8s-app: heapster
+    kubernetes.io/cluster-service: "true"
+    version: v1
+  name: heapster-v1
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    k8s-app: heapster
+    version: v1
+  template:
+    metadata:
+      labels:
+        k8s-app: heapster
+        kubernetes.io/cluster-service: "true"
+        version: v1
+    spec:
+      containers:
+      - command:
+        - /heapster
+        - --listen_ip=0.0.0.0
+        - --port=8082
+        - --source=kubernetes:https://kubernetes?apiVersion=v1&insecure=true&inClusterConfig=false
+        - --sink=influxdb:http://influxdb:8086?avoidColumns=true
+        - --poll_duration=10s
+        - --stats_resolution=5s
+        image: 172.16.16.15:5000/heapster:v0.16.0
+        imagePullPolicy: IfNotPresent
+        name: heapster
+        ports:
+        - containerPort: 8082
+          hostPort: 8082
+          protocol: TCP
+        volumeMounts:
+        - mountPath: /etc/ssl/certs
+          name: ssl-certs
+          readOnly: true
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      nodeSelector:
+        region: zone2
+      volumes:
+      - hostPath:
+          path: /etc/ssl/certs
+        name: ssl-certs

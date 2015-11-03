@@ -14,8 +14,8 @@ Main Features:
 ## 1. Make that a middleware can write a JSON Response without connecting to the backend and follow the chain define for the frontends
 
 ### Current code:
-- https://github.com/lucmichalski/kube-vproxy/blob/master/kube-query-expansion/Godeps/_workspace/src/github.com/blippar/kube-vproxy-plugins/kube-middlewares/kubeDispatcher/kubeDispatcher.go#L373
-- https://github.com/lucmichalski/kube-vproxy/blob/master/kube-query-expansion/Godeps/_workspace/src/github.com/blippar/kube-vproxy-plugins/kube-middlewares/kubeOCR/kubeOCR.go#L337
+- https://github.com/lucmichalski/kube-vproxy/blob/master/kube-query-expansion/Godeps/_workspace/src/github.com/blippar/kube-vproxy/kube-middlewares/kubeDispatcher/kubeDispatcher.go#L373
+- https://github.com/lucmichalski/kube-vproxy/blob/master/kube-query-expansion/Godeps/_workspace/src/github.com/blippar/kube-vproxy/kube-middlewares/kubeOCR/kubeOCR.go#L337
 
 ### Goals:
 - Circuit breakers
@@ -134,7 +134,7 @@ Ideas fro playing with the text space:
 ### Current code:
 - Only one strategy, batching the requests whatever the popularity of an endpoint
 - https://github.com/lucmichalski/kube-vproxy/blob/master/kube-query-expansion/Godeps/_workspace/src/github.com/lepidosteus/golang-http-batch/batch/batch.go
-- https://github.com/lucmichalski/kube-vproxy/blob/master/kube-query-expansion/Godeps/_workspace/src/github.com/blippar/kube-vproxy-plugins/kube-middlewares/kubeDispatcher/kubeDispatcher.go#L294
+- https://github.com/lucmichalski/kube-vproxy/blob/master/kube-query-expansion/Godeps/_workspace/src/github.com/blippar/kube-vproxy/kube-middlewares/kubeDispatcher/kubeDispatcher.go#L294
 
 ### Goals:
 - Dynamic rebalancing of frontends
@@ -142,12 +142,20 @@ Ideas fro playing with the text space:
 
 ## 3. Optimize the Visual Proxy the code and lock the code best pratices
 1. Keep the on-the-fly image processing as light as possible
-	- https://github.com/lucmichalski/kube-vproxy/blob/master/kube-query-expansion/Godeps/_workspace/src/github.com/blippar/kube-vproxy-plugins/kube-middlewares/kubeDispatcher/kubeDispatcher.go#L108
+	- https://github.com/lucmichalski/kube-vproxy/blob/master/kube-query-expansion/Godeps/_workspace/src/github.com/blippar/kube-vproxy/kube-middlewares/kubeDispatcher/kubeDispatcher.go#L108
 2. Keep the dispatching of batch http requests smart and contextualized to optimize the overhall CPUs/RAM usage for visual mining
 3. Chain the several webservices with the stability
 
+## 4. Visual Logging of matches/pattern discoveries
+* Visual logging/clustering (Extract the matching zone with the bounding boxes coordinates, log the dimension/ratio context)
+* False/Positives clustering with a knowledge graph (Predictive Learning) 
+* Training models with un-learning strategies: flase/positive detection
+* Log-forwarding to Kube-Vision ELK Cluster (QPS reporting for a set of chain of middlewares chained)
+ 
+### Current code:
 
-## 4. Leverage Kubernetes Deployment
-1. Load-Balance Visual Mining services
-2. Load-Balance Input and Output Transformation with contextual batch routing
-3. Automatic scaling of the VisualProxy middleware service
+
+### Goals:
+- Reduce the memory footprint of the visual logging (Asynchronous cross-loading to an Amazon S3 bucket)
+- Optimize the leverage of a Redis set of clusters to 
+- Load a dataset to launch http benchmarks with concurrent form multi-part reuqests with variable file input conditions

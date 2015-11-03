@@ -1,0 +1,21 @@
+v1.
+{<<"/usr/src/app/_build/dev/lib/phoenix_live_reload/ebin/Elixir.Phoenix.LiveReload.Channel.beam">>,
+ 'Elixir.Phoenix.LiveReload.Channel',<<"lib/phoenix_live_reload/channel.ex">>,
+ ['Elixir.Phoenix.Socket','Elixir.Module','Elixir.Kernel',
+  'Elixir.Phoenix.Channel'],
+ ['Elixir.String','Elixir.Access','Elixir.String.Chars',erlang,'Elixir.Path',
+  'Elixir.Enum',fs,'Elixir.Application'],
+ [],nil}.
+{<<"/usr/src/app/_build/dev/lib/phoenix_live_reload/ebin/Elixir.Phoenix.LiveReloader.Socket.beam">>,
+ 'Elixir.Phoenix.LiveReloader.Socket',<<"lib/phoenix_live_reload/socket.ex">>,
+ ['Elixir.Phoenix','Elixir.Phoenix.Socket','Elixir.Module',
+  'Elixir.Phoenix.Transports.WebSocket','Elixir.Kernel',
+  'Elixir.Phoenix.Transports.LongPoll'],
+ [],[],nil}.
+{<<"/usr/src/app/_build/dev/lib/phoenix_live_reload/ebin/Elixir.Phoenix.LiveReloader.beam">>,
+ 'Elixir.Phoenix.LiveReloader',<<"lib/phoenix_live_reload/live_reloader.ex">>,
+ ['Elixir.Module','Elixir.Plug','Elixir.Kernel','Elixir.Application',
+  'Elixir.Plug.Conn','Elixir.File'],
+ ['Elixir.String','Elixir.Access','Elixir.String.Chars','Elixir.Map',erlang,
+  'Elixir.Path','Elixir.Enum'],
+ [],nil}.

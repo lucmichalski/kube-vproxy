@@ -63,15 +63,39 @@ svc_kube_discovery_vproxy:
   command: "-apiInterface=0.0.0.0 -interface=0.0.0.0 -etcd=http://svc_kube_storage_etcd:4001 -etcdKey=vulcand -port=80 -apiPort=8182"
 
 # Start the ETCD2 - Web UI browser
-svc_kube_storage_etcd_browser:
-  image: denverdino/etcdbrowser
-  name: svc_kube_storage_etcd_browser
-  hostname: svc_kube_storage_etcd_browser
-  environment:
-   - ETCD_HOST=svc_kube_storage_etcd
+#svc_kube_storage_etcd_browser:
+#  image: denverdino/etcdbrowser
+#  name: svc_kube_storage_etcd_browser
+#  hostname: svc_kube_storage_etcd_browser
+#  environment:
+#   - ETCD_HOST=svc_kube_storage_etcd
+#  ports:
+#    - "8000:8000"
+#  command: ""
+
+svc_kube_vproxy_etcd_viewer:
+  build: svc_kube_vproxy_etcd_viewer
+  links:
+    - svc_kube_discovery_vproxy
+  hostname: svc_kube_vproxy_etcd_viewer
   ports:
-    - "8000:8000"
-  command: ""
+    - "3335:8080"
+
+#svc_kube_vision_opencv_libccv:
+#  build: svc_kube_vision_opencv_libccv
+#  links:
+#    - svc_kube_discovery_vproxy
+#  hostname: svc_kube_vision_opencv_libccv
+#  expose:
+#    - "3350:3350"
+
+#svc_kube_vision_opencv_nonfree:
+#  build: svc_kube_vision_opencv_nonfree
+#  links:
+#    - svc_kube_discovery_vproxy
+#  hostname: svc_kube_vision_opencv3_nonfree
+#  expose:
+#    - "3333:3350"
 
 # Start the redis store for caching visual logs
 #svc_kube_storage_cache:

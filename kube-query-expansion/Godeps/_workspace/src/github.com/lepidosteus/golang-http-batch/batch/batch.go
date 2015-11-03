@@ -3,19 +3,14 @@ package batch
 import (
 	"fmt"
 	"net/http"
-//    "net/http/httputil"
 	"io/ioutil"
-//	"bufio"
 	"bytes"
 	"mime/multipart"
 	"io"
 	"encoding/json"
-//	"github.com/hyperboloide/pipe"
 	"log"
 	base64 "encoding/base64"
 	"net/textproto"
-//	"image"
-//	"image/jpeg"
 )
 
 const concurrentDefault = 10
@@ -101,12 +96,11 @@ type OcrRequest struct {
 func process(queue chan *entry, waiters chan bool, thread_num int) {
 	for entry := range queue {
 		if entry.vengine == "tessaract" {
-	        //log.Println("------- New multi-part related query - START -------")
-	        //log.Println("-- Method used: ", entry.method)
-	        //log.Println("-- Endpoint url: ", entry.url)
-	        //log.Println("-- Visual Engine Type to query: ", entry.vengine)
+
 			body := &bytes.Buffer{}
 			writer := multipart.NewWriter(body)
+
+			// will add dynamic parameters later and rotation
 		    jsonBytes := []byte(`{"engine":"tesseract", "preprocessor-args":{"stroke-width-transform":"0"}, "inplace_decode": false}`)
 			ocrRequest := OcrRequest{} 
 			err := json.Unmarshal(jsonBytes, &ocrRequest)
@@ -120,80 +114,70 @@ func process(queue chan *entry, waiters chan bool, thread_num int) {
 			mimeHeader.Set("Content-Type", "application/json")
 			part, err := writer.CreatePart(mimeHeader)
 			if err != nil {
-				//log.Println("Unable to create json multipart part")
+				err = writer.Close()
 	            entry.callback(entry.url, entry.method, entry.vengine, entry.payload, "", entry.data, err)
 				continue
 			}
 			_, err = part.Write(jsonBytes)
 			if err != nil {
-				//log.Println("Unable to write json multipart part")
+				err = writer.Close()
 	            entry.callback(entry.url, entry.method, entry.vengine, entry.payload, "", entry.data, err)
 				continue
 			}
 
 			partHeaders := textproto.MIMEHeader{}
-			// TODO: pass these vals in instead of hardcoding
 			partHeaders.Set("Content-Type", "image/jpeg")
 			partHeaders.Set("Content-Disposition", "attachment; filename=\"attachment.txt\".")
-
 			partAttach, err := writer.CreatePart(partHeaders)
 			if err != nil {
-				//log.Println("Unable to create image multipart part")
+				err = writer.Close()
 	            entry.callback(entry.url, entry.method, entry.vengine, entry.payload, "", entry.data, err)
 				continue
 			}
-
 		    dec := base64.NewDecoder(base64.StdEncoding, bytes.NewBuffer([]byte(entry.payload)))
 			_, err = io.Copy(partAttach, dec)
 			if err != nil {
-				//log.Println("Unable to write image in multipart part")
+				err = writer.Close()
 	            entry.callback(entry.url, entry.method, entry.vengine, entry.payload, "", entry.data, err)
 				continue
 			}
-
-			err = writer.Close()
 			if err != nil {
-				//log.Println("Error closing writer")
+				err = writer.Close()
 	            entry.callback(entry.url, entry.method, entry.vengine, entry.payload, "", entry.data, err)
 				continue
 			}
-
+			err = writer.Close()
 			// create a client
 			client := &http.Client{}
+			// Add it to the configuration file
 			req, err := http.NewRequest("POST", "http://192.168.99.100:9292/ocr-file-upload", bytes.NewReader(body.Bytes()))
-			if err != nil {
-				//log.Println("Error creating POST request")
-	            entry.callback(entry.url, entry.method, entry.vengine, entry.payload, "", entry.data, err)
-				continue
-			}
 			// set content type
 			contentType := fmt.Sprintf("multipart/related; boundary=%q", writer.Boundary())
 			req.Header.Set("Content-Type", contentType)
 			// send POST request
 			response, err := client.Do(req)
-			defer response.Body.Close()
 			if err != nil {
-				//log.Println("Error sending POST request")
 	            entry.callback(entry.url, entry.method, entry.vengine, entry.payload, "", entry.data, err)
 				continue
 			}
 			if response.StatusCode >= 400 {
-				//log.Println("Got error status response: %d", response.StatusCode)
+				defer response.Body.Close()
 	            entry.callback(entry.url, entry.method, entry.vengine, entry.payload, "", entry.data, err)
 				continue
 			}
 			contents, err := ioutil.ReadAll(response.Body)
 			if err != nil {
-				//log.Println("Error reading response")
+				defer response.Body.Close()
 	            entry.callback(entry.url, entry.method, entry.vengine, entry.payload, "", entry.data, err)
 				continue
 			} else {
 		        //log.Println("%s", contents)
 		        log.Println("------- New multi-part related query - END -------")
+				defer response.Body.Close()
 				entry.callback(entry.url, entry.method, entry.vengine, entry.payload, string(contents), entry.data, nil)			
 			}
 
-		} else {
+		} else if entry.vengine !="" {
 
 		    //log.Println("------- New VMX - JSON Payload query - START -------")
 		    //log.Println("Method Used: ", entry.method)
@@ -207,7 +191,6 @@ func process(queue chan *entry, waiters chan bool, thread_num int) {
 			request.Header.Set("Content-Type", "application/json")
 			client := &http.Client{}
 			response, err := client.Do(request)
-			defer response.Body.Close()
 			if err != nil {
 				log.Println("Error sending POST request")
 	            entry.callback(entry.url, entry.method, entry.vengine, entry.payload, "", entry.data, err)
@@ -216,14 +199,18 @@ func process(queue chan *entry, waiters chan bool, thread_num int) {
 			contents, err := ioutil.ReadAll(response.Body)
 			if err != nil {
 				//log.Println("Error reading response")
+				defer response.Body.Close()
 	            entry.callback(entry.url, entry.method, entry.vengine, entry.payload, "", entry.data, err)
 				continue
 			} else {
 		        //log.Printf("%s", contents)
 		        //log.Println("------- New multi-part related query - END -------")
+				defer response.Body.Close()
 				entry.callback(entry.url, entry.method, entry.vengine, entry.payload, string(contents), entry.data, nil)			
 			}	
 
+		} else {
+			continue
 		}
 
 	}

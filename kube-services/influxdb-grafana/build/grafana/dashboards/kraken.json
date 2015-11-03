@@ -1,0 +1,610 @@
+{
+  "id": null,
+  "title": "kraken",
+  "originalTitle": "kraken",
+  "tags": [],
+  "style": "dark",
+  "timezone": "browser",
+  "editable": true,
+  "hideControls": false,
+  "sharedCrosshair": false,
+  "rows": [
+    {
+      "title": "test",
+      "height": "250px",
+      "editable": true,
+      "collapse": false,
+      "collapsable": true,
+      "panels": [
+        {
+          "span": 6,
+          "editable": true,
+          "type": "graph",
+          "x-axis": true,
+          "y-axis": true,
+          "scale": 1,
+          "y_formats": [
+            "ns",
+            "bytes"
+          ],
+          "grid": {
+            "max": null,
+            "min": null,
+            "leftMax": null,
+            "rightMax": null,
+            "leftMin": null,
+            "rightMin": null,
+            "threshold1": null,
+            "threshold2": null,
+            "threshold1Color": "rgba(216, 200, 27, 0.27)",
+            "threshold2Color": "rgba(234, 112, 112, 0.22)"
+          },
+          "resolution": 100,
+          "lines": true,
+          "fill": 1,
+          "linewidth": 2,
+          "points": true,
+          "pointradius": 2,
+          "bars": false,
+          "stack": false,
+          "spyable": true,
+          "options": false,
+          "legend": {
+            "show": false,
+            "values": true,
+            "min": false,
+            "max": true,
+            "current": false,
+            "total": false,
+            "avg": false,
+            "alignAsTable": true
+          },
+          "interactive": true,
+          "legend_counts": true,
+          "timezone": "browser",
+          "percentage": false,
+          "zerofill": true,
+          "nullPointMode": "null as zero",
+          "steppedLine": false,
+          "tooltip": {
+            "value_type": "cumulative",
+            "query_as_alias": true,
+            "shared": true
+          },
+          "targets": [
+            {
+              "target": "randomWalk('random walk')",
+              "function": "max",
+              "column": "value",
+              "series": "cpu/usage_ns_cumulative",
+              "query": "select max(value) from /container_name:[^\\/]*_host_id:.*cpu_usage_ns_cumulative/ where $timeFilter group by time($interval) fill(0) order asc",
+              "condition_filter": false,
+              "condition_key": "",
+              "condition_op": "=",
+              "condition_value": "",
+              "interval": "",
+              "groupby_field_add": true,
+              "groupby_field": "pod_name",
+              "alias": "$0.$1.$2.$3",
+              "fill": "0",
+              "rawQuery": true,
+              "hide": false,
+              "condition": "pod_name <> ''"
+            },
+            {
+              "target": "",
+              "function": "mean",
+              "column": "value"
+            }
+          ],
+          "aliasColors": {},
+          "title": "Container CPU time",
+          "datasource": null,
+          "renderer": "png",
+          "annotate": {
+            "enable": false
+          },
+          "id": 1,
+          "seriesOverrides": [],
+          "links": [],
+          "leftYAxisLabel": "",
+          "interval": "1m"
+        },
+        {
+          "span": 6,
+          "editable": true,
+          "type": "graph",
+          "x-axis": true,
+          "y-axis": true,
+          "scale": 1,
+          "y_formats": [
+            "bytes",
+            "bytes"
+          ],
+          "grid": {
+            "max": null,
+            "min": null,
+            "leftMax": null,
+            "rightMax": null,
+            "leftMin": null,
+            "rightMin": null,
+            "threshold1": null,
+            "threshold2": null,
+            "threshold1Color": "rgba(216, 200, 27, 0.27)",
+            "threshold2Color": "rgba(234, 112, 112, 0.22)"
+          },
+          "resolution": 100,
+          "lines": true,
+          "fill": 1,
+          "linewidth": 2,
+          "points": true,
+          "pointradius": 2,
+          "bars": false,
+          "stack": false,
+          "spyable": true,
+          "options": false,
+          "legend": {
+            "show": false,
+            "values": true,
+            "min": false,
+            "max": true,
+            "current": false,
+            "total": false,
+            "avg": false,
+            "alignAsTable": true
+          },
+          "interactive": true,
+          "legend_counts": true,
+          "timezone": "browser",
+          "percentage": false,
+          "zerofill": true,
+          "nullPointMode": "connected",
+          "steppedLine": false,
+          "tooltip": {
+            "value_type": "cumulative",
+            "query_as_alias": true,
+            "shared": true
+          },
+          "targets": [
+            {
+              "target": "randomWalk('random walk')",
+              "function": "mean",
+              "column": "value",
+              "series": "memory/usage_bytes_gauge",
+              "query": "select mean(value) from /container_name:[^\\/]*_host_id:.*memory_usage_bytes_gauge/ where $timeFilter group by time($interval) fill(0) order asc",
+              "condition_filter": false,
+              "condition_key": "",
+              "condition_op": "=",
+              "condition_value": "",
+              "interval": "",
+              "groupby_field_add": true,
+              "groupby_field": "pod_name",
+              "alias": "$0.$1.$2.$3",
+              "condition": "pod_name <> ''",
+              "fill": "0",
+              "rawQuery": true
+            }
+          ],
+          "aliasColors": {},
+          "title": "Pod Mean Memory",
+          "datasource": null,
+          "renderer": "png",
+          "annotate": {
+            "enable": false
+          },
+          "id": 2,
+          "seriesOverrides": [],
+          "links": [],
+          "interval": "1m"
+        }
+      ],
+      "notice": false
+    },
+    {
+      "title": "test",
+      "height": "250px",
+      "editable": true,
+      "collapse": false,
+      "collapsable": true,
+      "panels": [
+        {
+          "span": 6,
+          "editable": true,
+          "type": "graph",
+          "x-axis": true,
+          "y-axis": true,
+          "scale": 1,
+          "y_formats": [
+            "bytes",
+            "ns"
+          ],
+          "grid": {
+            "max": null,
+            "min": null,
+            "leftMax": null,
+            "rightMax": null,
+            "leftMin": null,
+            "rightMin": null,
+            "threshold1": null,
+            "threshold2": null,
+            "threshold1Color": "rgba(216, 200, 27, 0.27)",
+            "threshold2Color": "rgba(234, 112, 112, 0.22)"
+          },
+          "resolution": 100,
+          "lines": true,
+          "fill": 1,
+          "linewidth": 2,
+          "points": true,
+          "pointradius": 2,
+          "bars": false,
+          "stack": false,
+          "spyable": true,
+          "options": false,
+          "legend": {
+            "show": false,
+            "values": true,
+            "min": false,
+            "max": true,
+            "current": false,
+            "total": false,
+            "avg": false,
+            "alignAsTable": true,
+            "rightSide": false
+          },
+          "interactive": true,
+          "legend_counts": true,
+          "timezone": "browser",
+          "percentage": false,
+          "zerofill": true,
+          "nullPointMode": "connected",
+          "steppedLine": false,
+          "tooltip": {
+            "value_type": "cumulative",
+            "query_as_alias": true,
+            "shared": true
+          },
+          "targets": [
+            {
+              "target": "randomWalk('random walk')",
+              "function": "derivative",
+              "column": "value",
+              "series": "network/rx_bytes_cumulative",
+              "query": "select max(value) from /container_name:\\/_host_id:.*network_rx_bytes_cumulative/ where $timeFilter group by time($interval) fill(0) order asc",
+              "condition_filter": true,
+              "interval": "",
+              "groupby_field_add": true,
+              "groupby_field": "hostname",
+              "alias": "$0.$1.$2.$3",
+              "condition": "container_name = '/'",
+              "rawQuery": true,
+              "fill": "0"
+            }
+          ],
+          "aliasColors": {},
+          "title": "Node Network RX",
+          "datasource": null,
+          "renderer": "png",
+          "annotate": {
+            "enable": false
+          },
+          "id": 3,
+          "seriesOverrides": [],
+          "links": [],
+          "interval": "1m"
+        },
+        {
+          "span": 6,
+          "editable": true,
+          "type": "graph",
+          "x-axis": true,
+          "y-axis": true,
+          "scale": 1,
+          "y_formats": [
+            "bytes",
+            "bytes"
+          ],
+          "grid": {
+            "max": null,
+            "min": null,
+            "leftMax": null,
+            "rightMax": null,
+            "leftMin": null,
+            "rightMin": null,
+            "threshold1": null,
+            "threshold2": null,
+            "threshold1Color": "rgba(216, 200, 27, 0.27)",
+            "threshold2Color": "rgba(234, 112, 112, 0.22)"
+          },
+          "resolution": 100,
+          "lines": true,
+          "fill": 1,
+          "linewidth": 2,
+          "points": true,
+          "pointradius": 2,
+          "bars": false,
+          "stack": false,
+          "spyable": true,
+          "options": false,
+          "legend": {
+            "show": false,
+            "values": true,
+            "min": true,
+            "max": true,
+            "current": false,
+            "total": false,
+            "avg": false,
+            "alignAsTable": true
+          },
+          "interactive": true,
+          "legend_counts": true,
+          "timezone": "browser",
+          "percentage": false,
+          "zerofill": true,
+          "nullPointMode": "connected",
+          "steppedLine": false,
+          "tooltip": {
+            "value_type": "individual",
+            "query_as_alias": true,
+            "shared": true
+          },
+          "targets": [
+            {
+              "target": "randomWalk('random walk')",
+              "function": "derivative",
+              "column": "value",
+              "series": "network/tx_bytes_cumulative",
+              "query": "select max(value) from /container_name:\\/_host_id:.*network_tx_bytes_cumulative/ where $timeFilter group by time($interval) fill(0) order asc",
+              "condition_filter": true,
+              "interval": "",
+              "groupby_field_add": true,
+              "groupby_field": "hostname",
+              "alias": "$0.$1.$2.$3",
+              "condition": "container_name = '/'",
+              "fill": "0",
+              "rawQuery": true
+            }
+          ],
+          "aliasColors": {},
+          "title": "Node Network TX",
+          "datasource": null,
+          "renderer": "png",
+          "annotate": {
+            "enable": false
+          },
+          "id": 4,
+          "seriesOverrides": [],
+          "links": [],
+          "interval": "1m"
+        }
+      ],
+      "notice": false
+    },
+    {
+      "title": "test",
+      "height": "250px",
+      "editable": true,
+      "collapse": false,
+      "collapsable": true,
+      "panels": [
+        {
+          "span": 6,
+          "editable": true,
+          "type": "graph",
+          "x-axis": true,
+          "y-axis": true,
+          "scale": 1,
+          "y_formats": [
+            "ns",
+            "ns"
+          ],
+          "grid": {
+            "max": null,
+            "min": null,
+            "leftMax": null,
+            "rightMax": null,
+            "leftMin": null,
+            "rightMin": null,
+            "threshold1": null,
+            "threshold2": null,
+            "threshold1Color": "rgba(216, 200, 27, 0.27)",
+            "threshold2Color": "rgba(234, 112, 112, 0.22)"
+          },
+          "resolution": 100,
+          "lines": true,
+          "fill": 1,
+          "linewidth": 2,
+          "points": true,
+          "pointradius": 2,
+          "bars": false,
+          "stack": true,
+          "spyable": true,
+          "options": false,
+          "legend": {
+            "show": false,
+            "values": true,
+            "min": false,
+            "max": true,
+            "current": false,
+            "total": false,
+            "avg": false,
+            "alignAsTable": true
+          },
+          "interactive": true,
+          "legend_counts": true,
+          "timezone": "browser",
+          "percentage": false,
+          "zerofill": true,
+          "nullPointMode": "connected",
+          "steppedLine": false,
+          "tooltip": {
+            "value_type": "individual",
+            "query_as_alias": true,
+            "shared": true
+          },
+          "targets": [
+            {
+              "target": "randomWalk('random walk')",
+              "function": "derivative",
+              "column": "value",
+              "series": "cpu/usage_ns_cumulative",
+              "query": "select max(value) from /container_name:\\/_host_id:.*cpu_usage_ns_cumulative/ where $timeFilter group by time($interval) fill(0) order asc",
+              "condition_filter": true,
+              "interval": "",
+              "groupby_field_add": true,
+              "groupby_field": "hostname",
+              "alias": "$0.$1.$2.$3",
+              "condition": "container_name = '/'",
+              "fill": "0",
+              "rawQuery": true
+            }
+          ],
+          "aliasColors": {},
+          "title": "Node CPU usage (stacked)",
+          "datasource": null,
+          "renderer": "png",
+          "annotate": {
+            "enable": false
+          },
+          "id": 7,
+          "seriesOverrides": [],
+          "interval": "1m",
+          "links": []
+        },
+        {
+          "span": 6,
+          "editable": true,
+          "type": "graph",
+          "x-axis": true,
+          "y-axis": true,
+          "scale": 1,
+          "y_formats": [
+            "bytes",
+            "bytes"
+          ],
+          "grid": {
+            "max": null,
+            "min": null,
+            "leftMax": null,
+            "rightMax": null,
+            "leftMin": null,
+            "rightMin": null,
+            "threshold1": null,
+            "threshold2": null,
+            "threshold1Color": "rgba(216, 200, 27, 0.27)",
+            "threshold2Color": "rgba(234, 112, 112, 0.22)"
+          },
+          "resolution": 100,
+          "lines": true,
+          "fill": 1,
+          "linewidth": 2,
+          "points": true,
+          "pointradius": 2,
+          "bars": false,
+          "stack": true,
+          "spyable": true,
+          "options": false,
+          "legend": {
+            "show": false,
+            "values": true,
+            "min": false,
+            "max": true,
+            "current": true,
+            "total": false,
+            "avg": false,
+            "alignAsTable": true,
+            "rightSide": false
+          },
+          "interactive": true,
+          "legend_counts": true,
+          "timezone": "browser",
+          "percentage": false,
+          "zerofill": true,
+          "nullPointMode": "connected",
+          "steppedLine": false,
+          "tooltip": {
+            "value_type": "individual",
+            "query_as_alias": true,
+            "shared": true
+          },
+          "targets": [
+            {
+              "target": "randomWalk('random walk')",
+              "function": "max",
+              "column": "value",
+              "series": "memory/usage_bytes_gauge",
+              "query": "select max(value) from /container_name:\\/_host_id:.*memory_usage_bytes_gauge/ where $timeFilter group by time($interval) fill(0) order asc",
+              "condition_filter": true,
+              "interval": "",
+              "groupby_field_add": true,
+              "groupby_field": "hostname",
+              "alias": "$0.$1.$2.$3",
+              "condition": "container_name = '/'",
+              "fill": "0",
+              "rawQuery": true
+            }
+          ],
+          "aliasColors": {},
+          "title": "Node Memory (stacked)",
+          "datasource": null,
+          "renderer": "png",
+          "annotate": {
+            "enable": false
+          },
+          "id": 8,
+          "seriesOverrides": [],
+          "links": [],
+          "interval": "1m"
+        }
+      ],
+      "notice": false
+    }
+  ],
+  "nav": [
+    {
+      "type": "timepicker",
+      "collapse": false,
+      "notice": false,
+      "enable": true,
+      "status": "Stable",
+      "time_options": [
+        "5m",
+        "15m",
+        "1h",
+        "6h",
+        "12h",
+        "24h",
+        "2d",
+        "7d",
+        "30d"
+      ],
+      "refresh_intervals": [
+        "5s",
+        "10s",
+        "30s",
+        "1m",
+        "5m",
+        "15m",
+        "30m",
+        "1h",
+        "2h",
+        "1d"
+      ],
+      "now": true
+    }
+  ],
+  "time": {
+    "from": "now-15m",
+    "to": "now"
+  },
+  "templating": {
+    "list": [],
+    "enable": true
+  },
+  "annotations": {
+    "enable": true,
+    "list": []
+  },
+  "refresh": false,
+  "version": 6,
+  "hideAllLegends": false
+}

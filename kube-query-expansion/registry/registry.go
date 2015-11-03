@@ -16,6 +16,8 @@ import (
 	"github.com/blippar/kube-vproxy/kube-middlewares/kubeDispatcher"
 	
 	"github.com/blippar/kube-vproxy/kube-middlewares/kubeOCR"
+
+        "github.com/blippar/kube-vproxy/kube-middlewares/kubeConnect"
 	
 )
 
@@ -37,6 +39,8 @@ func GetRegistry() (*plugin.Registry, error) {
 		kubeDispatcher.GetSpec(),
        
 		kubeOCR.GetSpec(),
+
+                kubeConnect.GetSpec(),
        
 	}
 

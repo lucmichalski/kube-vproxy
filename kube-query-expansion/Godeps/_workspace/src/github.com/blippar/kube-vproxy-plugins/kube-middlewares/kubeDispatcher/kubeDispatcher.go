@@ -21,6 +21,7 @@ import (
 	"github.com/disintegration/imaging"	
 	"image"
 	"log"
+	"golang.org/x/net/contex"
 	"image/jpeg"
 	"net/http"
 	"strconv"

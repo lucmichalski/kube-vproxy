@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:wicket="http://wicket.apache.org">
+<head>
+<wicket:head>
+<style>
+.help-block .feedbackPanel {
+  padding-left: 0;
+  list-style: none;
+}
+</style>
+</wicket:head>
+
+</head>
+<body>
+
+<wicket:border>
+  <label class="control-label" wicket:id="label">[label]</label>
+  <wicket:body/>
+  <span wicket:id="feedbackIcon" class="glyphicon form-control-feedback" aria-hidden="true"></span>
+  <div wicket:id="feedback" class="help-block"></div>
+</wicket:border>
+
+</body>
+</html>

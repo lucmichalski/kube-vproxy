@@ -10,15 +10,78 @@ import (
 const (
 	endpointKey = "vulcand/upstreams/%v/endpoints/%v"
 	locationKey = "vulcand/hosts/%v/locations/%v"
-
 	backendPath  = "vulcand2/backends/%v"
 	serverPath   = "vulcand2/backends/%v/servers/%v"
 	frontendPath = "vulcand2/frontends/%v.%v"
-
 	// If vulcand registration is enabled, the app will be re-registering itself every
 	// this amount of seconds.
 	endpointTTL = 5 // seconds
 )
+
+// BackendSettings is a copy of github.com/mailgun/vulcand/engine.HTTPBackendSettings.
+// It is copied here so clients can use this type for configuration without importing
+// vulcand's code.
+type BackendSettings struct {
+	Timeouts struct {
+		Read, Dial, TLSHandshake string
+	}
+	KeepAlive struct {
+		Period              string
+		MaxIdleConnsPerHost int
+	}
+	KubeVisionSettings *struct {
+		DefaultEndpoint     	string
+		FallbackEndpoint     	string
+		Type     				string
+		Settings *struct {
+			Route 				string
+			MaxConcurrent 		int
+			MinScore 			float
+			Archive 			bool
+			S3CrossLoad 		bool
+		}
+	}
+	KubePreProcessingSettings *struct {
+		DefaultEndpoint     	string
+		FallbackEndpoint     	string
+		Type     				string
+		Settings *struct {
+			Route 				string
+			MaxConcurrent 		int
+			CircuitBreaker 		bool
+			Archive 			bool
+			S3CrossLoad 		bool
+		}
+	}
+	TLSSettings *struct {
+		PreferServerCipherSuites bool
+		InsecureSkipVerify       bool
+		MinVersion               string
+		MaxVersion               string
+		SessionTicketsDisabled   bool
+		SessionCache             struct {
+			Type     string
+			Settings *struct {
+				Capacity int
+			}
+		}
+		CipherSuites []string
+	}
+	TLSSettings *struct {
+		PreferServerCipherSuites bool
+		InsecureSkipVerify       bool
+		MinVersion               string
+		MaxVersion               string
+		SessionTicketsDisabled   bool
+		SessionCache             struct {
+			Type     string
+			Settings *struct {
+				Capacity int
+			}
+		}
+		CipherSuites []string
+	}
+}
 
 type Registry struct {
 	etcdClient *etcd.Client

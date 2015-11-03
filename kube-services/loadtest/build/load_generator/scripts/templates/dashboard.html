@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link type="text/css" rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css">
+  <link type="text/css" rel="stylesheet" href="files/css/graph.css">
+  <link type="text/css" rel="stylesheet" href="files/css/detail.css">
+  <link type="text/css" rel="stylesheet" href="files/css/extensions.css?v=2">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
+  <script>
+    jQuery.noConflict();
+  </script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.15/jquery-ui.min.js"></script>
+  <script src="files/js/d3.v3.js"></script>
+  <script src="files/js/rickshaw.min.js"></script>
+</head>
+
+<body>
+
+<div id="content">
+
+  <h1>Requests per second</h1>
+  <div id="chart_container">
+    <div id="chartRPS"></div>
+  </div>
+  <h1>Average response time</h1>
+  <div id="chart_container">
+    <div id="chartART"></div>
+  </div>
+
+</div>
+
+<script>
+
+var palette = new Rickshaw.Color.Palette( { scheme: 'colorwheel' } );
+var graphRPS = null;
+var graphART = null;
+var seriesDataRPS = {}
+var seriesDataART = {}
+
+// Create a new EventSource
+var evtSrc = new EventSource("/stream");
+
+function addData(incoming) {
+
+  if (incoming.type === 'rps') {
+    seriesDataRPS[incoming.slave_id] = incoming.val
+    graphRPS.series.addData(seriesDataRPS);
+    graphRPS.update();
+  } else {
+    seriesDataART[incoming.slave_id] = incoming.val
+    graphART.series.addData(seriesDataART);
+    graphART.update();
+  }
+}
+
+function initGraph(data_object) {
+  if (data_object.type === 'rps') {
+    if (!graphRPS) {
+      graphRPS = new Rickshaw.Graph( {
+        element: document.getElementById("chartRPS"),
+        width: window.innerWidth || document.body.clientWidth,
+        height: (window.innerHeight - 100) / 2 || (document.body.clientHeight - 100) / 2,
+        renderer: 'area',
+        stack: true,
+        series: new Rickshaw.Series.FixedDuration([{
+          name: data_object.slave_id
+        }], palette, {
+          timeInterval: 2000,
+          maxDataPoints: 100,
+          timeBase: new Date().getTime() / 1000
+        })
+      } );
+
+      var hoverDetail = new Rickshaw.Graph.HoverDetail( {
+        graph: graphRPS,
+        xFormatter: function(x) {
+          return new Date(x * 1000).toString();
+        }
+      } );
+
+      var ticksTreatment = 'glow';
+
+      var xAxis = new Rickshaw.Graph.Axis.Time( {
+        graph: graphRPS,
+        ticksTreatment: ticksTreatment,
+        timeFixture: new Rickshaw.Fixtures.Time.Local()
+      } );
+
+      xAxis.render();
+
+      var yAxis = new Rickshaw.Graph.Axis.Y( {
+        graph: graphRPS,
+        tickFormat: Rickshaw.Fixtures.Number.formatKMBT,
+        ticksTreatment: ticksTreatment
+      } );
+
+      yAxis.render();
+    }
+  } else {
+    if (!graphART) {
+      graphART = new Rickshaw.Graph( {
+        element: document.getElementById("chartART"),
+        width: window.innerWidth || document.body.clientWidth,
+        height: (window.innerHeight - 100) / 2 || (document.body.clientHeight - 100) / 2,
+        renderer: 'area',
+        stack: true,
+        series: new Rickshaw.Series.FixedDuration([{
+          name: data_object.slave_id
+        }], palette, {
+          timeInterval: 1000,
+          maxDataPoints: 1000,
+          timeBase: new Date().getTime() / 1000
+        })
+      } );
+
+      var hoverDetail = new Rickshaw.Graph.HoverDetail( {
+        graph: graphART,
+        xFormatter: function(x) {
+          return new Date(x * 1000).toString();
+        }
+      } );
+
+      var ticksTreatment = 'glow';
+
+      var xAxis = new Rickshaw.Graph.Axis.Time( {
+        graph: graphART,
+        ticksTreatment: ticksTreatment,
+        timeFixture: new Rickshaw.Fixtures.Time.Local()
+      } );
+
+      xAxis.render();
+
+      var yAxis = new Rickshaw.Graph.Axis.Y( {
+        graph: graphART,
+        tickFormat: Rickshaw.Fixtures.Number.formatKMBT,
+        ticksTreatment: ticksTreatment
+      } );
+
+      yAxis.render();
+    }
+  }
+}
+
+// Handle receiving data
+evtSrc.onmessage = function(e) {
+  var obj = JSON.parse(e.data);  
+  initGraph(obj);
+  addData(obj);
+  console.log(obj)
+};
+
+</script>
+
+</body>
+</html>

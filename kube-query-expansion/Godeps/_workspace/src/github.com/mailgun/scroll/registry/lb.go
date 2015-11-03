@@ -37,6 +37,9 @@ func (s *LBRegistry) RegisterApp(registration *AppRegistration) error {
 		return err
 	}
 
+	// Add some etcd stored thresholds
+	endpoint.Settings = registration.VproxySettings
+
 	err = s.client.RegisterBackend(endpoint)
 	if err != nil {
 		log.Errorf("Failed to register backend for endpoint: %v, %s", endpoint, err)

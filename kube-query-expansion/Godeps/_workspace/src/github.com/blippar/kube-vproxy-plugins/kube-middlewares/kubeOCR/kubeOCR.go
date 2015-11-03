@@ -22,6 +22,7 @@ import (
 	"bytes"
 	"image/jpeg"
 	"encoding/base64"
+	"golang.org/x/net/contex"
 	"net/http"
 	"strconv"
 	"strings"
