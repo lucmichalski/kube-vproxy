@@ -1,0 +1,2 @@
+government_permit_type,/datasets/bulk/ltu76/governement/documents/passportindex.org,passportindex.org.zip,passportindex.org,3,world_gov_doc
+organization_brands_logo_logopedia_org,/datasets/bulk/ltu76/organization/brands/logos/logopedia.org,logopedia.org.zip,logopedia.org,3,world_org_brands_logo

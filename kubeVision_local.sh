@@ -1,7 +1,7 @@
 #!/bin/bash
 
-docker rm $(docker ps -a -q)
-docker rmi $(docker images | grep "^<none>" | awk '{print $3}')
+#docker rm $(docker ps -a -q)
+#docker rmi $(docker images | grep "^<none>" | awk '{print $3}')
 docker-compose -f cluster_kubeVision.docker-compose.yml stop
 docker-compose -f cluster_kubeVision.docker-compose.yml rm -f
 docker-compose -f cluster_kubeVision.docker-compose.yml build

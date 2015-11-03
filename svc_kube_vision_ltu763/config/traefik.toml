@@ -1,0 +1,27 @@
+# traefik.toml
+port = ":1979"
+graceTimeOut = 10
+logLevel = "ERROR"
+
+[web]
+address = ":1980"
+
+[etcd]
+
+# Etcd server endpoint
+#
+# Required
+#
+endpoint = "127.0.0.1:4001"
+
+# Enable watch Etcd changes
+#
+# Optional
+#
+watch = true
+
+# Prefix used for KV store.
+#
+# Optional
+#
+prefix = "/vulcand"

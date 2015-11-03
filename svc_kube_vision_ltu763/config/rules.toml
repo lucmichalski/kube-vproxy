@@ -1,0 +1,25 @@
+# rules.toml
+[backends]
+  [backends.backend1]
+    [backends.query.LoadBalancer]
+      method = "drr"
+    [backends.query.servers.server1]
+    url = "http://127.0.0.1:8080"
+    weight = 1
+    [backends.modify.LoadBalancer]
+      method = "drr"
+    [backends.modify.servers.server1]
+    url = "http://127.0.0.1:7789"
+    weight = 1
+
+[frontends]
+  [frontends.frontend1]
+  backend = "backend1"
+    [frontends.frontend1.routes.default]
+    rule = "PathPrefix"
+    value = "/query"
+  [frontends.frontend2]
+  backend = "backend2"
+    [frontends.frontend2.routes.default]
+    rule = "PathPrefix"
+    value = "/modify"
