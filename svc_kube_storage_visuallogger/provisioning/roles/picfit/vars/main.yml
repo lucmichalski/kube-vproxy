@@ -1,2 +1,0 @@
----
-picfit_path: "{{ go_path }}/src/github.com/thoas/picfit"

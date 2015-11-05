@@ -1,6 +1,0 @@
-v1.
-{<<"/usr/src/app/_build/dev/lib/cors_plug/ebin/Elixir.CORSPlug.beam">>,
- 'Elixir.CORSPlug',<<"lib/cors_plug.ex">>,
- ['Elixir.Kernel','Elixir.Plug.Conn'],
- ['Elixir.Access','Elixir.String.Chars',erlang,'Elixir.Enum','Elixir.Dict'],
- [],nil}.

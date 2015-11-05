@@ -1,8 +1,0 @@
-source 'https://rubygems.org'
-ruby '2.2.2'
-
-gem 'rake', '~> 10.4.2'
-gem 'dashing', '~> 1.3.4'
-gem 'dashing-contrib', '~> 0.1.14'
-gem 'kubeclient', '~> 0.2.0'
-gem 'paleta', '~> 0.3.0'

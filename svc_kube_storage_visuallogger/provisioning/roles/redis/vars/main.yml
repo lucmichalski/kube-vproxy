@@ -1,2 +1,0 @@
----
-redis_version_target: "redis-cli {{ redis_version }}"

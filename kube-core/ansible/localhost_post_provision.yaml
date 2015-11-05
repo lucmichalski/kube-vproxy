@@ -1,5 +1,0 @@
----
-- hosts: local
-  sudo: false
-  roles:
-    - ssh-config
