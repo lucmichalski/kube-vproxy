@@ -1,0 +1,28 @@
+{
+    "images": [{
+        "image": "ImageBase64",
+        "time": "2015-10-22T17:56:14.322Z"
+    }],
+    "params": {
+        "crop_radius": 80,
+        "crop_threshold": 0,
+        "display_threshold": 0,
+        "jpeg_quality": 1,
+        "remove_smooth_below_threshold": true,
+        "display_top_detection": false,
+        "max_windows": 100,
+        "learn_mode": false,
+        "learn_iterations": 10,
+        "learn_threshold": 0.12439,
+        "train_max_positives": 60,
+        "train_max_negatives": 2000,
+        "detect_max_overlap": 0.1,
+        "learn_max_positives": 1,
+        "detect_add_flip": false,
+        "levels_per_octave": 5,
+        "max_image_size": 325,
+        "initialize_max_cells": 10,
+        "cell_size": 4,
+        "initialize_add_flip": false
+    }
+}

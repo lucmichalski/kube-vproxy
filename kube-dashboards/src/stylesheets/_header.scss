@@ -1,0 +1,71 @@
+.v-header {
+  padding-top: 2px;
+  background-color: #fff;
+  background-image: url(envelope-border.png);
+  background-repeat: repeat-x;
+  background-size: 40px 2px;
+  border-bottom: 1px solid rgb(231, 231, 231);
+  @include clearfix();
+}
+
+.v-header-brand {
+  display: block;
+  margin: 0 40px 0 0;
+  padding: 20px 0;
+  float: left;
+}
+
+.v-header-nav {
+  margin: 0;
+  padding: 0;
+  float: left;
+  list-style: none;
+}
+
+.v-header-nav > li {
+  float: left;
+}
+
+.v-header-nav > li > a {
+  display: block;
+  padding: 20px;
+  font-size: 0.9em;
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
+.v-header-search {
+  float: right;
+  margin: 14px 0;
+  border: 1px solid rgb(231, 231, 231);
+}
+
+.v-header-search > input,
+.v-header-search > button {
+  display: block;
+  float: left;
+  border: 0;
+}
+
+.v-header-search > input {
+  width: 250px;
+  height: 28px;
+  padding: 5px;
+  color: #616161;
+  font-size: 0.9em;
+  outline: 0;
+}
+
+.v-header-search > button {
+  width: 28px;
+  height: 28px;
+  color: #616161;
+  text-align: center;
+  background-color: #fff;
+  border-left: 1px solid rgb(231, 231, 231);
+  outline: 0;
+
+  &:focus {
+    color: rgb(220, 75, 53);
+  }
+}

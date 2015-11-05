@@ -1,0 +1,17 @@
+---
+
+- name: Create hyperkube-docker-node
+  template: src=hyperkube-docker-node.service.ansible
+            dest=/etc/systemd/system/hyperkube-docker-node.service
+  sudo: yes
+  notify:
+    - reload systemd
+    - restart hyperkube-docker-node
+
+- name: Create hyperkube-docker-node-proxy
+  template: src=hyperkube-docker-proxy-node.service.ansible
+            dest=/etc/systemd/system/hyperkube-docker-proxy-node.service
+  sudo: yes
+  notify:
+    - reload systemd
+    - restart hyperkube-docker-proxy-node

@@ -1,0 +1,34 @@
+$default-color: #EEE;
+$ok-color: #14D100;
+$warn-color: #64DF60;
+$progress-color: #008500;
+$fail-color: #FF4100;
+
+body {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    background-color: $default-color;
+}
+
+#kubernetes {
+    position: relative;
+    width: 850px;
+    height: 850px;
+    background-color: $default-color;
+}
+
+#description {
+    position: absolute;
+    top: 100px;
+    left: 760px;
+    width: 350px;
+}
+
+#container {
+    position: relative;
+    width: 1024px;
+    padding: 5px;
+    margin:auto;
+    background-color: $default-color;
+}

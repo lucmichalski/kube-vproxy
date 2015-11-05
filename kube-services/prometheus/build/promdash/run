@@ -1,0 +1,8 @@
+#!/bin/sh
+set -x
+# copy-pasta of what was in run originally
+[ -z "$DATABASE_URL" ] && { echo "DATABASE_URL not set"; exit 1; }
+# HACKHACK: how to detect if this needs to be done, work for sqlite3 and mysql
+bin/bundle exec rake db:create
+bin/bundle exec rake db:migrate
+exec $@

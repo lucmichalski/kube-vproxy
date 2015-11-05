@@ -1,0 +1,70 @@
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  labels:
+    name: prometheus
+  name: prometheus
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    name: prometheus
+  template:
+    metadata:
+      labels:
+        name: prometheus
+    spec:
+      containers:
+      - env:
+        - name: DATABASE_URL
+          value: sqlite3:/promdash/file.sqlite3
+        image: 172.16.16.15:5000/promdash:latest
+        imagePullPolicy: Always
+        name: promdash
+        ports:
+        - containerPort: 3000
+          hostPort: 3000
+          protocol: TCP
+        volumeMounts:
+        - mountPath: /promdash
+          name: data
+      - args:
+        - -t
+        - PROMETHEUS,KUBE_APISERVER
+        - -d
+        - /var/prometheus
+        env:
+        - name: PROMETHEUS_TARGET_ADDRESS
+          value: localhost:9090
+        - name: KUBE_APISERVER_TARGET_ADDRESS
+          value: localhost:8001
+        image: 172.16.16.15:5000/prometheus:latest
+        imagePullPolicy: Always
+        name: prometheus
+        ports:
+        - containerPort: 9090
+          hostPort: 9090
+          protocol: TCP
+        volumeMounts:
+        - mountPath: /var/prometheus/
+          name: data
+      - args:
+        - proxy
+        - --port=8001
+        - --api-prefix=/
+        - --server=https://kubernetes
+        - --insecure-skip-tls-verify=true
+        - --api-version=v1
+        - --logtostderr=true
+        - --v=2
+        image: 172.16.16.15:5000/kubectl:v0.18.0-350-gfb3305edcf6c1a
+        imagePullPolicy: IfNotPresent
+        name: kubectl-proxy
+      dnsPolicy: ClusterFirst
+      nodeSelector:
+        region: zone1
+      restartPolicy: Always
+      volumes:
+      - hostPath:
+          path: /mnt/promdash
+        name: data

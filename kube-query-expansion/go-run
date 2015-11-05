@@ -1,0 +1,8 @@
+#!/bin/sh
+
+set -e
+
+# Recover the binary name stored by the go-build script
+goBin=$(cat /tmp/go-bin-name)
+
+exec $goBin $@

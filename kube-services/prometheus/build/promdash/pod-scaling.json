@@ -1,0 +1,1134 @@
+{
+  "name": "pod-scaling",
+  "created_at": "2015-08-11T22:05:45.776Z",
+  "updated_at": "2015-08-12T00:17:06.337Z",
+  "dashboard_json": {
+    "globalConfig": {
+      "numColumns": 4,
+      "aspectRatio": 0.4166666666666667,
+      "theme": "dark_theme",
+      "endTime": null,
+      "vars": {
+        "rate_window": "1m",
+        "quantile": "0.9",
+        "etcd_request_latency_threshold_us": "100000"
+      },
+      "tags": [],
+      "palette": "spectrum2000",
+      "resolution": 4,
+      "showVars": true,
+      "range": "30m",
+      "refresh": ""
+    },
+    "widgets": [
+      {
+        "title": "kubelet_running_pod_count",
+        "endTime": null,
+        "expressions": [
+          {
+            "id": 0,
+            "serverID": 1,
+            "axisID": 1,
+            "expression": "kubelet_running_pod_count"
+          }
+        ],
+        "tags": [],
+        "type": "graph",
+        "showLegend": "never",
+        "legendFormatStrings": [
+          {
+            "id": 1,
+            "name": ""
+          }
+        ],
+        "interpolationMethod": "linear",
+        "disabledSeries": {},
+        "axes": [
+          {
+            "orientation": "left",
+            "renderer": "stack",
+            "scale": "linear",
+            "format": "kmbt",
+            "id": 1,
+            "yMin": "0"
+          }
+        ],
+        "resolution": 4,
+        "range": "30m",
+        "palette": "spectrum2000"
+      },
+      {
+        "title": "kubelet_running_container_count",
+        "endTime": null,
+        "expressions": [
+          {
+            "id": 0,
+            "serverID": 1,
+            "axisID": 1,
+            "expression": "kubelet_running_container_count"
+          }
+        ],
+        "tags": [],
+        "type": "graph",
+        "showLegend": "never",
+        "legendFormatStrings": [
+          {
+            "id": 1,
+            "name": ""
+          }
+        ],
+        "interpolationMethod": "linear",
+        "disabledSeries": {},
+        "axes": [
+          {
+            "orientation": "left",
+            "renderer": "stack",
+            "scale": "linear",
+            "format": "kmbt",
+            "id": 1,
+            "yMin": "0"
+          }
+        ],
+        "resolution": 4,
+        "range": "30m",
+        "palette": "spectrum2000"
+      },
+      {
+        "title": "kubelet_running_pod_count (rate[{{rate_window}}])",
+        "endTime": null,
+        "expressions": [
+          {
+            "id": 0,
+            "serverID": 1,
+            "axisID": 1,
+            "expression": "rate(kubelet_running_pod_count[{{rate_window}}])"
+          }
+        ],
+        "tags": [],
+        "type": "graph",
+        "showLegend": "never",
+        "legendFormatStrings": [
+          {
+            "id": 1,
+            "name": ""
+          }
+        ],
+        "interpolationMethod": "linear",
+        "disabledSeries": {},
+        "axes": [
+          {
+            "orientation": "left",
+            "renderer": "stack",
+            "scale": "linear",
+            "format": "kmbt",
+            "id": 1,
+            "yMin": "0"
+          }
+        ],
+        "resolution": 4,
+        "range": "30m",
+        "palette": "spectrum2000"
+      },
+      {
+        "title": "kubelet_running_container_count (rate[{{rate_window}}])",
+        "endTime": null,
+        "expressions": [
+          {
+            "id": 0,
+            "serverID": 1,
+            "axisID": 1,
+            "expression": "rate(kubelet_running_container_count[{{rate_window}}])"
+          }
+        ],
+        "tags": [],
+        "type": "graph",
+        "showLegend": "never",
+        "legendFormatStrings": [
+          {
+            "id": 1,
+            "name": ""
+          }
+        ],
+        "interpolationMethod": "linear",
+        "disabledSeries": {},
+        "axes": [
+          {
+            "orientation": "left",
+            "renderer": "stack",
+            "scale": "linear",
+            "format": "kmbt",
+            "id": 1,
+            "yMin": "0"
+          }
+        ],
+        "resolution": 4,
+        "range": "30m",
+        "palette": "spectrum2000"
+      },
+      {
+        "title": "process_cpu_seconds_total (avg by job)",
+        "range": "30m",
+        "endTime": null,
+        "expressions": [
+          {
+            "id": 0,
+            "serverID": 1,
+            "axisID": 1,
+            "expression": "avg(process_cpu_seconds_total) by (job)"
+          }
+        ],
+        "tags": [],
+        "type": "graph",
+        "showLegend": "always",
+        "legendFormatStrings": [
+          {
+            "id": 1,
+            "name": ""
+          }
+        ],
+        "interpolationMethod": "linear",
+        "disabledSeries": {},
+        "axes": [
+          {
+            "orientation": "left",
+            "renderer": "line",
+            "scale": "linear",
+            "format": "kmbt",
+            "id": 1
+          }
+        ],
+        "resolution": 4,
+        "palette": "spectrum2000"
+      },
+      {
+        "title": "process_memory_bytes (avg by job)",
+        "range": "30m",
+        "endTime": null,
+        "expressions": [
+          {
+            "id": 0,
+            "serverID": 1,
+            "axisID": 1,
+            "expression": "avg(process_resident_memory_bytes + process_virtual_memory_bytes) by (job)"
+          }
+        ],
+        "tags": [],
+        "type": "graph",
+        "showLegend": "always",
+        "legendFormatStrings": [
+          {
+            "id": 1,
+            "name": ""
+          }
+        ],
+        "interpolationMethod": "linear",
+        "disabledSeries": {},
+        "axes": [
+          {
+            "orientation": "left",
+            "renderer": "line",
+            "scale": "linear",
+            "format": "kmbt",
+            "id": 1
+          }
+        ],
+        "resolution": 4,
+        "palette": "spectrum2000"
+      },
+      {
+        "title": "process_cpu_seconds_total (avg rate[{{rate_window}}] by job)",
+        "range": "30m",
+        "endTime": null,
+        "expressions": [
+          {
+            "id": 0,
+            "serverID": 1,
+            "axisID": 1,
+            "expression": "avg(rate(process_cpu_seconds_total[{{rate_window}}])) by (job)"
+          }
+        ],
+        "tags": [],
+        "type": "graph",
+        "showLegend": "always",
+        "legendFormatStrings": [
+          {
+            "id": 1,
+            "name": "{{job}}"
+          }
+        ],
+        "interpolationMethod": "linear",
+        "disabledSeries": {},
+        "axes": [
+          {
+            "orientation": "left",
+            "renderer": "line",
+            "scale": "linear",
+            "format": "kmbt",
+            "id": 1
+          }
+        ],
+        "resolution": 4,
+        "palette": "spectrum2000"
+      },
+      {
+        "title": "process_memory_bytes_total (avg rate[{{rate_window}}] by job)",
+        "range": "30m",
+        "endTime": null,
+        "expressions": [
+          {
+            "id": 0,
+            "serverID": 1,
+            "axisID": 1,
+            "expression": "avg(rate(process_resident_memory_bytes[{{rate_window}}]) + rate(process_virtual_memory_bytes[{{rate_window}}])) by (job)"
+          }
+        ],
+        "tags": [],
+        "type": "graph",
+        "showLegend": "always",
+        "legendFormatStrings": [
+          {
+            "id": 1,
+            "name": ""
+          }
+        ],
+        "interpolationMethod": "linear",
+        "disabledSeries": {},
+        "axes": [
+          {
+            "orientation": "left",
+            "renderer": "line",
+            "scale": "linear",
+            "format": "kmgtp1024",
+            "id": 1
+          }
+        ],
+        "resolution": 4,
+        "palette": "spectrum2000"
+      },
+      {
+        "title": "container_cpu_usage_seconds_total (kube|etcd2)",
+        "range": "30m",
+        "endTime": null,
+        "expressions": [
+          {
+            "id": 0,
+            "serverID": 1,
+            "axisID": 1,
+            "expression": "sum(container_cpu_usage_seconds_total{job=~\"_CADVISOR\",name=~\"etcd2|kube\"}) by (job, name) > 0"
+          }
+        ],
+        "tags": [],
+        "type": "graph",
+        "showLegend": "always",
+        "legendFormatStrings": [
+          {
+            "id": 1,
+            "name": ""
+          }
+        ],
+        "interpolationMethod": "linear",
+        "disabledSeries": {},
+        "axes": [
+          {
+            "orientation": "left",
+            "renderer": "line",
+            "scale": "linear",
+            "format": "kmbt",
+            "id": 1
+          }
+        ],
+        "resolution": 4,
+        "palette": "spectrum2000"
+      },
+      {
+        "title": "container_memory_usage_bytes (kube|etcd2)",
+        "range": "30m",
+        "endTime": null,
+        "expressions": [
+          {
+            "id": 0,
+            "serverID": 1,
+            "axisID": 1,
+            "expression": "container_memory_usage_bytes{job=~\"_CADVISOR\", name=~\"etcd2|kube\"} > 0"
+          }
+        ],
+        "tags": [],
+        "type": "graph",
+        "showLegend": "always",
+        "legendFormatStrings": [
+          {
+            "id": 1,
+            "name": "{{id}}"
+          }
+        ],
+        "interpolationMethod": "linear",
+        "disabledSeries": {},
+        "axes": [
+          {
+            "orientation": "left",
+            "renderer": "line",
+            "scale": "linear",
+            "format": "kmbt",
+            "id": 1
+          }
+        ],
+        "resolution": 4,
+        "palette": "spectrum2000"
+      },
+      {
+        "title": "container_cpu_usage_seconds_total (avg rate[{{rate_window}}] by job)",
+        "range": "30m",
+        "endTime": null,
+        "expressions": [
+          {
+            "id": 0,
+            "serverID": 1,
+            "axisID": 1,
+            "expression": "avg(rate(container_cpu_usage_seconds_total{job=~\"_CADVISOR\",name=~\"etcd2|kube\"}[{{rate_window}}])) by (job,name)"
+          }
+        ],
+        "tags": [],
+        "type": "graph",
+        "showLegend": "always",
+        "legendFormatStrings": [
+          {
+            "id": 1,
+            "name": ""
+          }
+        ],
+        "interpolationMethod": "linear",
+        "disabledSeries": {},
+        "axes": [
+          {
+            "orientation": "left",
+            "renderer": "line",
+            "scale": "linear",
+            "format": "kmbt",
+            "id": 1
+          }
+        ],
+        "resolution": 4,
+        "palette": "spectrum2000"
+      },
+      {
+        "title": "container_memory_usage_bytes (kube|etcd2) (avg rate[{{rate_window}}] by job)",
+        "range": "30m",
+        "endTime": null,
+        "expressions": [
+          {
+            "id": 0,
+            "serverID": 1,
+            "axisID": 1,
+            "expression": "avg(rate(container_memory_usage_bytes{job=~\"_CADVISOR\",name=~\"etcd2|kube\"}[{{rate_window}}])) by (job,name)"
+          }
+        ],
+        "tags": [],
+        "type": "graph",
+        "showLegend": "always",
+        "legendFormatStrings": [
+          {
+            "id": 1,
+            "name": ""
+          }
+        ],
+        "interpolationMethod": "linear",
+        "disabledSeries": {},
+        "axes": [
+          {
+            "orientation": "left",
+            "renderer": "line",
+            "scale": "linear",
+            "format": "kmbt",
+            "id": 1
+          }
+        ],
+        "resolution": 4,
+        "palette": "spectrum2000"
+      },
+      {
+        "title": "container_fs_io_time_seconds_total (avg by job)",
+        "range": "30m",
+        "endTime": null,
+        "expressions": [
+          {
+            "id": 0,
+            "serverID": 1,
+            "axisID": 1,
+            "expression": "avg(container_fs_io_time_seconds_total) by (job)"
+          }
+        ],
+        "tags": [],
+        "type": "graph",
+        "showLegend": "sometimes",
+        "legendFormatStrings": [
+          {
+            "id": 1,
+            "name": ""
+          }
+        ],
+        "interpolationMethod": "linear",
+        "disabledSeries": {},
+        "axes": [
+          {
+            "orientation": "left",
+            "renderer": "line",
+            "scale": "linear",
+            "format": "kmbt",
+            "id": 1
+          }
+        ],
+        "resolution": 4,
+        "palette": "spectrum2000"
+      },
+      {
+        "title": "container_fs_io_time_seconds_total (avg rate[{{rate_window}}] by job)",
+        "range": "30m",
+        "endTime": null,
+        "expressions": [
+          {
+            "id": 0,
+            "serverID": 1,
+            "axisID": 1,
+            "expression": "avg(rate(container_fs_io_time_seconds_total[{{rate_window}}])) by (job)"
+          }
+        ],
+        "tags": [],
+        "type": "graph",
+        "showLegend": "sometimes",
+        "legendFormatStrings": [
+          {
+            "id": 1,
+            "name": ""
+          }
+        ],
+        "interpolationMethod": "linear",
+        "disabledSeries": {},
+        "axes": [
+          {
+            "orientation": "left",
+            "renderer": "line",
+            "scale": "linear",
+            "format": "kmbt",
+            "id": 1
+          }
+        ],
+        "resolution": 4,
+        "palette": "spectrum2000"
+      },
+      {
+        "title": "container_fs_write_seconds_total (avg by job)",
+        "range": "30m",
+        "endTime": null,
+        "expressions": [
+          {
+            "id": 0,
+            "serverID": 1,
+            "axisID": 1,
+            "expression": "avg(container_fs_write_seconds_total) by (job)"
+          }
+        ],
+        "tags": [],
+        "type": "graph",
+        "showLegend": "always",
+        "legendFormatStrings": [
+          {
+            "id": 1,
+            "name": ""
+          }
+        ],
+        "interpolationMethod": "linear",
+        "disabledSeries": {},
+        "axes": [
+          {
+            "orientation": "left",
+            "renderer": "line",
+            "scale": "linear",
+            "format": "kmbt",
+            "id": 1
+          }
+        ],
+        "resolution": 4,
+        "palette": "spectrum2000"
+      },
+      {
+        "title": "container_fs_read_seconds_total (avg by job)",
+        "range": "30m",
+        "endTime": null,
+        "expressions": [
+          {
+            "id": 0,
+            "serverID": 1,
+            "axisID": 1,
+            "expression": "avg(container_fs_read_seconds_total) by (job)"
+          }
+        ],
+        "tags": [],
+        "type": "graph",
+        "showLegend": "sometimes",
+        "legendFormatStrings": [
+          {
+            "id": 1,
+            "name": ""
+          }
+        ],
+        "interpolationMethod": "linear",
+        "disabledSeries": {},
+        "axes": [
+          {
+            "orientation": "left",
+            "renderer": "line",
+            "scale": "linear",
+            "format": "kmbt",
+            "id": 1
+          }
+        ],
+        "resolution": 4,
+        "palette": "spectrum2000"
+      },
+      {
+        "title": "kubelet_docker_ops_latency_seconds (q[{{quantile}}] avg by op)",
+        "range": "30m",
+        "endTime": null,
+        "expressions": [
+          {
+            "id": 0,
+            "serverID": 1,
+            "axisID": 1,
+            "expression": "avg(kubelet_docker_operations_latency_microseconds{quantile=\"{{quantile}}\"}) by (operation_type) / 1000000"
+          }
+        ],
+        "tags": [],
+        "type": "graph",
+        "showLegend": "always",
+        "legendFormatStrings": [
+          {
+            "id": 1,
+            "name": ""
+          }
+        ],
+        "interpolationMethod": "linear",
+        "disabledSeries": {},
+        "axes": [
+          {
+            "orientation": "left",
+            "renderer": "line",
+            "scale": "linear",
+            "format": "kmbt",
+            "id": 1
+          }
+        ],
+        "resolution": 4
+      },
+      {
+        "title": "kubelet_container_manager_latency_seconds by (q[{{quantile}} avg by op)",
+        "range": "30m",
+        "endTime": null,
+        "expressions": [
+          {
+            "id": 0,
+            "serverID": 1,
+            "axisID": 1,
+            "expression": "avg(kubelet_container_manager_latency_microseconds{quantile=\"{{quantile}}\"}) by (operation_type) / 1000000"
+          }
+        ],
+        "tags": [],
+        "type": "graph",
+        "showLegend": "sometimes",
+        "legendFormatStrings": [
+          {
+            "id": 1,
+            "name": ""
+          }
+        ],
+        "interpolationMethod": "linear",
+        "disabledSeries": {},
+        "axes": [
+          {
+            "orientation": "left",
+            "renderer": "line",
+            "scale": "linear",
+            "format": "kmbt",
+            "id": 1
+          }
+        ],
+        "resolution": 4
+      },
+      {
+        "title": "kubelet_docker_ops_latency_seconds_sum (avg by op)",
+        "range": "30m",
+        "endTime": null,
+        "expressions": [
+          {
+            "id": 0,
+            "serverID": 1,
+            "axisID": 1,
+            "expression": "avg(kubelet_docker_operations_latency_microseconds_sum) by (operation_type) / 1000000"
+          }
+        ],
+        "tags": [],
+        "type": "graph",
+        "showLegend": "always",
+        "legendFormatStrings": [
+          {
+            "id": 1,
+            "name": ""
+          }
+        ],
+        "interpolationMethod": "linear",
+        "disabledSeries": {},
+        "axes": [
+          {
+            "orientation": "left",
+            "renderer": "line",
+            "scale": "linear",
+            "format": "kmbt",
+            "id": 1
+          }
+        ],
+        "resolution": 4
+      },
+      {
+        "title": "kubelet_docker_ops_latency_seconds_sum (avg rate[{{rate_window}}] by op)",
+        "range": "30m",
+        "endTime": null,
+        "expressions": [
+          {
+            "id": 0,
+            "serverID": 1,
+            "axisID": 1,
+            "expression": "avg(rate(kubelet_docker_operations_latency_microseconds_sum[{{rate_window}}])) by (operation_type) / 1000000"
+          }
+        ],
+        "tags": [],
+        "type": "graph",
+        "showLegend": "always",
+        "legendFormatStrings": [
+          {
+            "id": 1,
+            "name": ""
+          }
+        ],
+        "interpolationMethod": "linear",
+        "disabledSeries": {},
+        "axes": [
+          {
+            "orientation": "left",
+            "renderer": "line",
+            "scale": "linear",
+            "format": "kmbt",
+            "id": 1
+          }
+        ],
+        "resolution": 4
+      },
+      {
+        "title": "etcd_request_latencies_summary_µs (avg q[{{quantile}}] by operation)",
+        "range": "30m",
+        "endTime": null,
+        "expressions": [
+          {
+            "id": 0,
+            "serverID": 1,
+            "axisID": 1,
+            "expression": "avg(etcd_request_latencies_summary{quantile=\"{{quantile}}\"}) by (operation)"
+          }
+        ],
+        "tags": [],
+        "type": "graph",
+        "showLegend": "sometimes",
+        "legendFormatStrings": [
+          {
+            "id": 1,
+            "name": ""
+          }
+        ],
+        "interpolationMethod": "linear",
+        "disabledSeries": {},
+        "axes": [
+          {
+            "orientation": "left",
+            "renderer": "line",
+            "scale": "linear",
+            "format": "kmbt",
+            "id": 1
+          }
+        ],
+        "resolution": 4
+      },
+      {
+        "title": "etcd_request_latencies_summary_µs (avg q[{{quantile}}] by type)",
+        "range": "30m",
+        "endTime": null,
+        "expressions": [
+          {
+            "id": 0,
+            "serverID": 1,
+            "axisID": 1,
+            "expression": "avg(etcd_request_latencies_summary{quantile=\"{{quantile}}\"}) by (type)"
+          }
+        ],
+        "tags": [],
+        "type": "graph",
+        "showLegend": "always",
+        "legendFormatStrings": [
+          {
+            "id": 1,
+            "name": ""
+          }
+        ],
+        "interpolationMethod": "linear",
+        "disabledSeries": {},
+        "axes": [
+          {
+            "orientation": "left",
+            "renderer": "line",
+            "scale": "linear",
+            "format": "kmbt",
+            "id": 1
+          }
+        ],
+        "resolution": 4
+      },
+      {
+        "title": "etcd_request_latencies_summary_µs (q[{{quantile}}] > {{etcd_request_latency_threshold_us}} µs)",
+        "range": "30m",
+        "endTime": null,
+        "expressions": [
+          {
+            "id": 0,
+            "serverID": 1,
+            "axisID": 1,
+            "expression": "avg(etcd_request_latencies_summary{quantile=\"{{quantile}}\"} > {{etcd_request_latency_threshold_us}}) by (operation,type)"
+          }
+        ],
+        "tags": [],
+        "type": "graph",
+        "showLegend": "always",
+        "legendFormatStrings": [
+          {
+            "id": 1,
+            "name": ""
+          }
+        ],
+        "interpolationMethod": "linear",
+        "disabledSeries": {},
+        "axes": [
+          {
+            "orientation": "left",
+            "renderer": "line",
+            "scale": "linear",
+            "format": "kmbt",
+            "id": 1
+          }
+        ],
+        "resolution": 4
+      },
+      {
+        "title": "etcd_request_latencies_summary_sum_seconds (top 5)",
+        "range": "30m",
+        "endTime": null,
+        "expressions": [
+          {
+            "id": 0,
+            "serverID": 1,
+            "axisID": 1,
+            "expression": "topk(5, etcd_request_latencies_summary_sum) / 1000000"
+          }
+        ],
+        "tags": [],
+        "type": "graph",
+        "showLegend": "always",
+        "legendFormatStrings": [
+          {
+            "id": 1,
+            "name": ""
+          }
+        ],
+        "interpolationMethod": "linear",
+        "disabledSeries": {},
+        "axes": [
+          {
+            "orientation": "left",
+            "renderer": "line",
+            "scale": "linear",
+            "format": "kmbt",
+            "id": 1
+          }
+        ],
+        "resolution": 4
+      },
+      {
+        "title": "container_network_receive_bytes_total (sum by job)",
+        "range": "30m",
+        "endTime": null,
+        "expressions": [
+          {
+            "id": 0,
+            "serverID": 1,
+            "axisID": 1,
+            "expression": "sum(container_network_receive_bytes_total{name=\"/\"}) by (job)"
+          }
+        ],
+        "tags": [],
+        "type": "graph",
+        "showLegend": "sometimes",
+        "legendFormatStrings": [
+          {
+            "id": 1,
+            "name": ""
+          }
+        ],
+        "interpolationMethod": "linear",
+        "disabledSeries": {},
+        "axes": [
+          {
+            "orientation": "left",
+            "renderer": "line",
+            "scale": "linear",
+            "format": "kmgtp1024",
+            "id": 1
+          }
+        ],
+        "resolution": 4
+      },
+      {
+        "title": "container_network_transmit_bytes_total (sum by job)",
+        "range": "30m",
+        "endTime": null,
+        "expressions": [
+          {
+            "id": 0,
+            "serverID": 1,
+            "axisID": 1,
+            "expression": "sum(container_network_transmit_bytes_total{name=\"/\"}) by (job)"
+          }
+        ],
+        "tags": [],
+        "type": "graph",
+        "showLegend": "sometimes",
+        "legendFormatStrings": [
+          {
+            "id": 1,
+            "name": ""
+          }
+        ],
+        "interpolationMethod": "linear",
+        "disabledSeries": {},
+        "axes": [
+          {
+            "orientation": "left",
+            "renderer": "line",
+            "scale": "linear",
+            "format": "kmgtp1024",
+            "id": 1
+          }
+        ],
+        "resolution": 4
+      },
+      {
+        "title": "container_network_receive_bytes_total (sum rate[{{rate_window}}] by job)",
+        "range": "30m",
+        "endTime": null,
+        "expressions": [
+          {
+            "id": 0,
+            "serverID": 1,
+            "axisID": 1,
+            "expression": "sum(rate(container_network_receive_bytes_total{name=\"/\"}[{{rate_window}}])) by (job)"
+          }
+        ],
+        "tags": [],
+        "type": "graph",
+        "showLegend": "sometimes",
+        "legendFormatStrings": [
+          {
+            "id": 1,
+            "name": ""
+          }
+        ],
+        "interpolationMethod": "linear",
+        "disabledSeries": {},
+        "axes": [
+          {
+            "orientation": "left",
+            "renderer": "line",
+            "scale": "linear",
+            "format": "kmgtp1024",
+            "id": 1
+          }
+        ],
+        "resolution": 4
+      },
+      {
+        "title": "container_network_transmit_bytes_total (sum rate[{{rate_window}}] by job)",
+        "range": "30m",
+        "endTime": null,
+        "expressions": [
+          {
+            "id": 0,
+            "serverID": 1,
+            "axisID": 1,
+            "expression": "sum(rate(container_network_transmit_bytes_total{name=\"/\"}[{{rate_window}}])) by (job)"
+          }
+        ],
+        "tags": [],
+        "type": "graph",
+        "showLegend": "sometimes",
+        "legendFormatStrings": [
+          {
+            "id": 1,
+            "name": ""
+          }
+        ],
+        "interpolationMethod": "linear",
+        "disabledSeries": {},
+        "axes": [
+          {
+            "orientation": "left",
+            "renderer": "line",
+            "scale": "linear",
+            "format": "kmgtp1024",
+            "id": 1
+          }
+        ],
+        "resolution": 4
+      },
+      {
+        "title": "kube etcd_store_writes_total (avg by action)",
+        "range": "30m",
+        "endTime": null,
+        "expressions": [
+          {
+            "id": 0,
+            "serverID": 1,
+            "axisID": 1,
+            "expression": "avg(etcd_store_writes_total) by (action)"
+          }
+        ],
+        "tags": [],
+        "type": "graph",
+        "showLegend": "sometimes",
+        "legendFormatStrings": [
+          {
+            "id": 1,
+            "name": ""
+          }
+        ],
+        "interpolationMethod": "linear",
+        "disabledSeries": {},
+        "axes": [
+          {
+            "orientation": "left",
+            "renderer": "line",
+            "scale": "linear",
+            "format": "kmbt",
+            "id": 1
+          }
+        ],
+        "resolution": 4
+      },
+      {
+        "title": "kube etcd_store_reads_total (avg by action)",
+        "range": "30m",
+        "endTime": null,
+        "expressions": [
+          {
+            "id": 0,
+            "serverID": 1,
+            "axisID": 1,
+            "expression": "avg(etcd_store_reads_total) by (action)"
+          }
+        ],
+        "tags": [],
+        "type": "graph",
+        "showLegend": "sometimes",
+        "legendFormatStrings": [
+          {
+            "id": 1,
+            "name": ""
+          }
+        ],
+        "interpolationMethod": "linear",
+        "disabledSeries": {},
+        "axes": [
+          {
+            "orientation": "left",
+            "renderer": "line",
+            "scale": "linear",
+            "format": "kmbt",
+            "id": 1
+          }
+        ],
+        "resolution": 4
+      },
+      {
+        "title": "kube etcd_store_expires_total",
+        "range": "30m",
+        "endTime": null,
+        "expressions": [
+          {
+            "id": 0,
+            "serverID": 1,
+            "axisID": 1,
+            "expression": "etcd_store_expires_total{job=\"KUBE_ETCD\"}"
+          }
+        ],
+        "tags": [],
+        "type": "graph",
+        "showLegend": "sometimes",
+        "legendFormatStrings": [
+          {
+            "id": 1,
+            "name": ""
+          }
+        ],
+        "interpolationMethod": "linear",
+        "disabledSeries": {},
+        "axes": [
+          {
+            "orientation": "left",
+            "renderer": "line",
+            "scale": "linear",
+            "format": "kmbt",
+            "id": 1
+          }
+        ],
+        "resolution": 4
+      },
+      {
+        "title": "kube etcd_store_watchers",
+        "range": "30m",
+        "endTime": null,
+        "expressions": [
+          {
+            "id": 0,
+            "serverID": 1,
+            "axisID": 1,
+            "expression": "etcd_store_watchers{job=\"KUBE_ETCD\"}"
+          }
+        ],
+        "tags": [],
+        "type": "graph",
+        "showLegend": "sometimes",
+        "legendFormatStrings": [
+          {
+            "id": 1,
+            "name": ""
+          }
+        ],
+        "interpolationMethod": "linear",
+        "disabledSeries": {},
+        "axes": [
+          {
+            "orientation": "left",
+            "renderer": "line",
+            "scale": "linear",
+            "format": "kmbt",
+            "id": 1
+          }
+        ],
+        "resolution": 4
+      }
+    ]
+  }
+}

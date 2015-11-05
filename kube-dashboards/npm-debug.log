@@ -1,0 +1,1653 @@
+0 info it worked if it ends with ok
+1 verbose cli [ '/usr/local/Cellar/node/4.2.1/bin/node',
+1 verbose cli   '/usr/local/bin/npm',
+1 verbose cli   'install' ]
+2 info using npm@2.14.7
+3 info using node@v4.2.1
+4 verbose readDependencies loading dependencies from /Users/lucmichalski/.go/src/github.com/blippar/kube-vproxy/kube-dashboards/package.json
+5 verbose install where, deps [ '/Users/lucmichalski/.go/src/github.com/blippar/kube-vproxy/kube-dashboards',
+5 verbose install   [ 'bootstrap-sass',
+5 verbose install     'font-awesome',
+5 verbose install     'jquery',
+5 verbose install     'react',
+5 verbose install     'react-router',
+5 verbose install     'browserify',
+5 verbose install     'express',
+5 verbose install     'html-minifier',
+5 verbose install     'jest-cli',
+5 verbose install     'node-sass',
+5 verbose install     'react-tools',
+5 verbose install     'reactify',
+5 verbose install     'serve-static',
+5 verbose install     'uglifyify',
+5 verbose install     'yargs' ] ]
+6 verbose install where, peers [ '/Users/lucmichalski/.go/src/github.com/blippar/kube-vproxy/kube-dashboards',
+6 verbose install   [] ]
+7 verbose installManyTop reading for lifecycle /Users/lucmichalski/.go/src/github.com/blippar/kube-vproxy/kube-dashboards/package.json
+8 info preinstall vulcand-dashboard@
+9 verbose readDependencies loading dependencies from /Users/lucmichalski/.go/src/github.com/blippar/kube-vproxy/kube-dashboards/package.json
+10 silly cache add args [ 'bootstrap-sass@>3.2.0', null ]
+11 verbose cache add spec bootstrap-sass@>3.2.0
+12 silly cache add args [ 'font-awesome@>4.2.0', null ]
+13 verbose cache add spec font-awesome@>4.2.0
+14 silly cache add parsed spec Result {
+14 silly cache add   raw: 'bootstrap-sass@>3.2.0',
+14 silly cache add   scope: null,
+14 silly cache add   name: 'bootstrap-sass',
+14 silly cache add   rawSpec: '>3.2.0',
+14 silly cache add   spec: '>3.2.0',
+14 silly cache add   type: 'range' }
+15 silly addNamed bootstrap-sass@>3.2.0
+16 verbose addNamed ">3.2.0" is a valid semver range for bootstrap-sass
+17 silly addNameRange { name: 'bootstrap-sass', range: '>3.2.0', hasData: false }
+18 silly mapToRegistry name bootstrap-sass
+19 silly mapToRegistry using default registry
+20 silly mapToRegistry registry https://registry.npmjs.org/
+21 silly mapToRegistry uri https://registry.npmjs.org/bootstrap-sass
+22 verbose addNameRange registry:https://registry.npmjs.org/bootstrap-sass not in flight; fetching
+23 silly cache add parsed spec Result {
+23 silly cache add   raw: 'font-awesome@>4.2.0',
+23 silly cache add   scope: null,
+23 silly cache add   name: 'font-awesome',
+23 silly cache add   rawSpec: '>4.2.0',
+23 silly cache add   spec: '>4.2.0',
+23 silly cache add   type: 'range' }
+24 silly addNamed font-awesome@>4.2.0
+25 verbose addNamed ">4.2.0" is a valid semver range for font-awesome
+26 silly addNameRange { name: 'font-awesome', range: '>4.2.0', hasData: false }
+27 silly mapToRegistry name font-awesome
+28 silly mapToRegistry using default registry
+29 silly mapToRegistry registry https://registry.npmjs.org/
+30 silly mapToRegistry uri https://registry.npmjs.org/font-awesome
+31 verbose addNameRange registry:https://registry.npmjs.org/font-awesome not in flight; fetching
+32 silly cache add args [ 'jquery@>2.1.1', null ]
+33 verbose cache add spec jquery@>2.1.1
+34 silly cache add parsed spec Result {
+34 silly cache add   raw: 'jquery@>2.1.1',
+34 silly cache add   scope: null,
+34 silly cache add   name: 'jquery',
+34 silly cache add   rawSpec: '>2.1.1',
+34 silly cache add   spec: '>2.1.1',
+34 silly cache add   type: 'range' }
+35 silly addNamed jquery@>2.1.1
+36 verbose addNamed ">2.1.1" is a valid semver range for jquery
+37 silly addNameRange { name: 'jquery', range: '>2.1.1', hasData: false }
+38 silly mapToRegistry name jquery
+39 silly mapToRegistry using default registry
+40 silly mapToRegistry registry https://registry.npmjs.org/
+41 silly mapToRegistry uri https://registry.npmjs.org/jquery
+42 verbose addNameRange registry:https://registry.npmjs.org/jquery not in flight; fetching
+43 silly cache add args [ 'react@>0.11.1', null ]
+44 verbose cache add spec react@>0.11.1
+45 silly cache add parsed spec Result {
+45 silly cache add   raw: 'react@>0.11.1',
+45 silly cache add   scope: null,
+45 silly cache add   name: 'react',
+45 silly cache add   rawSpec: '>0.11.1',
+45 silly cache add   spec: '>0.11.1',
+45 silly cache add   type: 'range' }
+46 silly addNamed react@>0.11.1
+47 verbose addNamed ">0.11.1" is a valid semver range for react
+48 silly addNameRange { name: 'react', range: '>0.11.1', hasData: false }
+49 silly mapToRegistry name react
+50 silly mapToRegistry using default registry
+51 silly mapToRegistry registry https://registry.npmjs.org/
+52 silly mapToRegistry uri https://registry.npmjs.org/react
+53 verbose addNameRange registry:https://registry.npmjs.org/react not in flight; fetching
+54 silly cache add args [ 'react-router@>1.0.0-rc3', null ]
+55 verbose cache add spec react-router@>1.0.0-rc3
+56 silly cache add parsed spec Result {
+56 silly cache add   raw: 'react-router@>1.0.0-rc3',
+56 silly cache add   scope: null,
+56 silly cache add   name: 'react-router',
+56 silly cache add   rawSpec: '>1.0.0-rc3',
+56 silly cache add   spec: '>1.0.0-rc3',
+56 silly cache add   type: 'range' }
+57 silly addNamed react-router@>1.0.0-rc3
+58 verbose addNamed ">1.0.0-rc3" is a valid semver range for react-router
+59 silly addNameRange { name: 'react-router', range: '>1.0.0-rc3', hasData: false }
+60 silly mapToRegistry name react-router
+61 silly mapToRegistry using default registry
+62 silly mapToRegistry registry https://registry.npmjs.org/
+63 silly mapToRegistry uri https://registry.npmjs.org/react-router
+64 verbose addNameRange registry:https://registry.npmjs.org/react-router not in flight; fetching
+65 silly cache add args [ 'browserify@>5.11.0', null ]
+66 verbose cache add spec browserify@>5.11.0
+67 silly cache add parsed spec Result {
+67 silly cache add   raw: 'browserify@>5.11.0',
+67 silly cache add   scope: null,
+67 silly cache add   name: 'browserify',
+67 silly cache add   rawSpec: '>5.11.0',
+67 silly cache add   spec: '>5.11.0',
+67 silly cache add   type: 'range' }
+68 silly addNamed browserify@>5.11.0
+69 verbose addNamed ">5.11.0" is a valid semver range for browserify
+70 silly addNameRange { name: 'browserify', range: '>5.11.0', hasData: false }
+71 silly mapToRegistry name browserify
+72 silly mapToRegistry using default registry
+73 silly mapToRegistry registry https://registry.npmjs.org/
+74 silly mapToRegistry uri https://registry.npmjs.org/browserify
+75 verbose addNameRange registry:https://registry.npmjs.org/browserify not in flight; fetching
+76 silly cache add args [ 'express@>4.9.5', null ]
+77 verbose cache add spec express@>4.9.5
+78 silly cache add parsed spec Result {
+78 silly cache add   raw: 'express@>4.9.5',
+78 silly cache add   scope: null,
+78 silly cache add   name: 'express',
+78 silly cache add   rawSpec: '>4.9.5',
+78 silly cache add   spec: '>4.9.5',
+78 silly cache add   type: 'range' }
+79 silly addNamed express@>4.9.5
+80 verbose addNamed ">4.9.5" is a valid semver range for express
+81 silly addNameRange { name: 'express', range: '>4.9.5', hasData: false }
+82 silly mapToRegistry name express
+83 silly mapToRegistry using default registry
+84 silly mapToRegistry registry https://registry.npmjs.org/
+85 silly mapToRegistry uri https://registry.npmjs.org/express
+86 verbose addNameRange registry:https://registry.npmjs.org/express not in flight; fetching
+87 silly cache add args [ 'html-minifier@>0.6.8', null ]
+88 verbose cache add spec html-minifier@>0.6.8
+89 silly cache add parsed spec Result {
+89 silly cache add   raw: 'html-minifier@>0.6.8',
+89 silly cache add   scope: null,
+89 silly cache add   name: 'html-minifier',
+89 silly cache add   rawSpec: '>0.6.8',
+89 silly cache add   spec: '>0.6.8',
+89 silly cache add   type: 'range' }
+90 silly addNamed html-minifier@>0.6.8
+91 verbose addNamed ">0.6.8" is a valid semver range for html-minifier
+92 silly addNameRange { name: 'html-minifier', range: '>0.6.8', hasData: false }
+93 silly mapToRegistry name html-minifier
+94 silly mapToRegistry using default registry
+95 silly mapToRegistry registry https://registry.npmjs.org/
+96 silly mapToRegistry uri https://registry.npmjs.org/html-minifier
+97 verbose addNameRange registry:https://registry.npmjs.org/html-minifier not in flight; fetching
+98 silly cache add args [ 'jest-cli@>0.1.18', null ]
+99 verbose cache add spec jest-cli@>0.1.18
+100 silly cache add parsed spec Result {
+100 silly cache add   raw: 'jest-cli@>0.1.18',
+100 silly cache add   scope: null,
+100 silly cache add   name: 'jest-cli',
+100 silly cache add   rawSpec: '>0.1.18',
+100 silly cache add   spec: '>0.1.18',
+100 silly cache add   type: 'range' }
+101 silly addNamed jest-cli@>0.1.18
+102 verbose addNamed ">0.1.18" is a valid semver range for jest-cli
+103 silly addNameRange { name: 'jest-cli', range: '>0.1.18', hasData: false }
+104 silly mapToRegistry name jest-cli
+105 silly mapToRegistry using default registry
+106 silly mapToRegistry registry https://registry.npmjs.org/
+107 silly mapToRegistry uri https://registry.npmjs.org/jest-cli
+108 verbose addNameRange registry:https://registry.npmjs.org/jest-cli not in flight; fetching
+109 silly cache add args [ 'node-sass@>0.9.3', null ]
+110 verbose cache add spec node-sass@>0.9.3
+111 silly cache add parsed spec Result {
+111 silly cache add   raw: 'node-sass@>0.9.3',
+111 silly cache add   scope: null,
+111 silly cache add   name: 'node-sass',
+111 silly cache add   rawSpec: '>0.9.3',
+111 silly cache add   spec: '>0.9.3',
+111 silly cache add   type: 'range' }
+112 silly addNamed node-sass@>0.9.3
+113 verbose addNamed ">0.9.3" is a valid semver range for node-sass
+114 silly addNameRange { name: 'node-sass', range: '>0.9.3', hasData: false }
+115 silly mapToRegistry name node-sass
+116 silly mapToRegistry using default registry
+117 silly mapToRegistry registry https://registry.npmjs.org/
+118 silly mapToRegistry uri https://registry.npmjs.org/node-sass
+119 verbose addNameRange registry:https://registry.npmjs.org/node-sass not in flight; fetching
+120 silly cache add args [ 'react-tools@>0.11.2', null ]
+121 verbose cache add spec react-tools@>0.11.2
+122 silly cache add parsed spec Result {
+122 silly cache add   raw: 'react-tools@>0.11.2',
+122 silly cache add   scope: null,
+122 silly cache add   name: 'react-tools',
+122 silly cache add   rawSpec: '>0.11.2',
+122 silly cache add   spec: '>0.11.2',
+122 silly cache add   type: 'range' }
+123 silly addNamed react-tools@>0.11.2
+124 verbose addNamed ">0.11.2" is a valid semver range for react-tools
+125 silly addNameRange { name: 'react-tools', range: '>0.11.2', hasData: false }
+126 silly mapToRegistry name react-tools
+127 silly mapToRegistry using default registry
+128 silly mapToRegistry registry https://registry.npmjs.org/
+129 silly mapToRegistry uri https://registry.npmjs.org/react-tools
+130 verbose addNameRange registry:https://registry.npmjs.org/react-tools not in flight; fetching
+131 silly cache add args [ 'reactify@>0.14.0', null ]
+132 verbose cache add spec reactify@>0.14.0
+133 silly cache add parsed spec Result {
+133 silly cache add   raw: 'reactify@>0.14.0',
+133 silly cache add   scope: null,
+133 silly cache add   name: 'reactify',
+133 silly cache add   rawSpec: '>0.14.0',
+133 silly cache add   spec: '>0.14.0',
+133 silly cache add   type: 'range' }
+134 silly addNamed reactify@>0.14.0
+135 verbose addNamed ">0.14.0" is a valid semver range for reactify
+136 silly addNameRange { name: 'reactify', range: '>0.14.0', hasData: false }
+137 silly mapToRegistry name reactify
+138 silly mapToRegistry using default registry
+139 silly mapToRegistry registry https://registry.npmjs.org/
+140 silly mapToRegistry uri https://registry.npmjs.org/reactify
+141 verbose addNameRange registry:https://registry.npmjs.org/reactify not in flight; fetching
+142 silly cache add args [ 'serve-static@>1.6.3', null ]
+143 verbose cache add spec serve-static@>1.6.3
+144 silly cache add parsed spec Result {
+144 silly cache add   raw: 'serve-static@>1.6.3',
+144 silly cache add   scope: null,
+144 silly cache add   name: 'serve-static',
+144 silly cache add   rawSpec: '>1.6.3',
+144 silly cache add   spec: '>1.6.3',
+144 silly cache add   type: 'range' }
+145 silly addNamed serve-static@>1.6.3
+146 verbose addNamed ">1.6.3" is a valid semver range for serve-static
+147 silly addNameRange { name: 'serve-static', range: '>1.6.3', hasData: false }
+148 silly mapToRegistry name serve-static
+149 silly mapToRegistry using default registry
+150 silly mapToRegistry registry https://registry.npmjs.org/
+151 silly mapToRegistry uri https://registry.npmjs.org/serve-static
+152 verbose addNameRange registry:https://registry.npmjs.org/serve-static not in flight; fetching
+153 silly cache add args [ 'uglifyify@>2.5.0', null ]
+154 verbose cache add spec uglifyify@>2.5.0
+155 silly cache add parsed spec Result {
+155 silly cache add   raw: 'uglifyify@>2.5.0',
+155 silly cache add   scope: null,
+155 silly cache add   name: 'uglifyify',
+155 silly cache add   rawSpec: '>2.5.0',
+155 silly cache add   spec: '>2.5.0',
+155 silly cache add   type: 'range' }
+156 silly addNamed uglifyify@>2.5.0
+157 verbose addNamed ">2.5.0" is a valid semver range for uglifyify
+158 silly addNameRange { name: 'uglifyify', range: '>2.5.0', hasData: false }
+159 silly mapToRegistry name uglifyify
+160 silly mapToRegistry using default registry
+161 silly mapToRegistry registry https://registry.npmjs.org/
+162 silly mapToRegistry uri https://registry.npmjs.org/uglifyify
+163 verbose addNameRange registry:https://registry.npmjs.org/uglifyify not in flight; fetching
+164 silly cache add args [ 'yargs@>1.3.1', null ]
+165 verbose cache add spec yargs@>1.3.1
+166 silly cache add parsed spec Result {
+166 silly cache add   raw: 'yargs@>1.3.1',
+166 silly cache add   scope: null,
+166 silly cache add   name: 'yargs',
+166 silly cache add   rawSpec: '>1.3.1',
+166 silly cache add   spec: '>1.3.1',
+166 silly cache add   type: 'range' }
+167 silly addNamed yargs@>1.3.1
+168 verbose addNamed ">1.3.1" is a valid semver range for yargs
+169 silly addNameRange { name: 'yargs', range: '>1.3.1', hasData: false }
+170 silly mapToRegistry name yargs
+171 silly mapToRegistry using default registry
+172 silly mapToRegistry registry https://registry.npmjs.org/
+173 silly mapToRegistry uri https://registry.npmjs.org/yargs
+174 verbose addNameRange registry:https://registry.npmjs.org/yargs not in flight; fetching
+175 verbose get https://registry.npmjs.org/font-awesome not expired, no request
+176 silly addNameRange number 2 { name: 'font-awesome', range: '>4.2.0', hasData: true }
+177 silly addNameRange versions [ 'font-awesome',
+177 silly addNameRange   [ '3.2.1', '4.0.3', '4.1.0', '4.2.0', '4.3.0', '4.4.0' ] ]
+178 silly addNamed font-awesome@4.4.0
+179 verbose addNamed "4.4.0" is a plain semver version for font-awesome
+180 verbose get https://registry.npmjs.org/jquery not expired, no request
+181 silly addNameRange number 2 { name: 'jquery', range: '>2.1.1', hasData: true }
+182 silly addNameRange versions [ 'jquery',
+182 silly addNameRange   [ '1.5.1',
+182 silly addNameRange     '1.6.2',
+182 silly addNameRange     '1.6.3',
+182 silly addNameRange     '1.7.2',
+182 silly addNameRange     '1.7.3',
+182 silly addNameRange     '1.8.2',
+182 silly addNameRange     '1.8.3',
+182 silly addNameRange     '2.1.0-beta2',
+182 silly addNameRange     '2.1.0-beta3',
+182 silly addNameRange     '1.11.0-beta3',
+182 silly addNameRange     '1.11.0-rc1',
+182 silly addNameRange     '2.1.0-rc1',
+182 silly addNameRange     '1.11.0',
+182 silly addNameRange     '2.1.0',
+182 silly addNameRange     '2.1.1-beta1',
+182 silly addNameRange     '1.11.1-beta1',
+182 silly addNameRange     '2.1.1-rc1',
+182 silly addNameRange     '1.11.1-rc1',
+182 silly addNameRange     '2.1.1-rc2',
+182 silly addNameRange     '1.11.1-rc2',
+182 silly addNameRange     '2.1.1',
+182 silly addNameRange     '1.11.1',
+182 silly addNameRange     '1.9.1',
+182 silly addNameRange     '2.1.2',
+182 silly addNameRange     '1.11.2',
+182 silly addNameRange     '2.1.3',
+182 silly addNameRange     '2.1.4',
+182 silly addNameRange     '1.11.3',
+182 silly addNameRange     '3.0.0-alpha1' ] ]
+183 silly addNamed jquery@2.1.4
+184 verbose addNamed "2.1.4" is a plain semver version for jquery
+185 verbose get https://registry.npmjs.org/react not expired, no request
+186 silly addNameRange number 2 { name: 'react', range: '>0.11.1', hasData: true }
+187 silly addNameRange versions [ 'react',
+187 silly addNameRange   [ '0.0.1',
+187 silly addNameRange     '0.0.2',
+187 silly addNameRange     '0.0.3',
+187 silly addNameRange     '0.1.2',
+187 silly addNameRange     '0.2.0',
+187 silly addNameRange     '0.2.1',
+187 silly addNameRange     '0.2.2',
+187 silly addNameRange     '0.2.3',
+187 silly addNameRange     '0.2.4',
+187 silly addNameRange     '0.2.5',
+187 silly addNameRange     '0.2.6',
+187 silly addNameRange     '0.3.0',
+187 silly addNameRange     '0.3.4',
+187 silly addNameRange     '0.3.5',
+187 silly addNameRange     '0.5.0',
+187 silly addNameRange     '0.5.1',
+187 silly addNameRange     '0.5.2',
+187 silly addNameRange     '0.6.0',
+187 silly addNameRange     '0.6.1',
+187 silly addNameRange     '0.6.2',
+187 silly addNameRange     '0.6.3',
+187 silly addNameRange     '0.7.0',
+187 silly addNameRange     '0.7.1',
+187 silly addNameRange     '0.8.0',
+187 silly addNameRange     '0.9.0-rc1',
+187 silly addNameRange     '0.9.0',
+187 silly addNameRange     '0.10.0-rc1',
+187 silly addNameRange     '0.10.0',
+187 silly addNameRange     '0.11.0-rc1',
+187 silly addNameRange     '0.11.0',
+187 silly addNameRange     '0.11.1',
+187 silly addNameRange     '0.11.2',
+187 silly addNameRange     '0.12.0-rc1',
+187 silly addNameRange     '0.12.0',
+187 silly addNameRange     '0.12.1',
+187 silly addNameRange     '0.12.2',
+187 silly addNameRange     '0.13.0-alpha.1',
+187 silly addNameRange     '0.13.0-alpha.2',
+187 silly addNameRange     '0.13.0-beta.1',
+187 silly addNameRange     '0.13.0-beta.2',
+187 silly addNameRange     '0.13.0-rc1',
+187 silly addNameRange     '0.13.0-rc2',
+187 silly addNameRange     '0.13.0',
+187 silly addNameRange     '0.13.1',
+187 silly addNameRange     '0.13.2',
+187 silly addNameRange     '0.13.3',
+187 silly addNameRange     '0.14.0-alpha1',
+187 silly addNameRange     '0.14.0-alpha2',
+187 silly addNameRange     '0.14.0-alpha3',
+187 silly addNameRange     '0.14.0-beta1',
+187 silly addNameRange     '0.14.0-beta2',
+187 silly addNameRange     '0.14.0-beta3',
+187 silly addNameRange     '0.14.0-rc1',
+187 silly addNameRange     '0.14.0',
+187 silly addNameRange     '0.14.1',
+187 silly addNameRange     '0.14.2' ] ]
+188 silly addNamed react@0.14.2
+189 verbose addNamed "0.14.2" is a plain semver version for react
+190 verbose get https://registry.npmjs.org/react-router not expired, no request
+191 silly addNameRange number 2 { name: 'react-router', range: '>1.0.0-rc3', hasData: true }
+192 silly addNameRange versions [ 'react-router',
+192 silly addNameRange   [ '0.0.0',
+192 silly addNameRange     '0.0.1',
+192 silly addNameRange     '0.4.0',
+192 silly addNameRange     '0.4.1',
+192 silly addNameRange     '0.4.2',
+192 silly addNameRange     '0.5.0',
+192 silly addNameRange     '0.5.1',
+192 silly addNameRange     '0.5.2',
+192 silly addNameRange     '0.5.3',
+192 silly addNameRange     '0.6.0',
+192 silly addNameRange     '0.6.1',
+192 silly addNameRange     '0.7.0',
+192 silly addNameRange     '0.8.0',
+192 silly addNameRange     '0.9.0',
+192 silly addNameRange     '0.9.1',
+192 silly addNameRange     '0.9.2',
+192 silly addNameRange     '0.9.3',
+192 silly addNameRange     '0.9.4',
+192 silly addNameRange     '0.9.5',
+192 silly addNameRange     '0.10.0',
+192 silly addNameRange     '0.10.1',
+192 silly addNameRange     '0.10.2',
+192 silly addNameRange     '0.11.0',
+192 silly addNameRange     '0.11.1',
+192 silly addNameRange     '0.11.2',
+192 silly addNameRange     '0.11.3',
+192 silly addNameRange     '0.11.4',
+192 silly addNameRange     '0.11.5',
+192 silly addNameRange     '0.11.6',
+192 silly addNameRange     '0.12.0',
+192 silly addNameRange     '0.12.1',
+192 silly addNameRange     '0.12.2',
+192 silly addNameRange     '0.12.3',
+192 silly addNameRange     '0.12.4',
+192 silly addNameRange     '0.13.0',
+192 silly addNameRange     '0.13.1',
+192 silly addNameRange     '0.13.2',
+192 silly addNameRange     '0.13.3',
+192 silly addNameRange     '1.0.0-alpha1',
+192 silly addNameRange     '1.0.0-alpha2',
+192 silly addNameRange     '1.0.0-beta1',
+192 silly addNameRange     '1.0.0-beta2',
+192 silly addNameRange     '1.0.0-beta3',
+192 silly addNameRange     '1.0.0-beta4',
+192 silly addNameRange     '1.0.0-rc1',
+192 silly addNameRange     '0.13.4',
+192 silly addNameRange     '1.0.0-rc2',
+192 silly addNameRange     '1.0.0-rc3' ] ]
+193 verbose get https://registry.npmjs.org/html-minifier not expired, no request
+194 silly addNameRange number 2 { name: 'html-minifier', range: '>0.6.8', hasData: true }
+195 silly addNameRange versions [ 'html-minifier',
+195 silly addNameRange   [ '0.4.3',
+195 silly addNameRange     '0.4.4',
+195 silly addNameRange     '0.4.5',
+195 silly addNameRange     '0.5.0',
+195 silly addNameRange     '0.5.1',
+195 silly addNameRange     '0.5.2',
+195 silly addNameRange     '0.5.4',
+195 silly addNameRange     '0.5.5',
+195 silly addNameRange     '0.5.6',
+195 silly addNameRange     '0.6.0',
+195 silly addNameRange     '0.6.1',
+195 silly addNameRange     '0.6.2',
+195 silly addNameRange     '0.6.3',
+195 silly addNameRange     '0.6.4',
+195 silly addNameRange     '0.6.5',
+195 silly addNameRange     '0.6.6',
+195 silly addNameRange     '0.6.7',
+195 silly addNameRange     '0.6.8',
+195 silly addNameRange     '0.6.9',
+195 silly addNameRange     '0.7.0',
+195 silly addNameRange     '0.7.1',
+195 silly addNameRange     '0.7.2',
+195 silly addNameRange     '0.8.0',
+195 silly addNameRange     '1.0.0' ] ]
+196 silly addNamed html-minifier@1.0.0
+197 verbose addNamed "1.0.0" is a plain semver version for html-minifier
+198 verbose get https://registry.npmjs.org/express not expired, no request
+199 silly addNameRange number 2 { name: 'express', range: '>4.9.5', hasData: true }
+200 silly addNameRange versions [ 'express',
+200 silly addNameRange   [ '0.14.0',
+200 silly addNameRange     '0.14.1',
+200 silly addNameRange     '1.0.0',
+200 silly addNameRange     '1.0.1',
+200 silly addNameRange     '1.0.2',
+200 silly addNameRange     '1.0.3',
+200 silly addNameRange     '1.0.4',
+200 silly addNameRange     '1.0.5',
+200 silly addNameRange     '1.0.6',
+200 silly addNameRange     '1.0.7',
+200 silly addNameRange     '1.0.8',
+200 silly addNameRange     '2.0.0',
+200 silly addNameRange     '2.1.0',
+200 silly addNameRange     '2.1.1',
+200 silly addNameRange     '2.2.0',
+200 silly addNameRange     '2.2.1',
+200 silly addNameRange     '2.2.2',
+200 silly addNameRange     '2.3.0',
+200 silly addNameRange     '2.3.1',
+200 silly addNameRange     '2.3.2',
+200 silly addNameRange     '2.3.3',
+200 silly addNameRange     '2.3.4',
+200 silly addNameRange     '2.3.5',
+200 silly addNameRange     '2.3.6',
+200 silly addNameRange     '2.3.7',
+200 silly addNameRange     '2.3.8',
+200 silly addNameRange     '2.3.9',
+200 silly addNameRange     '2.3.10',
+200 silly addNameRange     '2.3.11',
+200 silly addNameRange     '2.3.12',
+200 silly addNameRange     '2.4.0',
+200 silly addNameRange     '2.4.1',
+200 silly addNameRange     '2.4.2',
+200 silly addNameRange     '2.4.3',
+200 silly addNameRange     '2.4.4',
+200 silly addNameRange     '2.4.5',
+200 silly addNameRange     '2.4.6',
+200 silly addNameRange     '2.4.7',
+200 silly addNameRange     '2.5.0',
+200 silly addNameRange     '2.5.1',
+200 silly addNameRange     '2.5.2',
+200 silly addNameRange     '2.5.3',
+200 silly addNameRange     '2.5.4',
+200 silly addNameRange     '2.5.5',
+200 silly addNameRange     '2.5.6',
+200 silly addNameRange     '2.5.7',
+200 silly addNameRange     '2.5.8',
+200 silly addNameRange     '2.5.9',
+200 silly addNameRange     '2.5.10',
+200 silly addNameRange     '2.5.11',
+200 silly addNameRange     '3.0.0',
+200 silly addNameRange     '3.0.1',
+200 silly addNameRange     '3.0.2',
+200 silly addNameRange     '3.0.3',
+200 silly addNameRange     '3.0.4',
+200 silly addNameRange     '3.0.5',
+200 silly addNameRange     '3.0.6',
+200 silly addNameRange     '3.1.0',
+200 silly addNameRange     '3.1.1',
+200 silly addNameRange     '3.1.2',
+200 silly addNameRange     '3.2.0',
+200 silly addNameRange     '3.2.1',
+200 silly addNameRange     '3.2.2',
+200 silly addNameRange     '3.2.3',
+200 silly addNameRange     '3.2.4',
+200 silly addNameRange     '3.2.5',
+200 silly addNameRange     '3.2.6',
+200 silly addNameRange     '3.3.0',
+200 silly addNameRange     '3.3.1',
+200 silly addNameRange     '3.3.2',
+200 silly addNameRange     '3.3.3',
+200 silly addNameRange     '3.3.4',
+200 silly addNameRange     '3.3.5',
+200 silly addNameRange     '3.3.6',
+200 silly addNameRange     '1.0.0-beta',
+200 silly addNameRange     '1.0.0-beta2',
+200 silly addNameRange     '1.0.0-rc',
+200 silly addNameRange     '1.0.0-rc2',
+200 silly addNameRange     '1.0.0-rc3',
+200 silly addNameRange     '1.0.0-rc4',
+200 silly addNameRange     '2.0.0-beta',
+200 silly addNameRange     '2.0.0-beta2',
+200 silly addNameRange     '2.0.0-beta3',
+200 silly addNameRange     '2.0.0-rc',
+200 silly addNameRange     '2.0.0-rc2',
+200 silly addNameRange     '2.0.0-rc3',
+200 silly addNameRange     '3.0.0-alpha1',
+200 silly addNameRange     '3.0.0-alpha2',
+200 silly addNameRange     '3.0.0-alpha3',
+200 silly addNameRange     '3.0.0-alpha4',
+200 silly addNameRange     '3.0.0-alpha5',
+200 silly addNameRange     '3.0.0-beta1',
+200 silly addNameRange     '3.0.0-beta2',
+200 silly addNameRange     '3.0.0-beta3',
+200 silly addNameRange     '3.0.0-beta4',
+200 silly addNameRange     '3.0.0-beta6',
+200 silly addNameRange     '3.0.0-beta7',
+200 silly addNameRange     '3.0.0-rc1',
+200 silly addNameRange     '3.0.0-rc2',
+200 silly addNameRange     '3.0.0-rc3',
+200 silly addNameRange     '3.0.0-rc4',
+200 silly addNameRange     '3.0.0-rc5',
+200 silly addNameRange     '3.3.7',
+200 silly addNameRange     '3.3.8',
+200 silly addNameRange     '3.4.0',
+200 silly addNameRange     '3.4.1',
+200 silly addNameRange     '3.4.2',
+200 silly addNameRange     '3.4.3',
+200 silly addNameRange     '3.4.4',
+200 silly addNameRange     '3.4.5',
+200 silly addNameRange     '3.4.6',
+200 silly addNameRange     '3.4.7',
+200 silly addNameRange     '3.4.8',
+200 silly addNameRange     '4.0.0-rc1',
+200 silly addNameRange     '4.0.0-rc2',
+200 silly addNameRange     '3.5.0',
+200 silly addNameRange     '4.0.0-rc3',
+200 silly addNameRange     '4.0.0-rc4',
+200 silly addNameRange     '3.5.1',
+200 silly addNameRange     '4.0.0',
+200 silly addNameRange     '3.5.2',
+200 silly addNameRange     '4.1.0',
+200 silly addNameRange     '4.1.1',
+200 silly addNameRange     '3.5.3',
+200 silly addNameRange     '4.1.2',
+200 silly addNameRange     '3.6.0',
+200 silly addNameRange     '4.2.0',
+200 silly addNameRange     '3.7.0',
+200 silly addNameRange     '3.8.0',
+200 silly addNameRange     '4.3.0',
+200 silly addNameRange     '4.3.1',
+200 silly addNameRange     '3.8.1',
+200 silly addNameRange     '4.3.2',
+200 silly addNameRange     '3.9.0',
+200 silly addNameRange     '4.4.0',
+200 silly addNameRange     '4.4.1',
+200 silly addNameRange     '3.10.0',
+200 silly addNameRange     '3.10.1',
+200 silly addNameRange     '3.10.2',
+200 silly addNameRange     '3.10.3',
+200 silly addNameRange     '3.10.4',
+200 silly addNameRange     '4.4.2',
+200 silly addNameRange     '3.10.5',
+200 silly addNameRange     '4.4.3',
+200 silly addNameRange     '3.11.0',
+200 silly addNameRange     '4.4.4',
+200 silly addNameRange     '3.12.0',
+200 silly addNameRange     '3.12.1',
+200 silly addNameRange     '4.4.5',
+200 silly addNameRange     '3.13.0',
+200 silly addNameRange     '4.5.0',
+200 silly addNameRange     '4.5.1',
+200 silly addNameRange     '3.14.0',
+200 silly addNameRange     '4.6.0',
+200 silly addNameRange     '4.6.1',
+200 silly addNameRange     '3.15.0',
+200 silly addNameRange     '4.7.0',
+200 silly addNameRange     '3.15.1',
+200 silly addNameRange     '4.7.1',
+200 silly addNameRange     '3.15.2',
+200 silly addNameRange     '4.7.2',
+200 silly addNameRange     '4.7.3',
+200 silly addNameRange     '3.15.3',
+200 silly addNameRange     '4.7.4',
+200 silly addNameRange     '3.16.0',
+200 silly addNameRange     '4.8.0',
+200 silly addNameRange     '3.16.1',
+200 silly addNameRange     '4.8.1',
+200 silly addNameRange     '3.16.2',
+200 silly addNameRange     '4.8.2',
+200 silly addNameRange     '3.16.3',
+200 silly addNameRange     '3.16.4',
+200 silly addNameRange     '4.8.3',
+200 silly addNameRange     '3.16.5',
+200 silly addNameRange     '3.16.6',
+200 silly addNameRange     '4.8.4',
+200 silly addNameRange     '3.16.7',
+200 silly addNameRange     '4.8.5',
+200 silly addNameRange     '3.16.8',
+200 silly addNameRange     '4.8.6',
+200 silly addNameRange     '3.16.9',
+200 silly addNameRange     '4.8.7',
+200 silly addNameRange     '3.16.10',
+200 silly addNameRange     '4.8.8',
+200 silly addNameRange     '3.17.0',
+200 silly addNameRange     '3.17.1',
+200 silly addNameRange     '4.9.0',
+200 silly addNameRange     '3.17.2',
+200 silly addNameRange     '4.9.1',
+200 silly addNameRange     '4.9.2',
+200 silly addNameRange     '3.17.3',
+200 silly addNameRange     '4.9.3',
+200 silly addNameRange     '3.17.4',
+200 silly addNameRange     '4.9.4',
+200 silly addNameRange     '3.17.5',
+200 silly addNameRange     '4.9.5',
+200 silly addNameRange     '3.17.6',
+200 silly addNameRange     '3.17.7',
+200 silly addNameRange     '4.9.6',
+200 silly addNameRange     '4.9.7',
+200 silly addNameRange     '3.17.8',
+200 silly addNameRange     '4.9.8',
+200 silly addNameRange     '3.18.0',
+200 silly addNameRange     '3.18.1',
+200 silly addNameRange     '4.10.0',
+200 silly addNameRange     '3.18.2',
+200 silly addNameRange     '4.10.1',
+200 silly addNameRange     '5.0.0-alpha.1',
+200 silly addNameRange     '3.18.3',
+200 silly addNameRange     '4.10.2',
+200 silly addNameRange     '3.18.4',
+200 silly addNameRange     '4.10.3',
+200 silly addNameRange     '4.10.4',
+200 silly addNameRange     '4.10.5',
+200 silly addNameRange     '3.18.5',
+200 silly addNameRange     '3.18.6',
+200 silly addNameRange     '4.10.6',
+200 silly addNameRange     '4.10.7',
+200 silly addNameRange     '3.19.0',
+200 silly addNameRange     '4.10.8',
+200 silly addNameRange     '4.11.0',
+200 silly addNameRange     '3.19.1',
+200 silly addNameRange     '4.11.1',
+200 silly addNameRange     '3.19.2',
+200 silly addNameRange     '4.11.2',
+200 silly addNameRange     '3.20.0',
+200 silly addNameRange     '4.12.0',
+200 silly addNameRange     '3.20.1',
+200 silly addNameRange     '4.12.1',
+200 silly addNameRange     '4.12.2',
+200 silly addNameRange     '3.20.2',
+200 silly addNameRange     '4.12.3',
+200 silly addNameRange     '3.20.3',
+200 silly addNameRange     '4.12.4',
+200 silly addNameRange     '3.21.0',
+200 silly addNameRange     '4.13.0',
+200 silly addNameRange     '3.21.1',
+200 silly addNameRange     '4.13.1',
+200 silly addNameRange     '5.0.0-alpha.2',
+200 silly addNameRange     '3.21.2',
+200 silly addNameRange     '4.13.2',
+200 silly addNameRange     '4.13.3' ] ]
+201 silly addNamed express@4.13.3
+202 verbose addNamed "4.13.3" is a plain semver version for express
+203 verbose get https://registry.npmjs.org/jest-cli not expired, no request
+204 silly addNameRange number 2 { name: 'jest-cli', range: '>0.1.18', hasData: true }
+205 silly addNameRange versions [ 'jest-cli',
+205 silly addNameRange   [ '0.0.2-pre',
+205 silly addNameRange     '0.0.3-pre',
+205 silly addNameRange     '0.0.4-pre',
+205 silly addNameRange     '0.0.5-pre',
+205 silly addNameRange     '0.0.6-pre',
+205 silly addNameRange     '0.0.7-pre',
+205 silly addNameRange     '0.0.8-pre',
+205 silly addNameRange     '0.0.9-pre',
+205 silly addNameRange     '0.0.10-pre',
+205 silly addNameRange     '0.1.0',
+205 silly addNameRange     '0.1.1',
+205 silly addNameRange     '0.1.2',
+205 silly addNameRange     '0.1.3',
+205 silly addNameRange     '0.1.4',
+205 silly addNameRange     '0.1.5',
+205 silly addNameRange     '0.1.6',
+205 silly addNameRange     '0.1.7',
+205 silly addNameRange     '0.1.8',
+205 silly addNameRange     '0.1.9',
+205 silly addNameRange     '0.1.10',
+205 silly addNameRange     '0.1.11',
+205 silly addNameRange     '0.1.12',
+205 silly addNameRange     '0.1.13',
+205 silly addNameRange     '0.1.14',
+205 silly addNameRange     '0.1.15',
+205 silly addNameRange     '0.1.16',
+205 silly addNameRange     '0.1.17',
+205 silly addNameRange     '0.1.18',
+205 silly addNameRange     '0.2.0',
+205 silly addNameRange     '0.2.1',
+205 silly addNameRange     '0.2.2',
+205 silly addNameRange     '0.3.0',
+205 silly addNameRange     '0.4.0',
+205 silly addNameRange     '0.4.1',
+205 silly addNameRange     '0.4.2',
+205 silly addNameRange     '0.4.3',
+205 silly addNameRange     '0.4.4',
+205 silly addNameRange     '0.4.5',
+205 silly addNameRange     '0.4.7',
+205 silly addNameRange     '0.4.8',
+205 silly addNameRange     '0.4.9',
+205 silly addNameRange     '0.4.10',
+205 silly addNameRange     '0.4.11',
+205 silly addNameRange     '0.4.12',
+205 silly addNameRange     '0.4.13',
+205 silly addNameRange     '0.4.14',
+205 silly addNameRange     '0.4.15',
+205 silly addNameRange     '0.4.16',
+205 silly addNameRange     '0.4.17',
+205 silly addNameRange     '0.4.18',
+205 silly addNameRange     '0.5.0',
+205 silly addNameRange     '0.4.19',
+205 silly addNameRange     '0.5.1',
+205 silly addNameRange     '0.5.2',
+205 silly addNameRange     '0.5.3',
+205 silly addNameRange     '0.5.4',
+205 silly addNameRange     '0.5.5',
+205 silly addNameRange     '0.5.6',
+205 silly addNameRange     '0.5.7',
+205 silly addNameRange     '0.5.8',
+205 silly addNameRange     '0.5.10',
+205 silly addNameRange     '0.6.0',
+205 silly addNameRange     '0.6.1' ] ]
+206 silly addNamed jest-cli@0.6.1
+207 verbose addNamed "0.6.1" is a plain semver version for jest-cli
+208 verbose get https://registry.npmjs.org/node-sass not expired, no request
+209 silly addNameRange number 2 { name: 'node-sass', range: '>0.9.3', hasData: true }
+210 silly addNameRange versions [ 'node-sass',
+210 silly addNameRange   [ '0.2.0',
+210 silly addNameRange     '0.2.1',
+210 silly addNameRange     '0.2.2',
+210 silly addNameRange     '0.2.3',
+210 silly addNameRange     '0.2.4',
+210 silly addNameRange     '0.2.5',
+210 silly addNameRange     '0.2.6',
+210 silly addNameRange     '0.3.0',
+210 silly addNameRange     '0.4.0',
+210 silly addNameRange     '0.4.1',
+210 silly addNameRange     '0.4.2',
+210 silly addNameRange     '0.4.3',
+210 silly addNameRange     '0.4.4',
+210 silly addNameRange     '0.5.0',
+210 silly addNameRange     '0.5.1',
+210 silly addNameRange     '0.5.2',
+210 silly addNameRange     '0.5.3',
+210 silly addNameRange     '0.5.4',
+210 silly addNameRange     '0.6.0',
+210 silly addNameRange     '0.6.1',
+210 silly addNameRange     '0.6.2',
+210 silly addNameRange     '0.6.3',
+210 silly addNameRange     '0.6.4',
+210 silly addNameRange     '0.6.5',
+210 silly addNameRange     '0.6.6',
+210 silly addNameRange     '0.6.7',
+210 silly addNameRange     '0.7.0-alpha',
+210 silly addNameRange     '0.7.0',
+210 silly addNameRange     '0.8.0',
+210 silly addNameRange     '0.8.1',
+210 silly addNameRange     '0.8.2',
+210 silly addNameRange     '0.8.3',
+210 silly addNameRange     '0.8.4',
+210 silly addNameRange     '0.8.5',
+210 silly addNameRange     '0.8.6',
+210 silly addNameRange     '0.9.0',
+210 silly addNameRange     '0.9.1',
+210 silly addNameRange     '0.9.2',
+210 silly addNameRange     '0.9.3',
+210 silly addNameRange     '0.9.4-rc1',
+210 silly addNameRange     '0.9.4',
+210 silly addNameRange     '0.9.5-rc1',
+210 silly addNameRange     '0.9.5',
+210 silly addNameRange     '0.9.6',
+210 silly addNameRange     '1.0.0',
+210 silly addNameRange     '1.0.1',
+210 silly addNameRange     '1.0.2-alpha',
+210 silly addNameRange     '1.0.2',
+210 silly addNameRange     '1.0.3',
+210 silly addNameRange     '1.1.0',
+210 silly addNameRange     '1.1.1',
+210 silly addNameRange     '1.1.2',
+210 silly addNameRange     '1.1.3',
+210 silly addNameRange     '1.1.4',
+210 silly addNameRange     '1.2.0',
+210 silly addNameRange     '1.2.1',
+210 silly addNameRange     '1.2.2',
+210 silly addNameRange     '1.2.3',
+210 silly addNameRange     '2.0.0-beta',
+210 silly addNameRange     '2.0.0',
+210 silly addNameRange     '2.0.1',
+210 silly addNameRange     '3.0.0-alpha.0',
+210 silly addNameRange     '3.0.0-beta.2',
+210 silly addNameRange     '3.0.0-beta.3',
+210 silly addNameRange     '3.0.0-beta.4',
+210 silly addNameRange     '2.1.0',
+210 silly addNameRange     '2.1.1',
+210 silly addNameRange     '3.0.0-beta.5',
+210 silly addNameRange     '3.0.0-beta.7',
+210 silly addNameRange     '3.0.0',
+210 silly addNameRange     '3.1.0',
+210 silly addNameRange     '3.1.1',
+210 silly addNameRange     '3.1.2',
+210 silly addNameRange     '3.2.0',
+210 silly addNameRange     '3.3.0',
+210 silly addNameRange     '3.3.1',
+210 silly addNameRange     '3.3.2',
+210 silly addNameRange     '3.3.3',
+210 silly addNameRange     '3.4.0-beta1',
+210 silly addNameRange     '3.4.0-beta.2',
+210 silly addNameRange     '3.4.0',
+210 silly addNameRange     '3.4.1' ] ]
+211 silly addNamed node-sass@3.4.1
+212 verbose addNamed "3.4.1" is a plain semver version for node-sass
+213 verbose get https://registry.npmjs.org/reactify not expired, no request
+214 silly addNameRange number 2 { name: 'reactify', range: '>0.14.0', hasData: true }
+215 silly addNameRange versions [ 'reactify',
+215 silly addNameRange   [ '0.1.0',
+215 silly addNameRange     '0.1.1',
+215 silly addNameRange     '0.1.2',
+215 silly addNameRange     '0.1.3',
+215 silly addNameRange     '0.1.4',
+215 silly addNameRange     '0.2.0',
+215 silly addNameRange     '0.2.1',
+215 silly addNameRange     '0.2.2',
+215 silly addNameRange     '0.3.0',
+215 silly addNameRange     '0.3.1',
+215 silly addNameRange     '0.3.2',
+215 silly addNameRange     '0.4.0',
+215 silly addNameRange     '0.5.0',
+215 silly addNameRange     '0.5.1',
+215 silly addNameRange     '0.6.0',
+215 silly addNameRange     '0.6.1',
+215 silly addNameRange     '0.7.0',
+215 silly addNameRange     '0.8.0',
+215 silly addNameRange     '0.8.1',
+215 silly addNameRange     '0.9.0',
+215 silly addNameRange     '0.9.1',
+215 silly addNameRange     '0.10.0',
+215 silly addNameRange     '0.11.0',
+215 silly addNameRange     '0.12.0',
+215 silly addNameRange     '0.13.0',
+215 silly addNameRange     '0.13.1',
+215 silly addNameRange     '0.14.0',
+215 silly addNameRange     '0.15.0',
+215 silly addNameRange     '0.15.1',
+215 silly addNameRange     '0.14.1',
+215 silly addNameRange     '0.8.2',
+215 silly addNameRange     '0.9.2',
+215 silly addNameRange     '0.10.1',
+215 silly addNameRange     '0.11.1',
+215 silly addNameRange     '0.13.2',
+215 silly addNameRange     '0.12.1',
+215 silly addNameRange     '0.15.2',
+215 silly addNameRange     '0.16.0',
+215 silly addNameRange     '0.17.0',
+215 silly addNameRange     '0.17.1',
+215 silly addNameRange     '1.0.0',
+215 silly addNameRange     '1.1.0',
+215 silly addNameRange     '1.1.1' ] ]
+216 silly addNamed reactify@1.1.1
+217 verbose addNamed "1.1.1" is a plain semver version for reactify
+218 verbose get https://registry.npmjs.org/uglifyify not expired, no request
+219 silly addNameRange number 2 { name: 'uglifyify', range: '>2.5.0', hasData: true }
+220 silly addNameRange versions [ 'uglifyify',
+220 silly addNameRange   [ '0.0.1',
+220 silly addNameRange     '0.0.2',
+220 silly addNameRange     '0.0.3',
+220 silly addNameRange     '1.0.0',
+220 silly addNameRange     '1.0.1',
+220 silly addNameRange     '1.1.0',
+220 silly addNameRange     '1.2.0',
+220 silly addNameRange     '1.2.1',
+220 silly addNameRange     '1.2.2',
+220 silly addNameRange     '1.2.3',
+220 silly addNameRange     '2.0.0',
+220 silly addNameRange     '2.1.1',
+220 silly addNameRange     '2.2.0',
+220 silly addNameRange     '2.3.0',
+220 silly addNameRange     '2.4.0',
+220 silly addNameRange     '2.5.0',
+220 silly addNameRange     '2.6.0',
+220 silly addNameRange     '3.0.0',
+220 silly addNameRange     '3.0.1' ] ]
+221 silly addNamed uglifyify@3.0.1
+222 verbose addNamed "3.0.1" is a plain semver version for uglifyify
+223 verbose get https://registry.npmjs.org/bootstrap-sass not expired, no request
+224 silly addNameRange number 2 { name: 'bootstrap-sass', range: '>3.2.0', hasData: true }
+225 silly addNameRange versions [ 'bootstrap-sass',
+225 silly addNameRange   [ '2.3.2',
+225 silly addNameRange     '3.1.1',
+225 silly addNameRange     '3.2.0',
+225 silly addNameRange     '3.3.0',
+225 silly addNameRange     '3.3.1',
+225 silly addNameRange     '3.3.2',
+225 silly addNameRange     '3.3.3',
+225 silly addNameRange     '3.3.4',
+225 silly addNameRange     '3.3.5' ] ]
+226 silly addNamed bootstrap-sass@3.3.5
+227 verbose addNamed "3.3.5" is a plain semver version for bootstrap-sass
+228 verbose get https://registry.npmjs.org/react-tools not expired, no request
+229 silly addNameRange number 2 { name: 'react-tools', range: '>0.11.2', hasData: true }
+230 silly addNameRange versions [ 'react-tools',
+230 silly addNameRange   [ '0.3.0',
+230 silly addNameRange     '0.3.1',
+230 silly addNameRange     '0.3.2',
+230 silly addNameRange     '0.3.3',
+230 silly addNameRange     '0.4.0',
+230 silly addNameRange     '0.4.1',
+230 silly addNameRange     '0.5.0',
+230 silly addNameRange     '0.5.1',
+230 silly addNameRange     '0.4.2',
+230 silly addNameRange     '0.5.2',
+230 silly addNameRange     '0.8.0',
+230 silly addNameRange     '0.9.0-rc1',
+230 silly addNameRange     '0.9.0',
+230 silly addNameRange     '0.10.0-rc1',
+230 silly addNameRange     '0.10.0',
+230 silly addNameRange     '0.11.0-rc1',
+230 silly addNameRange     '0.11.0',
+230 silly addNameRange     '0.11.1',
+230 silly addNameRange     '0.11.2',
+230 silly addNameRange     '0.12.0-rc1',
+230 silly addNameRange     '0.12.0',
+230 silly addNameRange     '0.12.1',
+230 silly addNameRange     '0.12.2',
+230 silly addNameRange     '0.13.0-alpha.1',
+230 silly addNameRange     '0.13.0-alpha.2',
+230 silly addNameRange     '0.13.0-beta.1',
+230 silly addNameRange     '0.13.0-beta.2',
+230 silly addNameRange     '0.13.0-rc1',
+230 silly addNameRange     '0.13.0-rc2',
+230 silly addNameRange     '0.13.0',
+230 silly addNameRange     '0.13.1',
+230 silly addNameRange     '0.13.2',
+230 silly addNameRange     '0.13.3',
+230 silly addNameRange     '0.14.0-alpha1',
+230 silly addNameRange     '0.14.0-alpha2',
+230 silly addNameRange     '0.14.0-alpha3' ] ]
+231 silly addNamed react-tools@0.13.3
+232 verbose addNamed "0.13.3" is a plain semver version for react-tools
+233 verbose get https://registry.npmjs.org/browserify not expired, no request
+234 silly addNameRange number 2 { name: 'browserify', range: '>5.11.0', hasData: true }
+235 silly addNameRange versions [ 'browserify',
+235 silly addNameRange   [ '0.0.1',
+235 silly addNameRange     '0.0.2',
+235 silly addNameRange     '0.0.3',
+235 silly addNameRange     '0.0.4',
+235 silly addNameRange     '0.0.5',
+235 silly addNameRange     '0.1.0',
+235 silly addNameRange     '0.1.1',
+235 silly addNameRange     '0.1.2',
+235 silly addNameRange     '0.1.3',
+235 silly addNameRange     '0.1.4',
+235 silly addNameRange     '0.1.5',
+235 silly addNameRange     '0.2.0',
+235 silly addNameRange     '0.2.1',
+235 silly addNameRange     '0.2.2',
+235 silly addNameRange     '0.2.3',
+235 silly addNameRange     '0.2.4',
+235 silly addNameRange     '0.2.5',
+235 silly addNameRange     '0.2.6',
+235 silly addNameRange     '0.2.7',
+235 silly addNameRange     '0.2.8',
+235 silly addNameRange     '0.2.9',
+235 silly addNameRange     '0.2.10',
+235 silly addNameRange     '0.2.11',
+235 silly addNameRange     '0.3.0',
+235 silly addNameRange     '0.3.1',
+235 silly addNameRange     '0.3.2',
+235 silly addNameRange     '0.3.3',
+235 silly addNameRange     '0.3.4',
+235 silly addNameRange     '0.3.5',
+235 silly addNameRange     '0.3.6',
+235 silly addNameRange     '0.3.7',
+235 silly addNameRange     '0.4.0',
+235 silly addNameRange     '0.4.1',
+235 silly addNameRange     '0.4.2',
+235 silly addNameRange     '0.4.3',
+235 silly addNameRange     '0.4.4',
+235 silly addNameRange     '0.4.5',
+235 silly addNameRange     '0.4.6',
+235 silly addNameRange     '0.4.7',
+235 silly addNameRange     '0.4.8',
+235 silly addNameRange     '0.4.9',
+235 silly addNameRange     '0.4.10',
+235 silly addNameRange     '0.4.11',
+235 silly addNameRange     '0.4.12',
+235 silly addNameRange     '0.4.13',
+235 silly addNameRange     '0.4.14',
+235 silly addNameRange     '0.4.15',
+235 silly addNameRange     '0.5.0',
+235 silly addNameRange     '0.5.1',
+235 silly addNameRange     '0.5.2',
+235 silly addNameRange     '1.0.0',
+235 silly addNameRange     '1.1.0',
+235 silly addNameRange     '1.1.1',
+235 silly addNameRange     '1.1.2',
+235 silly addNameRange     '1.1.3',
+235 silly addNameRange     '1.1.4',
+235 silly addNameRange     '1.2.0',
+235 silly addNameRange     '1.2.1',
+235 silly addNameRange     '1.2.2',
+235 silly addNameRange     '1.2.3',
+235 silly addNameRange     '1.2.4',
+235 silly addNameRange     '1.2.5',
+235 silly addNameRange     '1.2.6',
+235 silly addNameRange     '1.2.7',
+235 silly addNameRange     '1.2.8',
+235 silly addNameRange     '1.2.9',
+235 silly addNameRange     '1.3.0',
+235 silly addNameRange     '1.4.0',
+235 silly addNameRange     '1.4.1',
+235 silly addNameRange     '1.4.2',
+235 silly addNameRange     '1.4.3',
+235 silly addNameRange     '1.4.4',
+235 silly addNameRange     '1.4.5',
+235 silly addNameRange     '1.4.6',
+235 silly addNameRange     '1.4.7',
+235 silly addNameRange     '1.4.8',
+235 silly addNameRange     '1.5.0',
+235 silly addNameRange     '1.6.0',
+235 silly addNameRange     '1.6.1',
+235 silly addNameRange     '1.7.0',
+235 silly addNameRange     '1.7.1',
+235 silly addNameRange     '1.7.2',
+235 silly addNameRange     '1.7.3',
+235 silly addNameRange     '1.7.4',
+235 silly addNameRange     '1.7.5',
+235 silly addNameRange     '1.7.6',
+235 silly addNameRange     '1.7.7',
+235 silly addNameRange     '1.8.0',
+235 silly addNameRange     '1.8.1',
+235 silly addNameRange     '1.8.2',
+235 silly addNameRange     '1.8.3',
+235 silly addNameRange     '1.9.0',
+235 silly addNameRange     '1.9.1',
+235 silly addNameRange     '1.9.2',
+235 silly addNameRange     '1.9.3',
+235 silly addNameRange     '1.9.4',
+235 silly addNameRange     '1.10.0',
+235 silly addNameRange     '1.10.1',
+235 silly addNameRange     '1.10.2',
+235 silly addNameRange     '1.10.3',
+235 silly addNameRange     '1.10.4',
+235 silly addNameRange     '1.10.5',
+235 silly addNameRange     '1.10.6',
+235 silly addNameRange     '1.10.7',
+235 silly addNameRange     '1.10.8',
+235 silly addNameRange     '1.10.9',
+235 silly addNameRange     '1.10.11',
+235 silly addNameRange     '1.10.12',
+235 silly addNameRange     '1.10.13',
+235 silly addNameRange     '1.10.14',
+235 silly addNameRange     '1.10.15',
+235 silly addNameRange     '1.10.16',
+235 silly addNameRange     '1.10.17',
+235 silly addNameRange     '1.11.0',
+235 silly addNameRange     '1.11.1',
+235 silly addNameRange     '1.12.0',
+235 silly addNameRange     '1.12.1',
+235 silly addNameRange     '1.12.2',
+235 silly addNameRange     '1.12.3',
+235 silly addNameRange     '1.13.0',
+235 silly addNameRange     '1.13.1',
+235 silly addNameRange     '1.13.2',
+235 silly addNameRange     '1.13.3',
+235 silly addNameRange     '1.13.4',
+235 silly addNameRange     '1.13.5',
+235 silly addNameRange     '1.13.6',
+235 silly addNameRange     '1.13.8',
+235 silly addNameRange     '1.13.9',
+235 silly addNameRange     '1.13.10',
+235 silly addNameRange     '1.14.0',
+235 silly addNameRange     '1.14.1',
+235 silly addNameRange     '1.14.2',
+235 silly addNameRange     '1.14.3',
+235 silly addNameRange     '1.14.4',
+235 silly addNameRange     '1.14.5',
+235 silly addNameRange     '1.15.0',
+235 silly addNameRange     '1.15.1',
+235 silly addNameRange     '1.15.2',
+235 silly addNameRange     '1.15.3',
+235 silly addNameRange     '1.15.4',
+235 silly addNameRange     '1.15.5',
+235 silly addNameRange     '1.15.6',
+235 silly addNameRange     '1.16.0',
+235 silly addNameRange     '1.16.1',
+235 silly addNameRange     '1.16.2',
+235 silly addNameRange     '1.16.3',
+235 silly addNameRange     '1.16.4',
+235 silly addNameRange     '1.16.5',
+235 silly addNameRange     '1.16.6',
+235 silly addNameRange     '1.16.7',
+235 silly addNameRange     '1.16.8',
+235 silly addNameRange     '1.17.0',
+235 silly addNameRange     '1.17.1',
+235 silly addNameRange     '1.17.2',
+235 silly addNameRange     '1.17.3',
+235 silly addNameRange     '1.18.0',
+235 silly addNameRange     '2.0.0',
+235 silly addNameRange     '2.0.1',
+235 silly addNameRange     '2.1.0',
+235 silly addNameRange     '2.2.0',
+235 silly addNameRange     '2.2.1',
+235 silly addNameRange     '2.2.2',
+235 silly addNameRange     '2.2.3',
+235 silly addNameRange     '2.2.4',
+235 silly addNameRange     '2.2.5',
+235 silly addNameRange     '2.2.6',
+235 silly addNameRange     '2.3.0',
+235 silly addNameRange     '2.3.1',
+235 silly addNameRange     '2.4.0',
+235 silly addNameRange     '2.4.1',
+235 silly addNameRange     '2.4.2',
+235 silly addNameRange     '2.4.3',
+235 silly addNameRange     '2.5.0',
+235 silly addNameRange     '2.5.1',
+235 silly addNameRange     '2.6.0',
+235 silly addNameRange     '2.6.1',
+235 silly addNameRange     '2.7.0',
+235 silly addNameRange     '2.7.1',
+235 silly addNameRange     '2.7.2',
+235 silly addNameRange     '2.7.3',
+235 silly addNameRange     '2.7.4',
+235 silly addNameRange     '2.8.0',
+235 silly addNameRange     '2.8.1',
+235 silly addNameRange     '2.9.0',
+235 silly addNameRange     '2.10.0',
+235 silly addNameRange     '2.10.1',
+235 silly addNameRange     '2.10.2',
+235 silly addNameRange     '2.11.0',
+235 silly addNameRange     '2.12.0',
+235 silly addNameRange     '2.12.1',
+235 silly addNameRange     '2.12.2',
+235 silly addNameRange     '2.12.3',
+235 silly addNameRange     '2.12.4',
+235 silly addNameRange     '2.12.5',
+235 silly addNameRange     '2.13.0',
+235 silly addNameRange     '2.13.1',
+235 silly addNameRange     '2.13.2',
+235 silly addNameRange     '2.13.3',
+235 silly addNameRange     '2.14.0',
+235 silly addNameRange     '2.14.1',
+235 silly addNameRange     '2.14.2',
+235 silly addNameRange     '2.15.0',
+235 silly addNameRange     '2.16.0',
+235 silly addNameRange     '2.17.0',
+235 silly addNameRange     '2.17.1',
+235 silly addNameRange     '2.17.2',
+235 silly addNameRange     '2.17.3',
+235 silly addNameRange     '2.17.4',
+235 silly addNameRange     '2.18.0',
+235 silly addNameRange     '2.18.1',
+235 silly addNameRange     '2.19.0',
+235 silly addNameRange     '2.20.0',
+235 silly addNameRange     '2.20.1',
+235 silly addNameRange     '2.20.2',
+235 silly addNameRange     '2.21.0',
+235 silly addNameRange     '2.22.0',
+235 silly addNameRange     '2.23.0',
+235 silly addNameRange     '2.23.1',
+235 silly addNameRange     '2.24.0',
+235 silly addNameRange     '2.24.1',
+235 silly addNameRange     '2.24.2',
+235 silly addNameRange     '2.24.3',
+235 silly addNameRange     '2.25.0',
+235 silly addNameRange     '2.25.1',
+235 silly addNameRange     '2.26.0',
+235 silly addNameRange     '2.27.0',
+235 silly addNameRange     '2.27.1',
+235 silly addNameRange     '2.28.0',
+235 silly addNameRange     '2.29.0',
+235 silly addNameRange     '2.29.1',
+235 silly addNameRange     '2.30.0',
+235 silly addNameRange     '2.31.0',
+235 silly addNameRange     '2.32.0',
+235 silly addNameRange     '2.32.1',
+235 silly addNameRange     '2.32.2',
+235 silly addNameRange     '2.32.3',
+235 silly addNameRange     '2.32.4',
+235 silly addNameRange     '2.33.0',
+235 silly addNameRange     '2.33.1',
+235 silly addNameRange     '2.34.0',
+235 silly addNameRange     '2.34.1',
+235 silly addNameRange     '2.34.2',
+235 silly addNameRange     '2.34.3',
+235 silly addNameRange     '2.35.0',
+235 silly addNameRange     '2.35.1',
+235 silly addNameRange     '2.35.2',
+235 silly addNameRange     '2.35.3',
+235 silly addNameRange     '2.35.4',
+235 silly addNameRange     '2.36.0',
+235 silly addNameRange     '2.36.1',
+235 silly addNameRange     '3.0.0',
+235 silly addNameRange     '3.1.0',
+235 silly addNameRange     '3.1.1',
+235 silly addNameRange     '3.1.2',
+235 silly addNameRange     '3.1.3',
+235 silly addNameRange     '3.2.0',
+235 silly addNameRange     '3.2.1',
+235 silly addNameRange     '3.2.2',
+235 silly addNameRange     '3.3.0',
+235 silly addNameRange     '3.4.0',
+235 silly addNameRange     '3.4.1',
+235 silly addNameRange     '3.5.0',
+235 silly addNameRange     '3.6.0',
+235 silly addNameRange     '3.7.0',
+235 silly addNameRange     '3.8.0',
+235 silly addNameRange     '3.8.1',
+235 silly addNameRange     '3.9.0',
+235 silly addNameRange     '3.9.1',
+235 silly addNameRange     '3.10.0',
+235 silly addNameRange     '3.11.0',
+235 silly addNameRange     '3.11.1',
+235 silly addNameRange     '3.12.0',
+235 silly addNameRange     '3.13.0',
+235 silly addNameRange     '3.14.0',
+235 silly addNameRange     '3.14.1',
+235 silly addNameRange     '3.16.0',
+235 silly addNameRange     '3.16.1',
+235 silly addNameRange     '3.17.0',
+235 silly addNameRange     '3.18.0',
+235 silly addNameRange     '3.19.0',
+235 silly addNameRange     '3.19.1',
+235 silly addNameRange     '3.20.0',
+235 silly addNameRange     '3.20.1',
+235 silly addNameRange     '3.20.2',
+235 silly addNameRange     '3.21.0',
+235 silly addNameRange     '3.21.1',
+235 silly addNameRange     '3.22.0',
+235 silly addNameRange     '3.22.1',
+235 silly addNameRange     '3.23.0',
+235 silly addNameRange     '3.23.1',
+235 silly addNameRange     '3.24.0',
+235 silly addNameRange     '3.24.1',
+235 silly addNameRange     '3.24.2',
+235 silly addNameRange     '3.24.3',
+235 silly addNameRange     '3.24.4',
+235 silly addNameRange     '3.24.5',
+235 silly addNameRange     '3.24.6',
+235 silly addNameRange     '3.24.7',
+235 silly addNameRange     '3.24.8',
+235 silly addNameRange     '3.24.9',
+235 silly addNameRange     '3.24.10',
+235 silly addNameRange     '3.24.11',
+235 silly addNameRange     '3.24.13',
+235 silly addNameRange     '3.25.0',
+235 silly addNameRange     '3.25.1',
+235 silly addNameRange     '3.25.2',
+235 silly addNameRange     '3.26.0',
+235 silly addNameRange     '3.27.0',
+235 silly addNameRange     '3.27.1',
+235 silly addNameRange     '3.28.0',
+235 silly addNameRange     '3.28.1',
+235 silly addNameRange     '3.28.2',
+235 silly addNameRange     '3.29.0',
+235 silly addNameRange     '3.29.1',
+235 silly addNameRange     '3.30.0',
+235 silly addNameRange     '3.30.1',
+235 silly addNameRange     '3.30.2',
+235 silly addNameRange     '3.30.3',
+235 silly addNameRange     '3.30.4',
+235 silly addNameRange     '3.31.0',
+235 silly addNameRange     '3.31.1',
+235 silly addNameRange     '3.31.2',
+235 silly addNameRange     '3.32.0',
+235 silly addNameRange     '3.32.1',
+235 silly addNameRange     '3.33.0',
+235 silly addNameRange     '3.33.1',
+235 silly addNameRange     '3.34.0',
+235 silly addNameRange     '3.35.0',
+235 silly addNameRange     '3.36.0',
+235 silly addNameRange     '3.36.1',
+235 silly addNameRange     '3.37.0',
+235 silly addNameRange     '3.37.1',
+235 silly addNameRange     '3.37.2',
+235 silly addNameRange     '3.38.0',
+235 silly addNameRange     '3.38.1',
+235 silly addNameRange     '3.39.0',
+235 silly addNameRange     '3.40.0',
+235 silly addNameRange     '3.40.1',
+235 silly addNameRange     '3.40.2',
+235 silly addNameRange     '3.40.3',
+235 silly addNameRange     '3.40.4',
+235 silly addNameRange     '3.41.0',
+235 silly addNameRange     '3.42.0',
+235 silly addNameRange     '3.43.0',
+235 silly addNameRange     '3.44.0',
+235 silly addNameRange     '3.44.1',
+235 silly addNameRange     '3.44.2',
+235 silly addNameRange     '3.45.0',
+235 silly addNameRange     '3.46.0',
+235 silly addNameRange     '3.46.1',
+235 silly addNameRange     '4.0.0',
+235 silly addNameRange     '4.1.0',
+235 silly addNameRange     '4.1.1',
+235 silly addNameRange     '4.1.2',
+235 silly addNameRange     '4.1.3',
+235 silly addNameRange     '4.1.4',
+235 silly addNameRange     '4.1.5',
+235 silly addNameRange     '4.1.6',
+235 silly addNameRange     '4.1.7',
+235 silly addNameRange     '4.1.8',
+235 silly addNameRange     '4.1.9',
+235 silly addNameRange     '4.1.10',
+235 silly addNameRange     '4.1.11',
+235 silly addNameRange     '4.2.0',
+235 silly addNameRange     '4.2.1',
+235 silly addNameRange     '4.2.2',
+235 silly addNameRange     '4.2.3',
+235 silly addNameRange     '5.0.0',
+235 silly addNameRange     '5.0.1',
+235 silly addNameRange     '5.0.2',
+235 silly addNameRange     '5.0.3',
+235 silly addNameRange     '5.0.4',
+235 silly addNameRange     '5.0.5',
+235 silly addNameRange     '5.0.6',
+235 silly addNameRange     '5.0.7',
+235 silly addNameRange     '5.0.8',
+235 silly addNameRange     '5.1.0',
+235 silly addNameRange     '5.1.1',
+235 silly addNameRange     '5.2.0',
+235 silly addNameRange     '5.2.1',
+235 silly addNameRange     '5.3.0',
+235 silly addNameRange     '5.4.0',
+235 silly addNameRange     '5.4.1',
+235 silly addNameRange     '5.4.2',
+235 silly addNameRange     '5.5.0',
+235 silly addNameRange     '5.6.0',
+235 silly addNameRange     '5.6.1',
+235 silly addNameRange     '5.7.0',
+235 silly addNameRange     '5.8.0',
+235 silly addNameRange     '5.9.0',
+235 silly addNameRange     '5.9.1',
+235 silly addNameRange     '5.9.2',
+235 silly addNameRange     '5.9.3',
+235 silly addNameRange     '5.10.0',
+235 silly addNameRange     '5.10.1',
+235 silly addNameRange     '5.11.0',
+235 silly addNameRange     '5.11.1',
+235 silly addNameRange     '5.11.2',
+235 silly addNameRange     '5.12.0',
+235 silly addNameRange     '5.12.1',
+235 silly addNameRange     '5.12.2',
+235 silly addNameRange     '5.13.0',
+235 silly addNameRange     '5.13.1',
+235 silly addNameRange     '6.0.0',
+235 silly addNameRange     '6.0.1',
+235 silly addNameRange     '6.0.2',
+235 silly addNameRange     '6.0.3',
+235 silly addNameRange     '6.1.0',
+235 silly addNameRange     '6.1.1',
+235 silly addNameRange     '6.1.2',
+235 silly addNameRange     '6.2.0',
+235 silly addNameRange     '6.3.0',
+235 silly addNameRange     '6.3.1',
+235 silly addNameRange     '6.3.2',
+235 silly addNameRange     '6.3.3',
+235 silly addNameRange     '6.3.4',
+235 silly addNameRange     '7.0.0',
+235 silly addNameRange     '7.0.1',
+235 silly addNameRange     '7.0.2',
+235 silly addNameRange     '7.0.3',
+235 silly addNameRange     '7.1.0',
+235 silly addNameRange     '8.0.0',
+235 silly addNameRange     '8.0.1',
+235 silly addNameRange     '8.0.2',
+235 silly addNameRange     '8.0.3',
+235 silly addNameRange     '8.1.0',
+235 silly addNameRange     '8.1.1',
+235 silly addNameRange     '8.1.2',
+235 silly addNameRange     '8.1.3',
+235 silly addNameRange     '9.0.0',
+235 silly addNameRange     '9.0.1',
+235 silly addNameRange     '9.0.2',
+235 silly addNameRange     '9.0.3',
+235 silly addNameRange     '9.0.4',
+235 silly addNameRange     '9.0.5',
+235 silly addNameRange     '9.0.6',
+235 silly addNameRange     '9.0.7',
+235 silly addNameRange     '9.0.8',
+235 silly addNameRange     '10.0.0',
+235 silly addNameRange     '10.1.0',
+235 silly addNameRange     '10.1.1',
+235 silly addNameRange     '10.1.2',
+235 silly addNameRange     '10.1.3',
+235 silly addNameRange     '10.2.0',
+235 silly addNameRange     '10.2.1',
+235 silly addNameRange     '10.2.3',
+235 silly addNameRange     '10.2.4',
+235 silly addNameRange     '10.2.5',
+235 silly addNameRange     '10.2.6',
+235 silly addNameRange     '11.0.0',
+235 silly addNameRange     '11.0.1',
+235 silly addNameRange     '11.1.0',
+235 silly addNameRange     '11.2.0',
+235 silly addNameRange     '12.0.0',
+235 silly addNameRange     '12.0.1' ] ]
+236 silly addNamed browserify@12.0.1
+237 verbose addNamed "12.0.1" is a plain semver version for browserify
+238 verbose get https://registry.npmjs.org/yargs not expired, no request
+239 silly addNameRange number 2 { name: 'yargs', range: '>1.3.1', hasData: true }
+240 silly addNameRange versions [ 'yargs',
+240 silly addNameRange   [ '1.0.0',
+240 silly addNameRange     '1.0.1',
+240 silly addNameRange     '1.0.3',
+240 silly addNameRange     '1.0.4',
+240 silly addNameRange     '1.0.5',
+240 silly addNameRange     '1.0.6',
+240 silly addNameRange     '1.0.7',
+240 silly addNameRange     '1.0.8',
+240 silly addNameRange     '1.0.9',
+240 silly addNameRange     '1.0.10',
+240 silly addNameRange     '1.0.11',
+240 silly addNameRange     '1.0.12',
+240 silly addNameRange     '1.0.13',
+240 silly addNameRange     '1.0.15',
+240 silly addNameRange     '1.1.0',
+240 silly addNameRange     '1.1.1',
+240 silly addNameRange     '1.1.2',
+240 silly addNameRange     '1.1.3',
+240 silly addNameRange     '1.2.0',
+240 silly addNameRange     '1.2.1',
+240 silly addNameRange     '1.2.2',
+240 silly addNameRange     '1.2.3',
+240 silly addNameRange     '1.2.4',
+240 silly addNameRange     '1.2.5',
+240 silly addNameRange     '1.2.6',
+240 silly addNameRange     '1.3.0',
+240 silly addNameRange     '1.3.1',
+240 silly addNameRange     '1.3.2',
+240 silly addNameRange     '1.3.3',
+240 silly addNameRange     '2.1.1',
+240 silly addNameRange     '2.3.0',
+240 silly addNameRange     '3.0.0',
+240 silly addNameRange     '3.0.1',
+240 silly addNameRange     '3.0.2',
+240 silly addNameRange     '3.0.3',
+240 silly addNameRange     '3.0.4',
+240 silly addNameRange     '3.1.0',
+240 silly addNameRange     '3.2.1',
+240 silly addNameRange     '3.3.1',
+240 silly addNameRange     '3.4.0',
+240 silly addNameRange     '3.4.4',
+240 silly addNameRange     '3.4.5',
+240 silly addNameRange     '3.5.0',
+240 silly addNameRange     '3.5.1',
+240 silly addNameRange     '3.5.2',
+240 silly addNameRange     '3.5.3',
+240 silly addNameRange     '3.5.4',
+240 silly addNameRange     '3.6.0',
+240 silly addNameRange     '3.7.0',
+240 silly addNameRange     '3.7.1',
+240 silly addNameRange     '3.7.2',
+240 silly addNameRange     '3.8.0',
+240 silly addNameRange     '3.9.0',
+240 silly addNameRange     '3.9.1',
+240 silly addNameRange     '3.10.0',
+240 silly addNameRange     '3.11.0',
+240 silly addNameRange     '3.12.0',
+240 silly addNameRange     '3.13.0',
+240 silly addNameRange     '3.14.0',
+240 silly addNameRange     '3.15.0',
+240 silly addNameRange     '3.16.0',
+240 silly addNameRange     '3.16.1',
+240 silly addNameRange     '3.17.1',
+240 silly addNameRange     '3.18.0',
+240 silly addNameRange     '3.18.1',
+240 silly addNameRange     '3.19.0',
+240 silly addNameRange     '3.20.0',
+240 silly addNameRange     '3.21.0',
+240 silly addNameRange     '3.21.1',
+240 silly addNameRange     '3.22.0',
+240 silly addNameRange     '3.22.1',
+240 silly addNameRange     '3.22.2',
+240 silly addNameRange     '3.23.0',
+240 silly addNameRange     '3.24.0',
+240 silly addNameRange     '3.25.0',
+240 silly addNameRange     '3.26.0',
+240 silly addNameRange     '3.27.0',
+240 silly addNameRange     '3.28.0',
+240 silly addNameRange     '3.29.0' ] ]
+241 silly addNamed yargs@3.29.0
+242 verbose addNamed "3.29.0" is a plain semver version for yargs
+243 verbose get https://registry.npmjs.org/serve-static not expired, no request
+244 silly addNameRange number 2 { name: 'serve-static', range: '>1.6.3', hasData: true }
+245 silly addNameRange versions [ 'serve-static',
+245 silly addNameRange   [ '1.0.0',
+245 silly addNameRange     '1.0.1',
+245 silly addNameRange     '1.0.2',
+245 silly addNameRange     '1.0.3',
+245 silly addNameRange     '1.0.4',
+245 silly addNameRange     '1.1.0',
+245 silly addNameRange     '1.2.0',
+245 silly addNameRange     '1.2.1',
+245 silly addNameRange     '1.2.2',
+245 silly addNameRange     '1.2.3',
+245 silly addNameRange     '1.3.0',
+245 silly addNameRange     '1.3.1',
+245 silly addNameRange     '1.3.2',
+245 silly addNameRange     '1.4.0',
+245 silly addNameRange     '1.4.1',
+245 silly addNameRange     '1.4.2',
+245 silly addNameRange     '1.4.3',
+245 silly addNameRange     '1.4.4',
+245 silly addNameRange     '1.5.0',
+245 silly addNameRange     '1.5.1',
+245 silly addNameRange     '1.5.2',
+245 silly addNameRange     '1.5.3',
+245 silly addNameRange     '1.5.4',
+245 silly addNameRange     '1.6.0',
+245 silly addNameRange     '1.6.1',
+245 silly addNameRange     '1.6.2',
+245 silly addNameRange     '1.6.3',
+245 silly addNameRange     '1.6.4',
+245 silly addNameRange     '1.7.0',
+245 silly addNameRange     '1.7.1',
+245 silly addNameRange     '1.7.2',
+245 silly addNameRange     '1.8.0',
+245 silly addNameRange     '1.8.1',
+245 silly addNameRange     '1.6.5',
+245 silly addNameRange     '1.9.0',
+245 silly addNameRange     '1.9.1',
+245 silly addNameRange     '1.9.2',
+245 silly addNameRange     '1.9.3',
+245 silly addNameRange     '1.10.0' ] ]
+246 silly addNamed serve-static@1.10.0
+247 verbose addNamed "1.10.0" is a plain semver version for serve-static
+248 silly cache afterAdd font-awesome@4.4.0
+249 verbose afterAdd /Users/lucmichalski/.npm/font-awesome/4.4.0/package/package.json not in flight; writing
+250 silly cache afterAdd jquery@2.1.4
+251 verbose afterAdd /Users/lucmichalski/.npm/jquery/2.1.4/package/package.json not in flight; writing
+252 silly cache afterAdd react@0.14.2
+253 verbose afterAdd /Users/lucmichalski/.npm/react/0.14.2/package/package.json not in flight; writing
+254 silly cache afterAdd express@4.13.3
+255 verbose afterAdd /Users/lucmichalski/.npm/express/4.13.3/package/package.json not in flight; writing
+256 silly cache afterAdd uglifyify@3.0.1
+257 verbose afterAdd /Users/lucmichalski/.npm/uglifyify/3.0.1/package/package.json not in flight; writing
+258 silly cache afterAdd bootstrap-sass@3.3.5
+259 verbose afterAdd /Users/lucmichalski/.npm/bootstrap-sass/3.3.5/package/package.json not in flight; writing
+260 silly cache afterAdd reactify@1.1.1
+261 verbose afterAdd /Users/lucmichalski/.npm/reactify/1.1.1/package/package.json not in flight; writing
+262 silly cache afterAdd html-minifier@1.0.0
+263 verbose afterAdd /Users/lucmichalski/.npm/html-minifier/1.0.0/package/package.json not in flight; writing
+264 silly cache afterAdd yargs@3.29.0
+265 verbose afterAdd /Users/lucmichalski/.npm/yargs/3.29.0/package/package.json not in flight; writing
+266 silly cache afterAdd serve-static@1.10.0
+267 verbose afterAdd /Users/lucmichalski/.npm/serve-static/1.10.0/package/package.json not in flight; writing
+268 silly cache afterAdd jest-cli@0.6.1
+269 verbose afterAdd /Users/lucmichalski/.npm/jest-cli/0.6.1/package/package.json not in flight; writing
+270 silly cache afterAdd node-sass@3.4.1
+271 verbose afterAdd /Users/lucmichalski/.npm/node-sass/3.4.1/package/package.json not in flight; writing
+272 silly cache afterAdd react-tools@0.13.3
+273 verbose afterAdd /Users/lucmichalski/.npm/react-tools/0.13.3/package/package.json not in flight; writing
+274 silly cache afterAdd browserify@12.0.1
+275 verbose afterAdd /Users/lucmichalski/.npm/browserify/12.0.1/package/package.json not in flight; writing
+276 verbose afterAdd /Users/lucmichalski/.npm/html-minifier/1.0.0/package/package.json written
+277 verbose afterAdd /Users/lucmichalski/.npm/font-awesome/4.4.0/package/package.json written
+278 verbose afterAdd /Users/lucmichalski/.npm/express/4.13.3/package/package.json written
+279 verbose afterAdd /Users/lucmichalski/.npm/react/0.14.2/package/package.json written
+280 verbose afterAdd /Users/lucmichalski/.npm/yargs/3.29.0/package/package.json written
+281 verbose afterAdd /Users/lucmichalski/.npm/jquery/2.1.4/package/package.json written
+282 verbose afterAdd /Users/lucmichalski/.npm/bootstrap-sass/3.3.5/package/package.json written
+283 verbose afterAdd /Users/lucmichalski/.npm/node-sass/3.4.1/package/package.json written
+284 verbose afterAdd /Users/lucmichalski/.npm/uglifyify/3.0.1/package/package.json written
+285 verbose afterAdd /Users/lucmichalski/.npm/jest-cli/0.6.1/package/package.json written
+286 verbose afterAdd /Users/lucmichalski/.npm/serve-static/1.10.0/package/package.json written
+287 verbose afterAdd /Users/lucmichalski/.npm/reactify/1.1.1/package/package.json written
+288 verbose afterAdd /Users/lucmichalski/.npm/react-tools/0.13.3/package/package.json written
+289 verbose afterAdd /Users/lucmichalski/.npm/browserify/12.0.1/package/package.json written
+290 verbose stack Error: No compatible version found: react-router@'>1.0.0-rc3'
+290 verbose stack Valid install targets:
+290 verbose stack ["0.0.0","0.0.1","0.4.0","0.4.1","0.4.2","0.5.0","0.5.1","0.5.2","0.5.3","0.6.0","0.6.1","0.7.0","0.8.0","0.9.0","0.9.1","0.9.2","0.9.3","0.9.4","0.9.5","0.10.0","0.10.1","0.10.2","0.11.0","0.11.1","0.11.2","0.11.3","0.11.4","0.11.5","0.11.6","0.12.0","0.12.1","0.12.2","0.12.3","0.12.4","0.13.0","0.13.1","0.13.2","0.13.3","1.0.0-alpha1","1.0.0-alpha2","1.0.0-beta1","1.0.0-beta2","1.0.0-beta3","1.0.0-beta4","1.0.0-rc1","0.13.4","1.0.0-rc2","1.0.0-rc3"]
+290 verbose stack
+290 verbose stack     at installTargetsError (/usr/local/lib/node_modules/npm/lib/cache/add-named.js:284:12)
+290 verbose stack     at next (/usr/local/lib/node_modules/npm/lib/cache/add-named.js:262:19)
+290 verbose stack     at setData (/usr/local/lib/node_modules/npm/lib/cache/add-named.js:236:5)
+290 verbose stack     at RES (/usr/local/lib/node_modules/npm/node_modules/inflight/inflight.js:23:14)
+290 verbose stack     at f (/usr/local/lib/node_modules/npm/node_modules/once/once.js:17:25)
+290 verbose stack     at fixName (/usr/local/lib/node_modules/npm/lib/cache/add-named.js:29:5)
+290 verbose stack     at CachingRegistryClient.get_ (/usr/local/lib/node_modules/npm/lib/cache/caching-client.js:125:16)
+290 verbose stack     at /usr/local/lib/node_modules/npm/lib/cache/caching-client.js:91:14
+290 verbose stack     at /usr/local/lib/node_modules/npm/node_modules/graceful-fs/graceful-fs.js:76:16
+290 verbose stack     at FSReqWrap.readFileAfterClose [as oncomplete] (fs.js:380:3)
+291 verbose cwd /Users/lucmichalski/.go/src/github.com/blippar/kube-vproxy/kube-dashboards
+292 error Darwin 14.5.0
+293 error argv "/usr/local/Cellar/node/4.2.1/bin/node" "/usr/local/bin/npm" "install"
+294 error node v4.2.1
+295 error npm  v2.14.7
+296 error code ETARGET
+297 error notarget No compatible version found: react-router@'>1.0.0-rc3'
+297 error notarget Valid install targets:
+297 error notarget ["0.0.0","0.0.1","0.4.0","0.4.1","0.4.2","0.5.0","0.5.1","0.5.2","0.5.3","0.6.0","0.6.1","0.7.0","0.8.0","0.9.0","0.9.1","0.9.2","0.9.3","0.9.4","0.9.5","0.10.0","0.10.1","0.10.2","0.11.0","0.11.1","0.11.2","0.11.3","0.11.4","0.11.5","0.11.6","0.12.0","0.12.1","0.12.2","0.12.3","0.12.4","0.13.0","0.13.1","0.13.2","0.13.3","1.0.0-alpha1","1.0.0-alpha2","1.0.0-beta1","1.0.0-beta2","1.0.0-beta3","1.0.0-beta4","1.0.0-rc1","0.13.4","1.0.0-rc2","1.0.0-rc3"]
+297 error notarget
+297 error notarget This is most likely not a problem with npm itself.
+297 error notarget In most cases you or one of your dependencies are requesting
+297 error notarget a package version that doesn't exist.
+297 error notarget
+297 error notarget It was specified as a dependency of 'vulcand-dashboard'
+298 verbose exit [ 1, true ]

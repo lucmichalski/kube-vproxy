@@ -1,0 +1,33 @@
+{
+  "name": "vulcand-dashboard",
+  "private": true,
+  "main": "src/dashboard.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "dependencies": {
+    "bootstrap-sass": ">3.2.0",
+    "font-awesome": ">4.2.0",
+    "jquery": ">2.1.1",
+    "react": ">0.11.1",
+    "react-router": ">1.0.0-rc3"
+  },
+  "devDependencies": {
+    "browserify": ">5.11.0",
+    "express": ">4.9.5",
+    "html-minifier": ">0.6.8",
+    "jest-cli": ">0.1.18",
+    "node-sass": ">0.9.3",
+    "react-tools": ">0.11.2",
+    "reactify": ">0.14.0",
+    "serve-static": ">1.6.3",
+    "uglifyify": ">2.5.0",
+    "yargs": ">1.3.1"
+  },
+  "jest": {
+    "scriptPreprocessor": "<rootDir>/support/preprocessor.js",
+    "unmockedModulePathPatterns": [
+      "<rootDir>/node_modules/react"
+    ]
+  }
+}

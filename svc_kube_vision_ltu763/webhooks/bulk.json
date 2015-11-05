@@ -1,0 +1,16 @@
+{
+    "scripts": [
+        {
+            "command": "curl",
+            "args": [
+                "-h"
+            ]
+        },
+        {
+            "command": "echo",
+            "args": [
+            "hello"
+            ]
+        }
+    ]
+}

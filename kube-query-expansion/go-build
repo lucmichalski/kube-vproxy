@@ -1,0 +1,56 @@
+#!/bin/sh
+
+# This script use a slightly modified version of the binary naming method of the official golang image.
+# https://github.com/docker-library/golang/blob/396f40c6188614c7acd6d8299a0ea71030a056a6/1.4/go-wrapper
+
+set -e
+
+## Alpine deps
+apk add --update -t build-deps go git mercurial bzr gcc musl-dev
+apk add -u musl
+
+## GO Magic
+goDir="$(go list -e -f '{{.ImportComment}}' 2>/dev/null || true)"
+
+if [ -z "$goDir" -a -s .godir ]; then
+    goDir="$(cat .godir)"
+fi
+
+dir="$(pwd -P)"
+if [ "$goDir" ]; then
+    goPath="${GOPATH%%:*}" # this just grabs the first path listed in GOPATH, if there are multiple (which is the detection logic "go get" itself uses, too)
+    goDirPath="$goPath/src/$goDir"
+    mkdir -p "$(dirname "$goDirPath")"
+    if [ ! -e "$goDirPath" ]; then
+        ln -sfv "$dir" "$goDirPath"
+    elif [ ! -L "$goDirPath" ]; then
+        echo >&2 "error: $goDirPath already exists but is unexpectedly not a symlink!"
+        exit 1
+    fi
+    goBin="/bin/$(basename "$goDir")"
+else
+    goBin="/bin/$(basename "$dir")" # likely "app"
+fi
+
+if [ -d "Godeps" ]; then
+    go get github.com/tools/godep
+    godep restore
+fi
+
+goFlags=""
+if [ -s GOFLAGS ]; then
+    . ./GOFLAGS
+fi
+
+go get -v -d
+go build -ldflags " \
+    -X main.Version $1 \
+    ${goFlags} \
+" -o $goBin
+
+# Store the binary name in a temp file for the go-run script
+echo $goBin > /tmp/go-bin-name
+
+## Cleanup Alpine deps
+apk del --purge build-deps
+rm -rf /go /var/cache/apk/*

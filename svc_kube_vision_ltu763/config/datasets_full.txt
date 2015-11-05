@@ -1,0 +1,6 @@
+government_permit_type,/datasets/bulk/ltu76/governement/documents/passportindex.org,passportindex.org.zip,passportindex.org,3,/world/governement/document
+organization_brands_logo_logopedia_org,/datasets/bulk/ltu76/organization/brands/logos/logopedia.org,logopedia.org.zip,logopedia.org,3,/world/orginization/brands/logopedia.org
+creative_work_movies_amazon_instant_video,/datasets/bulk/ltu76/creative_work/instant_video/amazon.com-aiv,amazon.com-aiv.zip,amazon.com-aiv,3,/world/creative/vod_movies_tv
+creative_work_books_goodreads_com,/datasets/bulk/ltu76/creative_work/books/goodreads.com,goodreads.com.zip,goodreads.com,3,/world/creative/books/goodreads.com
+person_comedian,/datasets/bulk/ltu76/person,comedian.zip,person,3,/person/comedian/english
+creative_work_artwork_tate_gov_uk,/datasets/bulk/ltu76/creative_work/artworks/tate.org.uk,tate.gov.uk.zip,tate.gov.uk,3,/world/creative/art/gb/london

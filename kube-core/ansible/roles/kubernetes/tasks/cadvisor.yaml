@@ -1,0 +1,8 @@
+---
+- name: Create cadvisor service
+  template: src=cadvisor.service.ansible
+            dest=/etc/systemd/system/cadvisor.service
+  sudo: yes
+  notify:
+    - reload systemd
+    - restart cadvisor
