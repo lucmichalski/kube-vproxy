@@ -341,7 +341,7 @@ func (a *KubeOCRHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	b := batch.New()
 	b.SetMaxConcurrent(a.cfg.Concurrency)
-	b.AddEntry("http://192.168.99.100:9292/ocr-file-upload", "POST", "tessaract", imgStr, batch.Callback(func(url string, method string, vengine string, payload string, body string, data batch.CallbackData, err error) {
+	b.AddEntry("http://localhost:9292/ocr-file-upload", "POST", "tessaract", imgStr, batch.Callback(func(url string, method string, vengine string, payload string, body string, data batch.CallbackData, err error) {
 		if err != nil {
 			log.Println("Result from: ", url)
 		}

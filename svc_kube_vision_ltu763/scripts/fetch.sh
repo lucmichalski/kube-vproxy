@@ -16,7 +16,7 @@ echo Executing in $(pwd)
 echo "Access Key: $ACCESS_KEY"
 echo "Secret Key: $SECRET_KEY"
 echo "Bucket Name: ${BUCKET_NAME}"
-echo "Path on Bucket: s3://${BUCKET_NAME}/datasets/models/datasets/utils/ltuengine76-core/"
+echo "Path on Bucket: s3://${BUCKET_NAME}/datasets/utils/ltuengine76-core/"
 cd /opt
 
 echo ""
@@ -26,7 +26,7 @@ cd /opt
 echo ""
 echo "===================="
 echo "Sync to get the installation files and dependencies"
-s3cmd --config=/.s3cfg --access_key="$ACCESS_KEY" --secret_key="$SECRET_KEY" sync s3://${BUCKET_NAME}/datasets/utils/ltuengine76-core/ /opt
+s3cmd --config=/.s3cfg --access_key="$ACCESS_KEY" --secret_key="$SECRET_KEY" sync s3://${BUCKET_NAME}/datasets/utils/ltuengine76-core/ /opt/
 ls -l /opt
 
 echo ""

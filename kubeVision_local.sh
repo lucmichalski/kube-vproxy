@@ -14,11 +14,11 @@ MIDDLEWARE_DISPATCHER_NAME="kubeDispatcher"
 MIDDLEWARE_OCR_NAME="kubeOCR"
 
 # Kube VMX v1.x hostname + Port
-VMX1_HOSTNAME=kube-master.blippar-vision.com
+VMX1_HOSTNAME=localhost
 VMX1_PORT=3003
 
 # Kube VMX v2.x hostname + Port
-VMX2_HOSTNAME=kube-master.blippar-vision.com
+VMX2_HOSTNAME=localhost
 VMX2_PORT=3001
 
 # Kube LTU v7.6.3 hostname + Port
@@ -46,7 +46,7 @@ CONTEXT="Mixed visual analysis"
 # Will be fck gangsta more dynamic soon ! Chaaaaataaaa !
 TEMPLATE=$(cat ./kube-query-expansion/templates/vmx1.json | base64)
 cat ./kube-query-expansion/templates/vmx1.json | jq .
-SESSIONS=`curl http://$VMX1_HOSTNAME:$VMX1_PORT/session | jq -r '.data[] .id'`
+SESSIONS=`curl -s http://$VMX1_HOSTNAME:$VMX1_PORT/session | jq -r '.data[] .id'`
 ENDPOINTS=""
 for i in $(echo $SESSIONS | tr " " "\n")
 do
@@ -55,7 +55,7 @@ do
 done
 QUEUE=$(echo -n $ENDPOINTS | sed "s/\(.*\).\{1\}/\1/")
 
-SESSIONS=`curl http://$VMX2_HOSTNAME:$VMX2_PORT/sessions | jq -r '.data[] .id'`
+SESSIONS=`curl -s http://$VMX2_HOSTNAME:$VMX2_PORT/sessions | jq -r '.data[] .id'`
 ENDPOINTS=""
 for i in $(echo $SESSIONS | tr " " "\n")
 do
@@ -65,13 +65,15 @@ done
 QUEUE+="|"
 QUEUE+=$(echo -n $ENDPOINTS | sed "s/\(.*\).\{1\}/\1/")
 
-curl -s -X POST -H "Content-Type: application/json" -d "{\"Backend\": {\"Id\":\"bck_"$MODEL"\",\"Type\":\"http\"}, \"BackendSettings\": {\"Id\": \"\"} }" http://192.168.99.100:8182/v2/backends | jq .
+echo $QUEUE
 
-curl -s -X POST -H "Content-Type: application/json" -d "{\"Server\": {\"Id\":\"srv_"$MODEL"\",\"URL\":\"http://kube-master.blippar-vision.com\"}}" "http://192.168.99.100:8182/v2/backends/bck_$MODEL/servers"  | jq .
+curl -s -X POST -H "Content-Type: application/json" -d "{\"Backend\": {\"Id\":\"bck_"$MODEL"\",\"Type\":\"http\"}, \"BackendSettings\": {\"Id\": \"\"} }" http://localhost:8182/v2/backends | jq .
 
-curl -s -X POST -H "Content-Type: application/json" -d "{\"Frontend\": {\"Id\":\"front_"$MODEL"\",\"Type\":\"http\",\"BackendId\": \"bck_"$MODEL"\",\"Route\": \"PathRegexp(\\\"$ENDPOINT_MIDDLEWARE.*\\\")\"}}" http://192.168.99.100:8182/v2/frontends  | jq .
+curl -s -X POST -H "Content-Type: application/json" -d "{\"Server\": {\"Id\":\"srv_"$MODEL"\",\"URL\":\"http://cyclopus.blippar.com\"}}" "http://localhost:8182/v2/backends/bck_$MODEL/servers" | jq .
 
-curl -s -X POST -H "Content-Type: application/json" http://192.168.99.100:8182/v2/frontends/front_kubeFactor/middlewares \
+curl -s -X POST -H "Content-Type: application/json" -d "{\"Frontend\": {\"Id\":\"front_"$MODEL"\",\"Type\":\"http\",\"BackendId\": \"bck_"$MODEL"\",\"Route\": \"PathRegexp(\\\"$ENDPOINT_MIDDLEWARE.*\\\")\"}}" http://localhost:8182/v2/frontends  | jq .
+
+curl -s -X POST -H "Content-Type: application/json" http://localhost:8182/v2/frontends/front_kubeFactor/middlewares \
 	-d "{\"Middleware\": {
          \"Id\": \"front_kubeFactor_VMX\",
          \"Priority\":1,
@@ -95,12 +97,12 @@ curl -s -X POST -H "Content-Type: application/json" http://192.168.99.100:8182/v
 	        \"MinScore\": 0.2,
 	        \"Discovery\": \"BATCH\",
 	        \"ActiveEngines\": \"vmx2,vmx1\",
-			\"Debug\": 1
+		\"Debug\": 1
         }
     }
 }" | jq .
 
- curl -s -X POST -H "Content-Type: application/json" http://192.168.99.100:8182/v2/frontends/front_kubeFactor/middlewares \
+curl -s -X POST -H "Content-Type: application/json" http://localhost:8182/v2/frontends/front_kubeFactor/middlewares \
      -d '{"Middleware": {
          "Id": "front_kubeFactor_OCR",
          "Priority":1,
@@ -115,8 +117,8 @@ curl -s -X POST -H "Content-Type: application/json" http://192.168.99.100:8182/v
 	        "Concurrency": 50,
 	        "Transformation": "",
 	        "DetectDarkness": 0,
-	        "Chained": 0,
-			"OcrPreProcessors": "stroke-width-transform=1",
+	        "Chained": 1,
+		"OcrPreProcessors": "stroke-width-transform=1",
 	        "OcrEngine": "engine=tesseract",
 	        "EntitiesExtractor": "kube-aida",
 	        "EntitiesDiscovery": 0,
@@ -125,7 +127,7 @@ curl -s -X POST -H "Content-Type: application/json" http://192.168.99.100:8182/v
     }
 }'  | jq .
 
-curl -s -X POST -H "Content-Type: application/json" http://192.168.99.100:8182/v2/frontends/front_kubeFactor/middlewares \
+curl -v -X POST -H "Content-Type: application/json" http://localhost:8182/v2/frontends/front_kubeFactor/middlewares \
      -d '{"Middleware": {
          "Id": "front_kubeFactor_Connect",
          "Priority": 2,
@@ -143,7 +145,7 @@ echo "Count: $(echo -n "$files" | wc -l)"
 SESSIONID="KUBE-QUERY-EXPANSION"
 echo "$files" | while read file; do
   echo "$file"
-  curl -s -X POST -F "file"=@$file -F "region"="us" -F "sessionId"="$SESSIONID" http://192.168.99.100:81/vmx | jq .
+  curl -v -X POST -F "file"=@$file -F "region"="us" -F "sessionId"="$SESSIONID" http://localhost/vmx | jq .
 done
 
 files="$(find -L "./kube-assets/ocr_text" -type f)"
@@ -151,5 +153,5 @@ echo "Count: $(echo -n "$files" | wc -l)"
 SESSIONID="KUBE-QUERY-EXPANSION"
 echo "$files" | while read file; do
   echo "$file"
-  curl -s -X POST -F "file"=@$file -F "region"="us" -F "sessionId"="$SESSIONID" http://192.168.99.100:81/vmx  | jq .
+  curl -v -X POST -F "file"=@$file -F "region"="us" -F "sessionId"="$SESSIONID" http://localhost/vmx  | jq .
 done
