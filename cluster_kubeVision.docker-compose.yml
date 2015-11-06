@@ -59,7 +59,7 @@ svc_kube_discovery_vproxy:
     - svc_kube_storage_etcd
   ports:
     - "8182:8182"
-    - "80:80"
+    - "81:80"
   command: "-apiInterface=0.0.0.0 -interface=0.0.0.0 -etcd=http://svc_kube_storage_etcd:4001 -etcdKey=vulcand -port=80 -apiPort=8182"
 
 # Start the ETCD2 - Web UI browser
@@ -81,55 +81,31 @@ svc_kube_vproxy_etcd_viewer:
   ports:
     - "3335:8080"
 
-svc_kube_vision_ltu763:
-  build: svc_kube_vision_ltu763
-  links:
-    - svc_kube_discovery_vproxy
-  hostname: svc_kube_vision_ltu763
-  ports:
-    - "8888:8888"
-    - "8889:8080"
-    - "7789:7789"
+#svc_kube_vision_ltu763:
+#  build: svc_kube_vision_ltu763
+#  links:
+#    - svc_kube_discovery_vproxy
+#  hostname: svc_kube_vision_ltu763
+#  ports:
+#    - "8888:8888"
+#    - "8889:8080"
+#    - "7789:7789"
 
-svc_kube_vision_opencv_libccv:
-  build: svc_kube_vision_opencv_libccv
-  links:
-    - svc_kube_discovery_vproxy
-  hostname: svc_kube_vision_opencv_libccv
-  expose:
-    - "3350:3350"
+#svc_kube_vision_opencv_libccv:
+#  build: svc_kube_vision_opencv_libccv
+#  links:
+#    - svc_kube_discovery_vproxy
+#  hostname: svc_kube_vision_opencv_libccv
+#  expose:
+#    - "3350:3350"
 
-svc_kube_knowledge_aida:
-  build: svc_kube_knowledge_aida
-  links:
-    - svc_kube_discovery_vproxy
-  hostname: svc_kube_knowledge_aida
-  expose:
-    - "3338:3350"
-
-svc_kube_vision_semantic_theia:
-  build: svc_kube_vision_semantic_theia
-  links:
-    - svc_kube_discovery_vproxy
-  hostname: svc_kube_vision_semantic_theia
-  expose:
-    - "3337:3350"
-
-svc_kube_vision_openface:
-  build: svc_kube_vision_openface
-  links:
-    - svc_kube_discovery_vproxy
-  hostname: svc_kube_vision_openface
-  expose:
-    - "3334:3350"
-
-svc_kube_vision_opencv_nonfree:
-  build: svc_kube_vision_opencv_nonfree
-  links:
-    - svc_kube_discovery_vproxy
-  hostname: svc_kube_vision_opencv3_nonfree
-  expose:
-    - "3333:3350"
+#svc_kube_vision_opencv_nonfree:
+#  build: svc_kube_vision_opencv_nonfree
+#  links:
+#    - svc_kube_discovery_vproxy
+#  hostname: svc_kube_vision_opencv3_nonfree
+#  expose:
+#    - "3333:3350"
 
 # Start the redis store for caching visual logs
 #svc_kube_storage_cache:
@@ -146,73 +122,3 @@ svc_kube_vision_opencv_nonfree:
 #    - "7005:7005"
 #    - "7006:7006"
 #    - "7007:7007"
-
-# Kube Vision - Elasticsearch v1.7.2
-svc_kube_metrics_elastic:
-  build: svc_kube_metrics_elastic
-  volumes:
-    - /opt/kubeVision/data/:/var/lib/elasticsearch
-  restart: always
-
-# Kube Vision - Logstash 1.5.4
-svc_kube_metrics_logstash:
-  build: svc_kube_metrics_logstash
-  volumes:
-    - /opt/kubeVision/logs:/opt/logs
-    - ./logstash/conf.d:/etc/logstash/conf.d
-    - ./logstash/mappings:/etc/logstash/mappings
-    - ./logstash/patterns:/opt/logstash/patterns_extra
-  ports:
-    - "5000:5000"
-  links:
-    - svc_kube_metrics_elastic
-  restart: always
-
-# Kube Vision - Kibana 4
-svc_kube_metrics_kibana:
-  build: svc_kube_metrics_kibana
-  links:
-    - svc_kube_metrics_elastic
-  restart: always
-
-# Kube Vision - Nginx Reverse Proxy for Kibana 4
-svc_kube_gateway_proxy:
-  build: svc_kube_gateway_proxy
-  ports:
-    - "1443:443"
-  links:
-    - svc_kube_metrics_kibana
-  restart: always
-
-# Kube Vision - Kube Forwarder
-svc_kube_metrics_forwarder:
-  build: svc_kube_metrics_forwarder
-  links:
-    - svc_kube_metrics_logstash
-  volumes:
-    - /opt/kubeVision/data/logs:/opt/logs
-    - /usr/local/bin:/target
-
-# Kube Vision - Haddop Partition
-svc_kube_storage_hdfs:
-  build: svc_kube_storage_hdfs
-  command: /etc/bootstrap.sh -d -bash
-
-# Kube Vision - Kube Graph / Mazrunner
-svc_kube_metrics_mazerunner:
-  build: svc_kube_metrics_mazerunner
-  links:
-   - svc_kube_storage_hdfs
-
-# Kube Vision - Kube Graph / Neo4j
-svc_kube_metrics_graphdb:
-  build: svc_kube_metrics_graphdb
-  ports:
-   - "7474:7474"
-   - "1337:1337"
-  volumes:
-   - /opt/kubeVision/logs:/opt/logs
-   - /opt/kubeVision/data:/opt/data
-  links:
-   - svc_kube_metrics_mazerunner
-   - svc_kube_storage_hdfs
