@@ -429,22 +429,28 @@ func (a *KubeDispatcherHandler) ServeHTTP(w http.ResponseWriter, r *http.Request
 				}
 				if score > a.cfg.MinScore {
 					if a.cfg.Debug == 1 {
+						log.Printf("\r\nSTART ===================== %v \r\n", meta)
 						log.Println("Endpoint: ", url)
 						log.Println("EngineType: ", vengine)
 						log.Println("Model: ", meta)
 						log.Println("Score: ", score)
 						log.Println("Output: ", body)
 						log.Println("bb: ", bb)
+						log.Printf("END ===================== %v\r\n", meta)
 					}
-					w.Header().Set("X-Kube-VMXModel", fmt.Sprintf("%v", meta))
-					w.Header().Set("X-Kube-VMX-Score", fmt.Sprintf("%v", score))
+					w.Header().Set("X-Kube-VMX-Model", fmt.Sprintf("%v", meta))
+					w.Header().Set("X-Kube-VMX-Matched", fmt.Sprintf("%f|%v", score, a.cfg.MarkerId))
 					w.Header().Set("X-Kube-MarkerId", fmt.Sprintf("%v", a.cfg.MarkerId))
 				} else {
-					w.Header().Set("X-Kube-VMX-Model", fmt.Sprintf("%v", meta))
-					w.Header().Set("X-Kube-VMX-Score", "0")					
+					modelMissed := fmt.Sprintf("X-Kube-Missed-%v-%v", vengine, meta)
+					w.Header().Set(fmt.Sprintf("%v", modelMissed), fmt.Sprintf("%v", score))
 				}
+
 			}))
 		}
+		endpointsNb := len(endpoints) 
+		w.Header().Set("X-Kube-Bindings", fmt.Sprintf("%v", endpointsNb))
+		log.Println("Disptaching Endpoints Number: ", endpointsNb)
 		b.Run()
 	}
 	a.next.ServeHTTP(w, r)
