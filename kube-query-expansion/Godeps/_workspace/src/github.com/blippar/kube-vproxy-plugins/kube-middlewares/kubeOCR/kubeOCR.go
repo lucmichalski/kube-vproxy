@@ -99,8 +99,11 @@ type Output struct {
 
 // This function will be called each time the request hits the location with this middleware activated
 func (a *KubeOCRHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-    w.WriteHeader(406)
-	w.Header().Set("X-Middleware-Name", "KubeOCR")
+
+	w.Header().Set("X-Middleware-OCR", "KubeOCR")
+
+
+
     //io.WriteString(w, "OCR go")
 	if a.cfg.Chained == 0 {
 		a.next.ServeHTTP(w, r)
@@ -111,7 +114,7 @@ func (a *KubeOCRHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	file, _, err := r.FormFile("file")
 	if err != nil {
-	    w.WriteHeader(403)
+	    
 	    io.WriteString(w, "problem detected")
 		a.next.ServeHTTP(w, r)
 		return
@@ -119,14 +122,14 @@ func (a *KubeOCRHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	img, formatImg, err := image.Decode(file)
 	if err != nil {
-	    w.WriteHeader(403)
+	    
 	    io.WriteString(w, "problem detected")
 		a.next.ServeHTTP(w, r)
 		return
 	}
 
 	if formatImg != "jpeg" {
-	    w.WriteHeader(403)
+	    
 	    io.WriteString(w, "problem detected")
 		a.next.ServeHTTP(w, r)
 		return
@@ -157,7 +160,7 @@ func (a *KubeOCRHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 				sigma, err := strconv.ParseFloat(cmds[1], 64)
 				if err != nil {
 					log.Println("Error while decoding sigma: ", err)
-				    w.WriteHeader(403)
+				    
 				    io.WriteString(w, "problem detected")
 					a.next.ServeHTTP(w, r)
 					return
@@ -168,7 +171,7 @@ func (a *KubeOCRHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 				sigma, err := strconv.ParseFloat(cmds[1], 64)
 				if err != nil {
 					log.Println("Error while decoding sigma: ", err)
-				    w.WriteHeader(403)
+				    
 				    io.WriteString(w, "problem detected")
 					a.next.ServeHTTP(w, r)
 					return
@@ -179,7 +182,7 @@ func (a *KubeOCRHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 				sigma, err := strconv.ParseFloat(cmds[1], 64)
 				if err != nil {
 					log.Println("Error while decoding sigma: ", err)
-				    w.WriteHeader(403)
+				    
 				    io.WriteString(w, "problem detected")
 					a.next.ServeHTTP(w, r)
 					return
@@ -190,7 +193,7 @@ func (a *KubeOCRHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 				sigma, err := strconv.ParseFloat(cmds[1], 64)
 				if err != nil {
 					log.Println("Error while decoding sigma: ", err)
-				    w.WriteHeader(403)
+				    
 				    io.WriteString(w, "problem detected")
 					a.next.ServeHTTP(w, r)
 					return
@@ -201,7 +204,7 @@ func (a *KubeOCRHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 				sigma, err := strconv.ParseFloat(cmds[1], 64)
 				if err != nil {
 					log.Println("Error while decoding sigma: ", err)
-				    w.WriteHeader(403)
+				    
 				    io.WriteString(w, "problem detected")
 					a.next.ServeHTTP(w, r)
 					return
@@ -212,7 +215,7 @@ func (a *KubeOCRHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 				midpoint, err := strconv.ParseFloat(cmds[1], 64)
 				if err != nil {
 					log.Println("Error while decoding sigma: ", err)
-				    w.WriteHeader(403)
+				    
 				    io.WriteString(w, "problem detected")
 					a.next.ServeHTTP(w, r)
 					return
@@ -220,7 +223,7 @@ func (a *KubeOCRHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 				factor, err := strconv.ParseFloat(cmds[2], 64)
 				if err != nil {
 					log.Println("Error while decoding sigma: ", err)
-				    w.WriteHeader(403)
+				    
 				    io.WriteString(w, "problem detected")
 					a.next.ServeHTTP(w, r)
 					return
@@ -243,7 +246,7 @@ func (a *KubeOCRHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 				x0, err := strconv.ParseInt(cmds[1], 0, 32)
 				if err != nil {
 					log.Println("Error while decoding x0 coordinates: ", err)
-				    w.WriteHeader(403)
+				    
 				    io.WriteString(w, "problem detected")
 					a.next.ServeHTTP(w, r)
 					return
@@ -251,7 +254,7 @@ func (a *KubeOCRHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 				y0, err := strconv.ParseInt(cmds[2], 0, 32)
 				if err != nil {
 					log.Println("Error while decoding y0 coordinates: ", err)
-				    w.WriteHeader(403)
+				    
 				    io.WriteString(w, "problem detected")
 					a.next.ServeHTTP(w, r)
 					return
@@ -259,7 +262,7 @@ func (a *KubeOCRHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 				x1, err := strconv.ParseInt(cmds[3], 0, 32)
 				if err != nil {
 					log.Println("Error while decoding x1 coordinates: ", err)
-				    w.WriteHeader(403)
+				    
 				    io.WriteString(w, "problem detected")
 					a.next.ServeHTTP(w, r)
 					return
@@ -267,7 +270,7 @@ func (a *KubeOCRHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 				y1, err := strconv.ParseInt(cmds[4], 0, 32)
 				if err != nil {
 					log.Println("Error while decoding the y1 coordinates: ", err)
-				    w.WriteHeader(403)
+				    
 				    io.WriteString(w, "problem detected")
 					a.next.ServeHTTP(w, r)
 					return
@@ -278,7 +281,7 @@ func (a *KubeOCRHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 				width, err := strconv.ParseInt(cmds[1], 0, 32)
 				if err != nil {
 					log.Println("Error while decoding the width value: ", err)
-				    w.WriteHeader(403)
+				    
 				    io.WriteString(w, "problem detected")
 					a.next.ServeHTTP(w, r)
 					return
@@ -286,7 +289,7 @@ func (a *KubeOCRHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 				height, err := strconv.ParseInt(cmds[1], 0, 32)
 				if err != nil {
 					log.Println("Error while decoding the height value: ", err)
-				    w.WriteHeader(403)
+				    
 				    io.WriteString(w, "problem detected")
 					a.next.ServeHTTP(w, r)
 					return
@@ -329,7 +332,7 @@ func (a *KubeOCRHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	buf := bytes.NewBuffer(nil)
 	if err := jpeg.Encode(buf, dstImage, nil); err != nil {
 		log.Println("Problem while trying to encode")
-	    w.WriteHeader(403)
+	    
 	    io.WriteString(w, "problem detected")
 		a.next.ServeHTTP(w, r)
 		return
@@ -341,7 +344,6 @@ func (a *KubeOCRHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	b := batch.New()
 	b.SetMaxConcurrent(a.cfg.Concurrency)
-
 	b.AddEntry("http://192.168.99.100:9292/ocr-file-upload", "POST", "tessaract", imgStr, batch.Callback(func(url string, method string, vengine string, payload string, body string, data batch.CallbackData, err error) {
 		if err != nil {
 			log.Println("Result from: ", url)
@@ -352,16 +354,11 @@ func (a *KubeOCRHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 				log.Println("Text extracted:", len(body))
 				log.Println("Cumulated Characters Length (With Spaces):\n", body)
 			}
-			w.Header().Set("X-Kube-Engine", "OCR")
-			w.Header().Set("X-Kube-Score", string(len(body)))
-			fmt.Fprintln(w, string("====START===="))
-			fmt.Fprintln(w, string(body))
-			fmt.Fprintln(w, string("====END===="))
+			w.Header().Set("X-Kube-OCR-result", string(len(body)))
 		}
 	}))
 
 	b.Run()
-    w.WriteHeader(404)
 	a.next.ServeHTTP(w, r)
 }
 

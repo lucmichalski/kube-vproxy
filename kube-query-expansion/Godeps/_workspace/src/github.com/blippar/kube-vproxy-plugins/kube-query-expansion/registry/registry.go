@@ -17,6 +17,8 @@ import (
 	
 	"github.com/blippar/kube-vproxy/kube-middlewares/kubeOCR"
 	
+	"github.com/blippar/kube-vproxy/kube-middlewares/kubeConnect"
+
 )
 
 func GetRegistry() (*plugin.Registry, error) {

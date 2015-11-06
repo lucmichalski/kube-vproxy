@@ -99,8 +99,8 @@ func (b *bufferWriter) WriteHeader(code int) {
 
 // This function will be called each time the request hits the location with this middleware activated
 func (a *KubeDispatcherHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-    w.WriteHeader(406)
-	w.Header().Set("X-Middleware-Name", "KubeDispatcher")
+
+	w.Header().Set("X-Middleware-VMX", "KubeDispatcher")
 	if a.cfg.Chained == 0 {
 		a.next.ServeHTTP(w, r)
 		return
@@ -111,7 +111,7 @@ func (a *KubeDispatcherHandler) ServeHTTP(w http.ResponseWriter, r *http.Request
 
 	file, _, err := r.FormFile("file")
 	if err != nil {
-	    w.WriteHeader(403)
+	    
 	    io.WriteString(w, "problem detected")
 		a.next.ServeHTTP(w, r)
 		return
@@ -119,14 +119,14 @@ func (a *KubeDispatcherHandler) ServeHTTP(w http.ResponseWriter, r *http.Request
 
 	img, formatImg, err := image.Decode(file)
 	if err != nil {
-	    w.WriteHeader(403)
+	    
 	    io.WriteString(w, "problem detected")
 		a.next.ServeHTTP(w, r)
 		return
 	}
 
 	if formatImg != "jpeg" {
-	    w.WriteHeader(403)
+	    
 	    io.WriteString(w, "problem detected")
 		a.next.ServeHTTP(w, r)
 		return
@@ -155,7 +155,7 @@ func (a *KubeDispatcherHandler) ServeHTTP(w http.ResponseWriter, r *http.Request
 				sigma, err := strconv.ParseFloat(cmds[1], 64)
 				if err != nil {
 					log.Println("Error while decoding sigma: ", err)
-				    w.WriteHeader(403)
+				    
 				    io.WriteString(w, "problem detected")
 					a.next.ServeHTTP(w, r)
 					return
@@ -165,7 +165,7 @@ func (a *KubeDispatcherHandler) ServeHTTP(w http.ResponseWriter, r *http.Request
 			if cmds[0] == "Sharpen" {
 				sigma, err := strconv.ParseFloat(cmds[1], 64)
 				if err != nil {
-					w.WriteHeader(444)
+					
 					w.Header().Set("KubeVision-VMX-status", "OK")
 					log.Println("Error while decoding sigma: ", err)
 					a.next.ServeHTTP(w, r)
@@ -176,7 +176,7 @@ func (a *KubeDispatcherHandler) ServeHTTP(w http.ResponseWriter, r *http.Request
 			if cmds[0] == "AdjustGamma" {
 				sigma, err := strconv.ParseFloat(cmds[1], 64)
 				if err != nil {
-					w.WriteHeader(444)
+					
 					w.Header().Set("KubeVision-VMX-status", "OK")
 					log.Println("Error while decoding sigma: ", err)
 					a.next.ServeHTTP(w, r)
@@ -187,7 +187,7 @@ func (a *KubeDispatcherHandler) ServeHTTP(w http.ResponseWriter, r *http.Request
 			if cmds[0] == "AdjustContrast" {
 				sigma, err := strconv.ParseFloat(cmds[1], 64)
 				if err != nil {
-					w.WriteHeader(444)
+					
 					w.Header().Set("KubeVision-VMX-status", "OK")
 					log.Println("Error while decoding sigma: ", err)
 					a.next.ServeHTTP(w, r)
@@ -197,7 +197,7 @@ func (a *KubeDispatcherHandler) ServeHTTP(w http.ResponseWriter, r *http.Request
 			if cmds[0] == "AdjustBrightness" {
 				sigma, err := strconv.ParseFloat(cmds[1], 64)
 				if err != nil {
-					w.WriteHeader(444)
+					
 					w.Header().Set("KubeVision-VMX-status", "OK")
 					log.Println("Error while decoding sigma: ", err)
 					a.next.ServeHTTP(w, r)
@@ -208,7 +208,7 @@ func (a *KubeDispatcherHandler) ServeHTTP(w http.ResponseWriter, r *http.Request
 			if cmds[0] == "AdjustSigmoid" {
 				midpoint, err := strconv.ParseFloat(cmds[1], 64)
 				if err != nil {
-					w.WriteHeader(444)
+					
 					w.Header().Set("KubeVision-VMX-status", "OK")
 					log.Println("Error while decoding sigma: ", err)
 					a.next.ServeHTTP(w, r)
@@ -216,7 +216,7 @@ func (a *KubeDispatcherHandler) ServeHTTP(w http.ResponseWriter, r *http.Request
 				}
 				factor, err := strconv.ParseFloat(cmds[2], 64)
 				if err != nil {
-					w.WriteHeader(444)
+					
 					w.Header().Set("KubeVision-VMX-status", "OK")
 					log.Println("Error while decoding sigma: ", err)
 					a.next.ServeHTTP(w, r)
@@ -239,7 +239,7 @@ func (a *KubeDispatcherHandler) ServeHTTP(w http.ResponseWriter, r *http.Request
 			if cmds[0] == "Crop" {
 				x0, err := strconv.ParseInt(cmds[1], 0, 32)
 				if err != nil {
-					w.WriteHeader(444)
+					
 					w.Header().Set("KubeVision-VMX-status", "OK")
 					log.Println("Error while decoding x0 coordinates: ", err)
 					a.next.ServeHTTP(w, r)
@@ -247,7 +247,7 @@ func (a *KubeDispatcherHandler) ServeHTTP(w http.ResponseWriter, r *http.Request
 				}
 				y0, err := strconv.ParseInt(cmds[2], 0, 32)
 				if err != nil {
-					w.WriteHeader(444)
+					
 					w.Header().Set("KubeVision-VMX-status", "OK")
 					log.Println("Error while decoding y0 coordinates: ", err)
 					a.next.ServeHTTP(w, r)
@@ -255,7 +255,7 @@ func (a *KubeDispatcherHandler) ServeHTTP(w http.ResponseWriter, r *http.Request
 				}
 				x1, err := strconv.ParseInt(cmds[3], 0, 32)
 				if err != nil {
-					w.WriteHeader(444)
+					
 					w.Header().Set("KubeVision-VMX-status", "OK")
 					a.next.ServeHTTP(w, r)
 					return
@@ -263,7 +263,7 @@ func (a *KubeDispatcherHandler) ServeHTTP(w http.ResponseWriter, r *http.Request
 				y1, err := strconv.ParseInt(cmds[4], 0, 32)
 				if err != nil {
 					log.Println("Error while decoding the y1 coordinates: ", err)
-					w.WriteHeader(444)
+					
 					w.Header().Set("KubeVision-VMX-status", "OK")
 					a.next.ServeHTTP(w, r)
 					return
@@ -274,7 +274,7 @@ func (a *KubeDispatcherHandler) ServeHTTP(w http.ResponseWriter, r *http.Request
 				width, err := strconv.ParseInt(cmds[1], 0, 32)
 				if err != nil {
 					log.Println("Error while decoding the width value: ", err)
-					w.WriteHeader(444)
+					
 					w.Header().Set("KubeVision-VMX-status", "OK")
 					a.next.ServeHTTP(w, r)
 					return
@@ -282,7 +282,7 @@ func (a *KubeDispatcherHandler) ServeHTTP(w http.ResponseWriter, r *http.Request
 				height, err := strconv.ParseInt(cmds[1], 0, 32)
 				if err != nil {
 					log.Println("Error while decoding the height value: ", err)
-					w.WriteHeader(444)
+					
 					w.Header().Set("KubeVision-VMX-status", "OK")
 					a.next.ServeHTTP(w, r)
 					return
@@ -324,9 +324,9 @@ func (a *KubeDispatcherHandler) ServeHTTP(w http.ResponseWriter, r *http.Request
 
 	buf := bytes.NewBuffer(nil)
 	if err := jpeg.Encode(buf, dstImage, nil); err != nil {
-//		w.WriteHeader(444)
+//		
 //		w.Header().Set("KubeVision-VMX-status", "OK")
-	    w.WriteHeader(403)
+	    
 	    io.WriteString(w, "problem detected")
 		a.next.ServeHTTP(w, r)
 		return
@@ -429,26 +429,28 @@ func (a *KubeDispatcherHandler) ServeHTTP(w http.ResponseWriter, r *http.Request
 				}
 				if score > a.cfg.MinScore {
 					if a.cfg.Debug == 1 {
+						log.Printf("\r\nSTART ===================== %v \r\n", meta)
 						log.Println("Endpoint: ", url)
 						log.Println("EngineType: ", vengine)
 						log.Println("Model: ", meta)
 						log.Println("Score: ", score)
 						log.Println("Output: ", body)
 						log.Println("bb: ", bb)
+						log.Printf("END ===================== %v\r\n", meta)
 					}
-					w.Header().Set("X-Kube-Engine", fmt.Sprintf("%v", meta))
-					w.Header().Set("X-Kube-Score", fmt.Sprintf("%v", score))
-				    //w.WriteString(w, "===KubeVisionVMX.body===\r\n"+base64.StdEncoding.EncodeToString([]byte(body))+"===KubeVisionVMX.body===\r\n")
-					fmt.Fprintln(w, string(body))
+					w.Header().Set("X-Kube-VMX-Model", fmt.Sprintf("%v", meta))
+					w.Header().Set("X-Kube-VMX-Matched", fmt.Sprintf("%f|%v", score, a.cfg.MarkerId))
+					w.Header().Set("X-Kube-MarkerId", fmt.Sprintf("%v", a.cfg.MarkerId))
 				} else {
-					w.Header().Set("X-Kube-Engine", fmt.Sprintf("%v", meta))
-					w.Header().Set("X-Kube-Score", "0")					
-					fmt.Fprintln(w, string("====START===="))
-					fmt.Fprintln(w, string(body))
-					fmt.Fprintln(w, string("====END===="))
+					modelMissed := fmt.Sprintf("X-Kube-Missed-%v-%v", vengine, meta)
+					w.Header().Set(fmt.Sprintf("%v", modelMissed), fmt.Sprintf("%v", score))
 				}
+
 			}))
 		}
+		endpointsNb := len(endpoints) 
+		w.Header().Set("X-Kube-Bindings", fmt.Sprintf("%v", endpointsNb))
+		log.Println("Disptaching Endpoints Number: ", endpointsNb)
 		b.Run()
 	}
 	a.next.ServeHTTP(w, r)
