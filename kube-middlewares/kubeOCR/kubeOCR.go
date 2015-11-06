@@ -15,9 +15,9 @@ import (
 	"github.com/lepidosteus/golang-http-batch/batch"
 	"github.com/disintegration/imaging"
 	"github.com/vulcand/vulcand/plugin"
-	"io"
 	"log"
 	"image"
+	"time"
 	"bytes"
 	"image/jpeg"
 	"encoding/base64"
@@ -102,9 +102,6 @@ func (a *KubeOCRHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("X-Middleware-OCR", "KubeOCR")
 
-
-
-    //io.WriteString(w, "OCR go")
 	if a.cfg.Chained == 0 {
 		a.next.ServeHTTP(w, r)
 		return
@@ -114,23 +111,17 @@ func (a *KubeOCRHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	file, _, err := r.FormFile("file")
 	if err != nil {
-	    
-	    io.WriteString(w, "problem detected")
 		a.next.ServeHTTP(w, r)
 		return
 	}
 
 	img, formatImg, err := image.Decode(file)
 	if err != nil {
-	    
-	    io.WriteString(w, "problem detected")
 		a.next.ServeHTTP(w, r)
 		return
 	}
 
 	if formatImg != "jpeg" {
-	    
-	    io.WriteString(w, "problem detected")
 		a.next.ServeHTTP(w, r)
 		return
 	} else {
@@ -151,17 +142,29 @@ func (a *KubeOCRHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		log.Println("ContentType: ", contentType)
 	}
 
+	// Need to create a package or method for all image processing
 	dstImage := img
 	if a.cfg.Transformation != "" || (a.cfg.Width > 0 || a.cfg.Height > 0) {
 		transformations := strings.Split(a.cfg.Transformation, ",")
+		if a.cfg.Debug == 1 {
+			w.Header().Set("KubeVision_DISPATCHER_LOG_IMG_PROCESSING_CHAIN_START", strconv.FormatInt(time.Now().UTC().UnixNano(), 10))					
+			w.Header().Set("KubeVision_DISPATCHER_LOG_IMG_PROCESSING_LENCHAIN", strconv.Itoa(len(transformations)))
+			log.Println("KubeVision_DISPATCHER_LOG_IMG_PROCESSING_START:", "at: ", strconv.FormatInt(time.Now().UTC().UnixNano(), 10), "lenght:", len(transformations))
+		}
 		for _, transform := range transformations {
 			cmds := strings.Split(string(transform), "=")
+			if a.cfg.Debug == 1 {
+				w.Header().Set("KubeVision_DISPATCHER_LOG_IMG_PROCESSING", strconv.FormatInt(time.Now().UTC().UnixNano(), 10))					
+				w.Header().Set("KubeVision_DISPATCHER_LOG_IMG_PROCESSING_CMD", cmds[0])
+				log.Println("KubeVision_DISPATCHER_LOG_IMG_PROCESSING_CMD:", cmds[0], "at: ", strconv.FormatInt(time.Now().UTC().UnixNano(), 10))																				
+			}
 			if cmds[0] == "Blur" {
 				sigma, err := strconv.ParseFloat(cmds[1], 64)
+				w.Header().Set("KubeVision_DISPATCHER_LOG_IMG_BLUR_SIGMA", strconv.FormatInt(time.Now().UTC().UnixNano(), 10))
+				log.Println("KubeVision_DISPATCHER_LOG_IMG_BLUR_SIGMA:", sigma, "at: ", strconv.FormatInt(time.Now().UTC().UnixNano(), 10))	
 				if err != nil {
-					log.Println("Error while decoding sigma: ", err)
-				    
-				    io.WriteString(w, "problem detected")
+					w.Header().Set("KubeVision_DISPATCHER_ERROR_IMG_BLUR_SIGMA", strconv.FormatInt(time.Now().UTC().UnixNano(), 10))
+					log.Println("KubeVision_DISPATCHER_ERROR_IMG_BLUR_SIGMA:", err, "at: ", strconv.FormatInt(time.Now().UTC().UnixNano(), 10))			    
 					a.next.ServeHTTP(w, r)
 					return
 				}
@@ -169,10 +172,11 @@ func (a *KubeOCRHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			}
 			if cmds[0] == "Sharpen" {
 				sigma, err := strconv.ParseFloat(cmds[1], 64)
-				if err != nil {
-					log.Println("Error while decoding sigma: ", err)
-				    
-				    io.WriteString(w, "problem detected")
+				w.Header().Set("KubeVision_DISPATCHER_LOG_IMG_SHARPEN_SIGMA", strconv.FormatInt(time.Now().UTC().UnixNano(), 10))
+				log.Println("KubeVision_DISPATCHER_LOG_IMG_SHARPEN_SIGMA:", sigma, "at: ", strconv.FormatInt(time.Now().UTC().UnixNano(), 10))	
+				if err != nil {					
+					w.Header().Set("KubeVision_DISPATCHER_ERROR_IMG_SHARPEN_SIGMA", strconv.FormatInt(time.Now().UTC().UnixNano(), 10))
+					log.Println("KubeVision_DISPATCHER_ERROR_IMG_SHARPEN_SIGMA:", err, "at: ", strconv.FormatInt(time.Now().UTC().UnixNano(), 10))
 					a.next.ServeHTTP(w, r)
 					return
 				}
@@ -180,10 +184,11 @@ func (a *KubeOCRHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			}
 			if cmds[0] == "AdjustGamma" {
 				sigma, err := strconv.ParseFloat(cmds[1], 64)
+				w.Header().Set("KubeVision_DISPATCHER_LOG_IMG_ADJUST-GAMMA_SIGMA", strconv.FormatInt(time.Now().UTC().UnixNano(), 10))
+				log.Println("KubeVision_DISPATCHER_LOG_IMG_ADJUST-GAMMA_SIGMA:", sigma, "at: ", strconv.FormatInt(time.Now().UTC().UnixNano(), 10))	
 				if err != nil {
-					log.Println("Error while decoding sigma: ", err)
-				    
-				    io.WriteString(w, "problem detected")
+					w.Header().Set("KubeVision_DISPATCHER_ERROR_IMG_ADJUST-GAMMA_SIGMA", strconv.FormatInt(time.Now().UTC().UnixNano(), 10))															
+					log.Println("KubeVision_DISPATCHER_ERROR_IMG_ADJUST-GAMMA_SIGMA:", err, "at: ", strconv.FormatInt(time.Now().UTC().UnixNano(), 10))
 					a.next.ServeHTTP(w, r)
 					return
 				}
@@ -192,20 +197,17 @@ func (a *KubeOCRHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			if cmds[0] == "AdjustContrast" {
 				sigma, err := strconv.ParseFloat(cmds[1], 64)
 				if err != nil {
-					log.Println("Error while decoding sigma: ", err)
-				    
-				    io.WriteString(w, "problem detected")
+					w.Header().Set("KubeVision_DISPATCHER_ERROR_IMG_ADJUST-CONTRAST_SIGMA", strconv.FormatInt(time.Now().UTC().UnixNano(), 10))										
+					log.Println("KubeVision_DISPATCHER_ERROR_IMG_ADJUST-CONTRAST_SIGMA", err, "at: ", strconv.FormatInt(time.Now().UTC().UnixNano(), 10))
 					a.next.ServeHTTP(w, r)
-					return
 				}
 				dstImage = imaging.AdjustContrast(img, sigma)
 			}
 			if cmds[0] == "AdjustBrightness" {
 				sigma, err := strconv.ParseFloat(cmds[1], 64)
 				if err != nil {
-					log.Println("Error while decoding sigma: ", err)
-				    
-				    io.WriteString(w, "problem detected")
+					w.Header().Set("KubeVision_DISPATCHER_ERROR_IMG_ADJUST-BRIGHTNESS_SIGMA", strconv.FormatInt(time.Now().UTC().UnixNano(), 10))					
+					log.Println("KubeVision_DISPATCHER_ERROR_IMG_ADJUST-BRIGHTNESS_SIGMA:", err, "at: ", strconv.FormatInt(time.Now().UTC().UnixNano(), 10))
 					a.next.ServeHTTP(w, r)
 					return
 				}
@@ -214,17 +216,15 @@ func (a *KubeOCRHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			if cmds[0] == "AdjustSigmoid" {
 				midpoint, err := strconv.ParseFloat(cmds[1], 64)
 				if err != nil {
-					log.Println("Error while decoding sigma: ", err)
-				    
-				    io.WriteString(w, "problem detected")
+					w.Header().Set("KubeVision_DISPATCHER_ERROR_IMG_ADJUST-SIGMOID_MIDPOINT", strconv.FormatInt(time.Now().UTC().UnixNano(), 10))
+					log.Println("KubeVision_DISPATCHER_ERROR_IMG_ADJUST-SIGMOID_MIDPOINT:", err, "at: ", strconv.FormatInt(time.Now().UTC().UnixNano(), 10))
 					a.next.ServeHTTP(w, r)
 					return
 				}
 				factor, err := strconv.ParseFloat(cmds[2], 64)
 				if err != nil {
-					log.Println("Error while decoding sigma: ", err)
-				    
-				    io.WriteString(w, "problem detected")
+					w.Header().Set("KubeVision_DISPATCHER_ERROR_IMG_ADJUST-SIGMOID_FACTOR", strconv.FormatInt(time.Now().UTC().UnixNano(), 10))
+					log.Println("KubeVision_DISPATCHER_ERROR_IMG_ADJUST-SIGMOID_FACTOR", err, "at: ", strconv.FormatInt(time.Now().UTC().UnixNano(), 10))
 					a.next.ServeHTTP(w, r)
 					return
 				}
@@ -244,34 +244,30 @@ func (a *KubeOCRHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			}
 			if cmds[0] == "Crop" {
 				x0, err := strconv.ParseInt(cmds[1], 0, 32)
-				if err != nil {
-					log.Println("Error while decoding x0 coordinates: ", err)
-				    
-				    io.WriteString(w, "problem detected")
+				if err != nil {					
+					w.Header().Set("KubeVision_DISPATCHER_ERROR_IMG_CROP_X0", strconv.FormatInt(time.Now().UTC().UnixNano(), 10))					
+					log.Println("KubeVision_DISPATCHER_ERROR_IMG_CROP_X0; ", err, "at: ", strconv.FormatInt(time.Now().UTC().UnixNano(), 10))
 					a.next.ServeHTTP(w, r)
 					return
 				}
 				y0, err := strconv.ParseInt(cmds[2], 0, 32)
 				if err != nil {
-					log.Println("Error while decoding y0 coordinates: ", err)
-				    
-				    io.WriteString(w, "problem detected")
+					w.Header().Set("KubeVision_DISPATCHER_ERROR_IMG_CROP_Y0", strconv.FormatInt(time.Now().UTC().UnixNano(), 10))					
+					log.Println("KubeVision_DISPATCHER_ERROR_IMG_CROP_Y0; ", err, "at: ", strconv.FormatInt(time.Now().UTC().UnixNano(), 10))
 					a.next.ServeHTTP(w, r)
 					return
 				}
 				x1, err := strconv.ParseInt(cmds[3], 0, 32)
-				if err != nil {
-					log.Println("Error while decoding x1 coordinates: ", err)
-				    
-				    io.WriteString(w, "problem detected")
+				if err != nil {					
+					w.Header().Set("KubeVision_DISPATCHER_ERROR_IMG_CROP_X1", strconv.FormatInt(time.Now().UTC().UnixNano(), 10))					
+					log.Println("KubeVision_DISPATCHER_ERROR_IMG_CROP_X1; ", err, "at: ", strconv.FormatInt(time.Now().UTC().UnixNano(), 10))										
 					a.next.ServeHTTP(w, r)
 					return
 				}
 				y1, err := strconv.ParseInt(cmds[4], 0, 32)
 				if err != nil {
-					log.Println("Error while decoding the y1 coordinates: ", err)
-				    
-				    io.WriteString(w, "problem detected")
+					w.Header().Set("KubeVision_DISPATCHER_ERROR_IMG_CROP_Y1", strconv.FormatInt(time.Now().UTC().UnixNano(), 10))					
+					log.Println("KubeVision_DISPATCHER_ERROR_IMG_CROP_Y1; ", err, "at: ", strconv.FormatInt(time.Now().UTC().UnixNano(), 10))																				
 					a.next.ServeHTTP(w, r)
 					return
 				}
@@ -280,17 +276,15 @@ func (a *KubeOCRHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			if cmds[0] == "CropCenter" {
 				width, err := strconv.ParseInt(cmds[1], 0, 32)
 				if err != nil {
-					log.Println("Error while decoding the width value: ", err)
-				    
-				    io.WriteString(w, "problem detected")
+					w.Header().Set("KubeVision_DISPATCHER_ERROR_IMG_CROP-CENTER_WIDTH", strconv.FormatInt(time.Now().UTC().UnixNano(), 10))					
+					log.Println("KubeVision_DISPATCHER_ERROR_IMG_CROP-CENTER_WIDTH; ", err, "at: ", strconv.FormatInt(time.Now().UTC().UnixNano(), 10))																				
 					a.next.ServeHTTP(w, r)
 					return
 				}
 				height, err := strconv.ParseInt(cmds[1], 0, 32)
 				if err != nil {
-					log.Println("Error while decoding the height value: ", err)
-				    
-				    io.WriteString(w, "problem detected")
+					w.Header().Set("KubeVision_DISPATCHER_ERROR_IMG_CROP-CENTER_HEIGHT", strconv.FormatInt(time.Now().UTC().UnixNano(), 10))					
+					log.Println("KubeVision_DISPATCHER_ERROR_IMG_CROP-CENTER_HEIGHT; ", err, "at: ", strconv.FormatInt(time.Now().UTC().UnixNano(), 10))																				
 					a.next.ServeHTTP(w, r)
 					return
 				}
@@ -308,12 +302,6 @@ func (a *KubeOCRHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			//      backgroundImage :=
 			//      dstImage = imaging.Overlay(backgroundImage, srcImage, image.Pt(strconv.ParseFloat(cmds[1], 64), strconv.ParseFloat(cmds[2], 64)), strconv.ParseFloat(cmds[3], 64))
 			//}
-			if cmds[0] == "Clone" {
-				//copiedImg := imaging.Clone(img)
-				if a.cfg.Debug == 1 {
-					//log.Println("Content-Type: %T\n", dstImage)
-				}
-			}
 			if cmds[0] == "Rotate" && cmds[1] == "180" {
 				dstImage = imaging.Rotate180(img)
 			}
@@ -327,14 +315,13 @@ func (a *KubeOCRHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 				dstImage = imaging.Fit(img, a.cfg.Width, a.cfg.Height, imaging.Lanczos)
 			}
 		}
+		w.Header().Set("KubeVision_DISPATCHER_LOG_IMG_PROCESSING_CHAIN_END", strconv.FormatInt(time.Now().UTC().UnixNano(), 10))					
 	}
 
 	buf := bytes.NewBuffer(nil)
 	if err := jpeg.Encode(buf, dstImage, nil); err != nil {
 		log.Println("Problem while trying to encode")
-	    
-	    io.WriteString(w, "problem detected")
-		a.next.ServeHTTP(w, r)
+	    a.next.ServeHTTP(w, r)
 		return
 	}
  
@@ -344,8 +331,7 @@ func (a *KubeOCRHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	b := batch.New()
 	b.SetMaxConcurrent(a.cfg.Concurrency)
-	// To put as a parameter
-	b.AddEntry("http://localhost:9292/ocr-file-upload", "POST", "tessaract", imgStr, batch.Callback(func(url string, method string, vengine string, payload string, body string, data batch.CallbackData, err error) {
+	b.AddEntry("http://192.168.99.100:9292/ocr-file-upload", "POST", "tessaract", imgStr, batch.Callback(func(url string, method string, vengine string, payload string, body string, data batch.CallbackData, err error) {
 		if err != nil {
 			log.Println("Result from: ", url)
 		}

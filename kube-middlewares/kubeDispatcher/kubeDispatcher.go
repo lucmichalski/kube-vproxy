@@ -13,7 +13,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/davidkbainbridge/jsonq" 
-//	"github.com/koyachi/go-nude"
 	"github.com/lepidosteus/golang-http-batch/batch"
 	"github.com/vulcand/vulcand/Godeps/_workspace/src/github.com/codegangsta/cli"
 	"github.com/vulcand/vulcand/Godeps/_workspace/src/github.com/vulcand/oxy/utils"
@@ -21,7 +20,7 @@ import (
 	"github.com/disintegration/imaging"	
 	"image"
 	"log"
-	"io"
+	"time"
 	"image/jpeg"
 	"net/http"
 	"strconv"
@@ -100,8 +99,10 @@ func (b *bufferWriter) WriteHeader(code int) {
 // This function will be called each time the request hits the location with this middleware activated
 func (a *KubeDispatcherHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
-	w.Header().Set("X-Middleware-VMX", "KubeDispatcher")
+	w.Header().Set("X-Middleware-DISPATCHER-START",  strconv.FormatInt(time.Now().UTC().UnixNano(), 10))
 	if a.cfg.Chained == 0 {
+		w.Header().Set("KubeVision_DISPATCHER_LOG_SKIPPED_BY_CONFIG", strconv.FormatInt(time.Now().UTC().UnixNano(), 10))
+		log.Println("KubeVision_DISPATCHER_LOG_SKIPPED_BY_CONFIG, ", "at: ", strconv.FormatInt(time.Now().UTC().UnixNano(), 10))					    
 		a.next.ServeHTTP(w, r)
 		return
 	}
@@ -111,52 +112,65 @@ func (a *KubeDispatcherHandler) ServeHTTP(w http.ResponseWriter, r *http.Request
 
 	file, _, err := r.FormFile("file")
 	if err != nil {
-	    
-	    io.WriteString(w, "problem detected")
+		w.Header().Set("KubeVision_DISPATCHER_ERROR_NO_INPUT", strconv.FormatInt(time.Now().UTC().UnixNano(), 10))
+		log.Println("KubeVision_DISPATCHER_ERROR_NO_INPUT:", err, "at: ", strconv.FormatInt(time.Now().UTC().UnixNano(), 10))			    
 		a.next.ServeHTTP(w, r)
 		return
 	}
 
 	img, formatImg, err := image.Decode(file)
 	if err != nil {
-	    
-	    io.WriteString(w, "problem detected")
+		w.Header().Set("KubeVision_DISPATCHER_ERROR_DECODE_INPUT_FORMAT", strconv.FormatInt(time.Now().UTC().UnixNano(), 10))
+		log.Println("KubeVision_DISPATCHER_ERROR_DECODE_INPUT_FORMAT:", err, "at: ", strconv.FormatInt(time.Now().UTC().UnixNano(), 10))					    
 		a.next.ServeHTTP(w, r)
 		return
 	}
 
-	if formatImg != "jpeg" {
-	    
-	    io.WriteString(w, "problem detected")
+	if formatImg != "jpeg" {	    
+		w.Header().Set("KubeVision_DISPATCHER_ERROR_INVALID_INPUT_FORMAT", strconv.FormatInt(time.Now().UTC().UnixNano(), 10))
+		log.Println("KubeVision_DISPATCHER_ERROR_INVALID_INPUT_FORMAT:", err, "at: ", strconv.FormatInt(time.Now().UTC().UnixNano(), 10))	   
 		a.next.ServeHTTP(w, r)
 		return
 	} else {
-		log.Println("Go for processing")		
+		w.Header().Set("KubeVision_DISPATCHER_LOG_VALID_INPUT_FORMAT", strconv.FormatInt(time.Now().UTC().UnixNano(), 10))
+		log.Println("KubeVision_DISPATCHER_LOG_VALID_INPUT_FORMAT:", err, "at: ", strconv.FormatInt(time.Now().UTC().UnixNano(), 10))	
 	}
 
 	if a.cfg.Debug == 1 {
-		log.Println("Format Type: ", formatImg)
-		log.Println("BlippId: ", a.cfg.BlippId)
-		log.Println("MarkerId: ", a.cfg.MarkerId)
-		log.Println("Context: ", a.cfg.Context)
-		log.Println("Thumb Width: ", a.cfg.Width)
-		log.Println("Thumb Height: ", a.cfg.Height)
-		log.Println("Learning Mode: ", a.cfg.Learn)
-		log.Println("Queue endpoints: ", a.cfg.Queue)
-		log.Println("ContentType: ", contentType)
+		log.Println("KubeVision_DISPATCHER_LOG_FORMAT_TYPE:", formatImg, "at: ", strconv.FormatInt(time.Now().UTC().UnixNano(), 10))	
+		log.Println("KubeVision_DISPATCHER_LOG_BLIPP_ID:", a.cfg.BlippId, "at: ", strconv.FormatInt(time.Now().UTC().UnixNano(), 10))	
+		log.Println("KubeVision_DISPATCHER_LOG_MARKER_ID:", a.cfg.MarkerId, "at: ", strconv.FormatInt(time.Now().UTC().UnixNano(), 10))	
+		log.Println("KubeVision_DISPATCHER_LOG_CONTEXT:", a.cfg.Context, "at: ", strconv.FormatInt(time.Now().UTC().UnixNano(), 10))	
+		log.Println("KubeVision_DISPATCHER_LOG_THUMB_WIDTH:", a.cfg.Width, "at: ", strconv.FormatInt(time.Now().UTC().UnixNano(), 10))	
+		log.Println("KubeVision_DISPATCHER_LOG_THUMB_HEIGHT:", a.cfg.Height, "at: ", strconv.FormatInt(time.Now().UTC().UnixNano(), 10))	
+		log.Println("KubeVision_DISPATCHER_LOG_LEARNING_MODE:", a.cfg.Learn, "at: ", strconv.FormatInt(time.Now().UTC().UnixNano(), 10))	
+		log.Println("KubeVision_DISPATCHER_LOG_CHAIN:", a.cfg.Queue, "at: ", strconv.FormatInt(time.Now().UTC().UnixNano(), 10))	
+		log.Println("KubeVision_DISPATCHER_LOG_CONTENT_TYPE:", contentType, "at: ", strconv.FormatInt(time.Now().UTC().UnixNano(), 10))	
 	}
+
+	// Need to create a package or method for all image processing
 	dstImage := img
 	if a.cfg.Transformation != "" || (a.cfg.Width > 0 || a.cfg.Height > 0) {
 		transformations := strings.Split(a.cfg.Transformation, ",")
+		if a.cfg.Debug == 1 {
+			w.Header().Set("KubeVision_DISPATCHER_LOG_IMG_PROCESSING_CHAIN_START", strconv.FormatInt(time.Now().UTC().UnixNano(), 10))					
+			w.Header().Set("KubeVision_DISPATCHER_LOG_IMG_PROCESSING_LENCHAIN", strconv.Itoa(len(transformations)))
+			log.Println("KubeVision_DISPATCHER_LOG_IMG_PROCESSING_START:", "at: ", strconv.FormatInt(time.Now().UTC().UnixNano(), 10), "lenght:", len(transformations))
+		}
 		for _, transform := range transformations {
 			cmds := strings.Split(string(transform), "=")
-			//dstImage := imaging.New(a.cfg.Width, a.cfg.Height, color.NRGBA{0, 0, 0, 0})
+			if a.cfg.Debug == 1 {
+				w.Header().Set("KubeVision_DISPATCHER_LOG_IMG_PROCESSING", strconv.FormatInt(time.Now().UTC().UnixNano(), 10))					
+				w.Header().Set("KubeVision_DISPATCHER_LOG_IMG_PROCESSING_CMD", cmds[0])
+				log.Println("KubeVision_DISPATCHER_LOG_IMG_PROCESSING_CMD:", cmds[0], "at: ", strconv.FormatInt(time.Now().UTC().UnixNano(), 10))																				
+			}
 			if cmds[0] == "Blur" {
 				sigma, err := strconv.ParseFloat(cmds[1], 64)
+				w.Header().Set("KubeVision_DISPATCHER_LOG_IMG_BLUR_SIGMA", strconv.FormatInt(time.Now().UTC().UnixNano(), 10))
+				log.Println("KubeVision_DISPATCHER_LOG_IMG_BLUR_SIGMA:", sigma, "at: ", strconv.FormatInt(time.Now().UTC().UnixNano(), 10))	
 				if err != nil {
-					log.Println("Error while decoding sigma: ", err)
-				    
-				    io.WriteString(w, "problem detected")
+					w.Header().Set("KubeVision_DISPATCHER_ERROR_IMG_BLUR_SIGMA", strconv.FormatInt(time.Now().UTC().UnixNano(), 10))
+					log.Println("KubeVision_DISPATCHER_ERROR_IMG_BLUR_SIGMA:", err, "at: ", strconv.FormatInt(time.Now().UTC().UnixNano(), 10))			    
 					a.next.ServeHTTP(w, r)
 					return
 				}
@@ -164,10 +178,11 @@ func (a *KubeDispatcherHandler) ServeHTTP(w http.ResponseWriter, r *http.Request
 			}
 			if cmds[0] == "Sharpen" {
 				sigma, err := strconv.ParseFloat(cmds[1], 64)
-				if err != nil {
-					
-					w.Header().Set("KubeVision-VMX-status", "OK")
-					log.Println("Error while decoding sigma: ", err)
+				w.Header().Set("KubeVision_DISPATCHER_LOG_IMG_SHARPEN_SIGMA", strconv.FormatInt(time.Now().UTC().UnixNano(), 10))
+				log.Println("KubeVision_DISPATCHER_LOG_IMG_SHARPEN_SIGMA:", sigma, "at: ", strconv.FormatInt(time.Now().UTC().UnixNano(), 10))	
+				if err != nil {					
+					w.Header().Set("KubeVision_DISPATCHER_ERROR_IMG_SHARPEN_SIGMA", strconv.FormatInt(time.Now().UTC().UnixNano(), 10))
+					log.Println("KubeVision_DISPATCHER_ERROR_IMG_SHARPEN_SIGMA:", err, "at: ", strconv.FormatInt(time.Now().UTC().UnixNano(), 10))
 					a.next.ServeHTTP(w, r)
 					return
 				}
@@ -175,10 +190,11 @@ func (a *KubeDispatcherHandler) ServeHTTP(w http.ResponseWriter, r *http.Request
 			}
 			if cmds[0] == "AdjustGamma" {
 				sigma, err := strconv.ParseFloat(cmds[1], 64)
+				w.Header().Set("KubeVision_DISPATCHER_LOG_IMG_ADJUST-GAMMA_SIGMA", strconv.FormatInt(time.Now().UTC().UnixNano(), 10))
+				log.Println("KubeVision_DISPATCHER_LOG_IMG_ADJUST-GAMMA_SIGMA:", sigma, "at: ", strconv.FormatInt(time.Now().UTC().UnixNano(), 10))	
 				if err != nil {
-					
-					w.Header().Set("KubeVision-VMX-status", "OK")
-					log.Println("Error while decoding sigma: ", err)
+					w.Header().Set("KubeVision_DISPATCHER_ERROR_IMG_ADJUST-GAMMA_SIGMA", strconv.FormatInt(time.Now().UTC().UnixNano(), 10))															
+					log.Println("KubeVision_DISPATCHER_ERROR_IMG_ADJUST-GAMMA_SIGMA:", err, "at: ", strconv.FormatInt(time.Now().UTC().UnixNano(), 10))
 					a.next.ServeHTTP(w, r)
 					return
 				}
@@ -187,9 +203,8 @@ func (a *KubeDispatcherHandler) ServeHTTP(w http.ResponseWriter, r *http.Request
 			if cmds[0] == "AdjustContrast" {
 				sigma, err := strconv.ParseFloat(cmds[1], 64)
 				if err != nil {
-					
-					w.Header().Set("KubeVision-VMX-status", "OK")
-					log.Println("Error while decoding sigma: ", err)
+					w.Header().Set("KubeVision_DISPATCHER_ERROR_IMG_ADJUST-CONTRAST_SIGMA", strconv.FormatInt(time.Now().UTC().UnixNano(), 10))										
+					log.Println("KubeVision_DISPATCHER_ERROR_IMG_ADJUST-CONTRAST_SIGMA", err, "at: ", strconv.FormatInt(time.Now().UTC().UnixNano(), 10))
 					a.next.ServeHTTP(w, r)
 				}
 				dstImage = imaging.AdjustContrast(img, sigma)
@@ -197,9 +212,8 @@ func (a *KubeDispatcherHandler) ServeHTTP(w http.ResponseWriter, r *http.Request
 			if cmds[0] == "AdjustBrightness" {
 				sigma, err := strconv.ParseFloat(cmds[1], 64)
 				if err != nil {
-					
-					w.Header().Set("KubeVision-VMX-status", "OK")
-					log.Println("Error while decoding sigma: ", err)
+					w.Header().Set("KubeVision_DISPATCHER_ERROR_IMG_ADJUST-BRIGHTNESS_SIGMA", strconv.FormatInt(time.Now().UTC().UnixNano(), 10))					
+					log.Println("KubeVision_DISPATCHER_ERROR_IMG_ADJUST-BRIGHTNESS_SIGMA:", err, "at: ", strconv.FormatInt(time.Now().UTC().UnixNano(), 10))
 					a.next.ServeHTTP(w, r)
 					return
 				}
@@ -208,17 +222,15 @@ func (a *KubeDispatcherHandler) ServeHTTP(w http.ResponseWriter, r *http.Request
 			if cmds[0] == "AdjustSigmoid" {
 				midpoint, err := strconv.ParseFloat(cmds[1], 64)
 				if err != nil {
-					
-					w.Header().Set("KubeVision-VMX-status", "OK")
-					log.Println("Error while decoding sigma: ", err)
+					w.Header().Set("KubeVision_DISPATCHER_ERROR_IMG_ADJUST-SIGMOID_MIDPOINT", strconv.FormatInt(time.Now().UTC().UnixNano(), 10))
+					log.Println("KubeVision_DISPATCHER_ERROR_IMG_ADJUST-SIGMOID_MIDPOINT:", err, "at: ", strconv.FormatInt(time.Now().UTC().UnixNano(), 10))
 					a.next.ServeHTTP(w, r)
 					return
 				}
 				factor, err := strconv.ParseFloat(cmds[2], 64)
 				if err != nil {
-					
-					w.Header().Set("KubeVision-VMX-status", "OK")
-					log.Println("Error while decoding sigma: ", err)
+					w.Header().Set("KubeVision_DISPATCHER_ERROR_IMG_ADJUST-SIGMOID_FACTOR", strconv.FormatInt(time.Now().UTC().UnixNano(), 10))
+					log.Println("KubeVision_DISPATCHER_ERROR_IMG_ADJUST-SIGMOID_FACTOR", err, "at: ", strconv.FormatInt(time.Now().UTC().UnixNano(), 10))
 					a.next.ServeHTTP(w, r)
 					return
 				}
@@ -238,33 +250,30 @@ func (a *KubeDispatcherHandler) ServeHTTP(w http.ResponseWriter, r *http.Request
 			}
 			if cmds[0] == "Crop" {
 				x0, err := strconv.ParseInt(cmds[1], 0, 32)
-				if err != nil {
-					
-					w.Header().Set("KubeVision-VMX-status", "OK")
-					log.Println("Error while decoding x0 coordinates: ", err)
+				if err != nil {					
+					w.Header().Set("KubeVision_DISPATCHER_ERROR_IMG_CROP_X0", strconv.FormatInt(time.Now().UTC().UnixNano(), 10))					
+					log.Println("KubeVision_DISPATCHER_ERROR_IMG_CROP_X0; ", err, "at: ", strconv.FormatInt(time.Now().UTC().UnixNano(), 10))
 					a.next.ServeHTTP(w, r)
 					return
 				}
 				y0, err := strconv.ParseInt(cmds[2], 0, 32)
 				if err != nil {
-					
-					w.Header().Set("KubeVision-VMX-status", "OK")
-					log.Println("Error while decoding y0 coordinates: ", err)
+					w.Header().Set("KubeVision_DISPATCHER_ERROR_IMG_CROP_Y0", strconv.FormatInt(time.Now().UTC().UnixNano(), 10))					
+					log.Println("KubeVision_DISPATCHER_ERROR_IMG_CROP_Y0; ", err, "at: ", strconv.FormatInt(time.Now().UTC().UnixNano(), 10))
 					a.next.ServeHTTP(w, r)
 					return
 				}
 				x1, err := strconv.ParseInt(cmds[3], 0, 32)
-				if err != nil {
-					
-					w.Header().Set("KubeVision-VMX-status", "OK")
+				if err != nil {					
+					w.Header().Set("KubeVision_DISPATCHER_ERROR_IMG_CROP_X1", strconv.FormatInt(time.Now().UTC().UnixNano(), 10))					
+					log.Println("KubeVision_DISPATCHER_ERROR_IMG_CROP_X1; ", err, "at: ", strconv.FormatInt(time.Now().UTC().UnixNano(), 10))										
 					a.next.ServeHTTP(w, r)
 					return
 				}
 				y1, err := strconv.ParseInt(cmds[4], 0, 32)
 				if err != nil {
-					log.Println("Error while decoding the y1 coordinates: ", err)
-					
-					w.Header().Set("KubeVision-VMX-status", "OK")
+					w.Header().Set("KubeVision_DISPATCHER_ERROR_IMG_CROP_Y1", strconv.FormatInt(time.Now().UTC().UnixNano(), 10))					
+					log.Println("KubeVision_DISPATCHER_ERROR_IMG_CROP_Y1; ", err, "at: ", strconv.FormatInt(time.Now().UTC().UnixNano(), 10))																				
 					a.next.ServeHTTP(w, r)
 					return
 				}
@@ -273,17 +282,15 @@ func (a *KubeDispatcherHandler) ServeHTTP(w http.ResponseWriter, r *http.Request
 			if cmds[0] == "CropCenter" {
 				width, err := strconv.ParseInt(cmds[1], 0, 32)
 				if err != nil {
-					log.Println("Error while decoding the width value: ", err)
-					
-					w.Header().Set("KubeVision-VMX-status", "OK")
+					w.Header().Set("KubeVision_DISPATCHER_ERROR_IMG_CROP-CENTER_WIDTH", strconv.FormatInt(time.Now().UTC().UnixNano(), 10))					
+					log.Println("KubeVision_DISPATCHER_ERROR_IMG_CROP-CENTER_WIDTH; ", err, "at: ", strconv.FormatInt(time.Now().UTC().UnixNano(), 10))																				
 					a.next.ServeHTTP(w, r)
 					return
 				}
 				height, err := strconv.ParseInt(cmds[1], 0, 32)
 				if err != nil {
-					log.Println("Error while decoding the height value: ", err)
-					
-					w.Header().Set("KubeVision-VMX-status", "OK")
+					w.Header().Set("KubeVision_DISPATCHER_ERROR_IMG_CROP-CENTER_HEIGHT", strconv.FormatInt(time.Now().UTC().UnixNano(), 10))					
+					log.Println("KubeVision_DISPATCHER_ERROR_IMG_CROP-CENTER_HEIGHT; ", err, "at: ", strconv.FormatInt(time.Now().UTC().UnixNano(), 10))																				
 					a.next.ServeHTTP(w, r)
 					return
 				}
@@ -301,12 +308,6 @@ func (a *KubeDispatcherHandler) ServeHTTP(w http.ResponseWriter, r *http.Request
 			//      backgroundImage :=
 			//      dstImage = imaging.Overlay(backgroundImage, srcImage, image.Pt(strconv.ParseFloat(cmds[1], 64), strconv.ParseFloat(cmds[2], 64)), strconv.ParseFloat(cmds[3], 64))
 			//}
-			if cmds[0] == "Clone" {
-				//copiedImg := imaging.Clone(img)
-				if a.cfg.Debug == 1 {
-					log.Println("Content-Type: %T\n", dstImage)
-				}
-			}
 			if cmds[0] == "Rotate" && cmds[1] == "180" {
 				dstImage = imaging.Rotate180(img)
 			}
@@ -320,37 +321,18 @@ func (a *KubeDispatcherHandler) ServeHTTP(w http.ResponseWriter, r *http.Request
 				dstImage = imaging.Fit(img, a.cfg.Width, a.cfg.Height, imaging.Lanczos)
 			}
 		}
+		w.Header().Set("KubeVision_DISPATCHER_LOG_IMG_PROCESSING_CHAIN_END", strconv.FormatInt(time.Now().UTC().UnixNano(), 10))					
 	}
 
 	buf := bytes.NewBuffer(nil)
 	if err := jpeg.Encode(buf, dstImage, nil); err != nil {
-//		
-//		w.Header().Set("KubeVision-VMX-status", "OK")
-	    
-	    io.WriteString(w, "problem detected")
+		w.Header().Set("KubeVision_DISPATCHER_ERROR_JPEGENCODE", strconv.FormatInt(time.Now().UTC().UnixNano(), 10))					
+		log.Println("KubeVision_DISPATCHER_ERROR_JPEGENCODE; ", err, "at: ", strconv.FormatInt(time.Now().UTC().UnixNano(), 10))																				
 		a.next.ServeHTTP(w, r)
 		return
 	}
  
 	imgStr := "data:image/jpeg;base64," + base64.StdEncoding.EncodeToString(buf.Bytes())
-
-	/*
-	if a.cfg.Debug == 1 {
-		log.Println("isNudeDetectMode = ", a.cfg.Nudity)
-	}
-
-	if a.cfg.Nudity == "detect" || a.cfg.Nudity == "block" {
-		isNude, err := nude.IsImageNude(img)
-		if err != nil {
-			a.next.ServeHTTP(w, r)
-			return
-		}
-		if isNude && a.cfg.Nudity == "block" {
-			a.next.ServeHTTP(w, r)
-			return
-		}
-	}
-	*/
 
 	// Condition for Payloads
 	payLoad, err := base64.StdEncoding.DecodeString(a.cfg.Template)
@@ -360,16 +342,17 @@ func (a *KubeDispatcherHandler) ServeHTTP(w http.ResponseWriter, r *http.Request
 	if a.cfg.Learn == 1 {
 		payLoaded = strings.Replace(payLoaded, "learn_mode\":false", "learn_mode\":true", 1)
 		if a.cfg.Debug == 1 {
-			log.Println("Learning mode activated for VMX 1.x and 2.x engines: %d\n", a.cfg.Learn)
+			w.Header().Set("KubeVision_DISPATCHER_LOG_LEARNING_MODE_ACTIVATED", strconv.FormatInt(time.Now().UTC().UnixNano(), 10))					
+			log.Println("KubeVision_DISPATCHER_LOG_LEARNING_MODE_ACTIVATED; ", "at: ", strconv.FormatInt(time.Now().UTC().UnixNano(), 10))
 		}
 	}
 
 	if a.cfg.Debug == 1 {
-		log.Println("JSON Payload:\n", payLoaded)
-		log.Println("Max Concurrency:", a.cfg.Concurrency)
-		log.Println("parseScore global rules:", a.cfg.ParseScore)
-		log.Println("parseMeta global rules:", a.cfg.ParseMeta)
-		log.Println("parseBB global rules:", a.cfg.ParseBB)
+		//log.Println("JSON Payload:\n", payLoaded)
+		log.Println("Max Concurrency: ", a.cfg.Concurrency)
+		log.Println("parseScore global rules: ", a.cfg.ParseScore)
+		log.Println("parseMeta global rules: ", a.cfg.ParseMeta)
+		log.Println("parseBB global rules: ", a.cfg.ParseBB)
 	}
 
 	if a.cfg.Discovery == "BATCH" {
@@ -379,26 +362,32 @@ func (a *KubeDispatcherHandler) ServeHTTP(w http.ResponseWriter, r *http.Request
 		for _, endpoint := range endpoints {
 			ep := strings.Split(endpoint, ":")
 			if a.cfg.Debug == 1 {
-				log.Println("Endpoint Protocol:", ep[0])
-				log.Println("Endpoint Type:", ep[1])
-				log.Println("Endpoint Url:", ep[2])
-				log.Println("Endpoint Port:", ep[3])
+				log.Println("Endpoint Protocol: ", ep[0])
+				log.Println("Endpoint Type: ", ep[1])
+				log.Println("Endpoint Url: ", ep[2])
+				log.Println("Endpoint Port: ", ep[3])
 			}
 			b.AddEntry(string("http:"+ep[2]+":"+ep[3]), string(ep[0]), string(ep[1]), string(payLoaded), batch.Callback(func(url string, method string, vengine string, payload string, body string, data batch.CallbackData, err error) {
 				if err != nil {
-					log.Println("Body has a problem:\n", body)
+					w.Header().Set("KubeVision_BATCH_BODY_ERROR", strconv.FormatInt(time.Now().UTC().UnixNano(), 10))
+					log.Println("KubeVision_BATCH_BODY_ERROR:", err, "at: ", strconv.FormatInt(time.Now().UTC().UnixNano(), 10))			    
 				}
 				if a.cfg.Debug == 1 {
-					log.Println("Body OK:\n", body)
-					log.Println("BodyLength: ", len(body))
+					log.Println("KubeVision_BATCH_BODY_OK;", "at: ", strconv.FormatInt(time.Now().UTC().UnixNano(), 10))
+					log.Println("KubeVision_BATCH_BODY_LENGTH:", len(body), "at: ", strconv.FormatInt(time.Now().UTC().UnixNano(), 10))
+					w.Header().Set("KubeVision_BATCH_BODY_LENGTH", strconv.Itoa(len(body)))
+					w.Header().Set("KubeVision_BATCH_BODY_OK", strconv.FormatInt(time.Now().UTC().UnixNano(), 10))
 				}
 				scoreParse := StrExtract(a.cfg.ParseScore, vengine+"=", "|", 1)
 				metaParse := StrExtract(a.cfg.ParseMeta, vengine+"=", "|", 1)
 				bbParse := StrExtract(a.cfg.ParseBB, vengine+"=", "|", 1)
 				if a.cfg.Debug == 1 {
-					log.Println("scoreParse: ", scoreParse)
-					log.Println("metaParse: ", metaParse)
-					log.Println("bbParse: ", bbParse)
+					w.Header().Set("KubeVision_BATCH_SCORE_PARSING_RULES", scoreParse)
+					w.Header().Set("KubeVision_BATCH_META_PARSING_RULES", metaParse)
+					w.Header().Set("KubeVision_BATCH_BBOX_PARSING_RULES", bbParse)
+					log.Println("KubeVision_BATCH_SCORE_PARSING_RULES:", scoreParse, strconv.FormatInt(time.Now().UTC().UnixNano(), 10))
+					log.Println("KubeVision_BATCH_META_PARSING_RULES:", metaParse, strconv.FormatInt(time.Now().UTC().UnixNano(), 10))
+					log.Println("KubeVision_BATCH_BBOX_PARSING_RULES:", bbParse, strconv.FormatInt(time.Now().UTC().UnixNano(), 10))
 				}
 				ret := map[string]interface{}{}
 				dec := json.NewDecoder(strings.NewReader(body))
@@ -406,51 +395,52 @@ func (a *KubeDispatcherHandler) ServeHTTP(w http.ResponseWriter, r *http.Request
 				jq := jsonq.NewQuery(ret)
 				score, error := jq.Float(scoreParse)
 				if error != nil {
-					log.Println("Body OK:\n", body)
+					w.Header().Set("KubeVision_BATCH_ERROR_PARSING_SCORE", strconv.FormatInt(time.Now().UTC().UnixNano(), 10))
+					log.Println("KubeVision_BATCH_ERROR_PARSING_SCORE:", vengine, strconv.FormatInt(time.Now().UTC().UnixNano(), 10))
 				}
 				if a.cfg.Debug == 1 {
-					log.Println("Score: ", score)
+					w.Header().Set("KubeVision_BATCH_SCORE", fmt.Sprintf("%v", score))
+					log.Println("KubeVision_BATCH_SCORE; ", score, " on, ", vengine, strconv.FormatInt(time.Now().UTC().UnixNano(), 10))
 				}
 				bb, error := jq.Array(bbParse)
 				if error != nil {
-					log.Println("Body OK:\n", body)
+					w.Header().Set("KubeVision_BATCH_ERROR_PARSING_BBOX", strconv.FormatInt(time.Now().UTC().UnixNano(), 10))
+					log.Println("KubeVision_BATCH_ERROR_PARSING_BBOX:", vengine, strconv.FormatInt(time.Now().UTC().UnixNano(), 10))
 				} else {
 					if a.cfg.Debug == 1 {
-						log.Println("Bounding Box: ", bb)
+						w.Header().Set("KubeVision_BATCH_BBOX", strconv.FormatInt(time.Now().UTC().UnixNano(), 10))
+						log.Println("KubeVision_BATCH_BBOX; ", bb, " on, ", vengine, strconv.FormatInt(time.Now().UTC().UnixNano(), 10))
 					}
 				}
 				meta, error := jq.String(metaParse)
 				if error != nil {
-					log.Println("Body OK:\n", body)
+					w.Header().Set("KubeVision_BATCH_ERROR_PARSING_NAMED_ENTITY", strconv.FormatInt(time.Now().UTC().UnixNano(), 10))
+					log.Println("KubeVision_BATCH_ERROR_PARSING_NAMED_ENTITY:", vengine, strconv.FormatInt(time.Now().UTC().UnixNano(), 10))
 				} else {
 					if a.cfg.Debug == 1 {
-						log.Println("Meta: ", meta)
+						w.Header().Set("KubeVision_BATCH_META", strconv.FormatInt(time.Now().UTC().UnixNano(), 10))
+						log.Println("KubeVision_BATCH_META; ", meta, " on, ", vengine, strconv.FormatInt(time.Now().UTC().UnixNano(), 10))
 					}
 				}
 				if score > a.cfg.MinScore {
-					if a.cfg.Debug == 1 {
-						log.Printf("\r\nSTART ===================== %v \r\n", meta)
-						log.Println("Endpoint: ", url)
-						log.Println("EngineType: ", vengine)
-						log.Println("Model: ", meta)
-						log.Println("Score: ", score)
-						log.Println("Output: ", body)
-						log.Println("bb: ", bb)
-						log.Printf("END ===================== %v\r\n", meta)
-					}
+					// Headers for Middlewares
 					w.Header().Set("X-Kube-VMX-Model", fmt.Sprintf("%v", meta))
-					w.Header().Set("X-Kube-VMX-Matched", fmt.Sprintf("%f|%v", score, a.cfg.MarkerId))
+					w.Header().Set("X-Kube-VMX-Matched", fmt.Sprintf("%f|%v|%v", score, a.cfg.MarkerId, meta))
 					w.Header().Set("X-Kube-MarkerId", fmt.Sprintf("%v", a.cfg.MarkerId))
+					w.Header().Set("X-Kube-VMX-Score", fmt.Sprintf("%v", score))
 				} else {
 					modelMissed := fmt.Sprintf("X-Kube-Missed-%v-%v", vengine, meta)
 					w.Header().Set(fmt.Sprintf("%v", modelMissed), fmt.Sprintf("%v", score))
+					log.Println("KubeVision_BATCH_NOK; ", meta, " on, ", vengine, strconv.FormatInt(time.Now().UTC().UnixNano(), 10))
 				}
 
 			}))
 		}
 		endpointsNb := len(endpoints) 
-		w.Header().Set("X-Kube-Bindings", fmt.Sprintf("%v", endpointsNb))
-		log.Println("Disptaching Endpoints Number: ", endpointsNb)
+		if a.cfg.Debug == 1 {
+			w.Header().Set("KubeVision_BATCH_BINDINGS", fmt.Sprintf("%v", endpointsNb))
+			log.Println("KubeVision_BATCH_BINDINGS ", fmt.Sprintf("%v", endpointsNb), strconv.FormatInt(time.Now().UTC().UnixNano(), 10))
+		}
 		b.Run()
 	}
 	a.next.ServeHTTP(w, r)

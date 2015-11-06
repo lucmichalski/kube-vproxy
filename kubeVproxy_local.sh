@@ -118,7 +118,7 @@ curl -X POST -H "Content-Type: application/json" http://192.168.99.100:8182/v2/f
 	        "Concurrency": 50,
 	        "Transformation": "",
 	        "DetectDarkness": 0,
-	        "Chained": 1,
+	        "Chained": 0,
 			"OcrPreProcessors": "stroke-width-transform=1",
 	        "OcrEngine": "engine=tesseract",
 	        "EntitiesExtractor": "kube-aida",

@@ -5,8 +5,9 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
-//	"log"
+	"log"
 	"strconv"
+	"bytes"
 	"io"
 	"strings"
 	"github.com/vulcand/vulcand/plugin"
@@ -39,111 +40,84 @@ type KubeConnectHandler struct {
 
 // This function will be called each time the request hits the location with this middleware activated
 func (s *KubeConnectHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	var results string
-	/*
-		log.Printf("connect template loaded: %s", connect)
-		log.Print("\r\nFINAL RESULT - START ===================== \r\n")
-		log.Print("\r\nREQUEST HEADERS FROM PREVIOUS MIDDLEWARE - START ===================== \r\n")
-	*/
+	results := &bytes.Buffer{}
+	log.Print("\r\nFINAL RESULT - START ===================== \r\n")
+	log.Print("\r\nREQUEST HEADERS FROM PREVIOUS MIDDLEWARE - START ===================== \r\n")
 	for header, value := range s.headers {
-		//log.Printf("%T, %v\n", header, header)
-		//log.Printf("%T, %v\n", value, value)
+		log.Printf("%T, %v\n", header, header)
+		log.Printf("%T, %v\n", value, value)
 		if header == "X-Kube-Vmx-Matched" {
 			matched := strings.Split(value, "|")
-			/*
-				log.Printf("%v, %v\n", matched[0], matched[1])
-			*/
+			log.Printf("MarkerId=%v, Score=%v, Entity=%v\n", matched[0], matched[1], matched[2])
 			if score, err := strconv.ParseFloat(matched[0], 64); err == nil {
-				//log.Printf("%T, %v\n", score, score)
+				log.Printf("%T, %v\n", score, score)
 				if score > 0 {
 					w.Header().Get(header)
-					/*
-						log.Printf("%v", fmt.Sprintf("Header: %v, Value: %v", header, value))
-					*/
-					result := fmt.Sprint("{", "\"ID\":", string(matched[1]), ",\"Score\":", 0, ",\"Keywords\":", "[]", "},")	
-					results += string(result)
+					log.Printf("%v", fmt.Sprintf("Header: %v, Value: %v", header, value))
+					result := fmt.Sprint("{", "\"ID\":", string(matched[1]), ",\"Score\":", score, ",\"Keywords\":", "[\""+matched[2]+"\"]", "},")	
+					results.WriteString(result)
 				}
 			}
 		}
 		w.Header().Set(header, value)
 		w.Header().Set("X-Middleware-Prev-Headers", "Parsed")
 	}
-	/*
-		log.Print("\r\nREQUEST HEADERS FROM PREVIOUS MIDDLEWARE - END ===================== \r\n")
-		log.Print("\r\nREQUEST HEADERS - START ===================== \r\n")
-	*/
+
+	log.Print("\r\nREQUEST HEADERS FROM PREVIOUS MIDDLEWARE - END ===================== \r\n")
+	log.Print("\r\nREQUEST HEADERS - START ===================== \r\n")
 	for header := range r.Header {
-		/*
 		log.Printf("%T, %v\n", header, header)
-		*/
 		if header == "X-Kube-Vmx-Matched" {
 			value := r.Header.Get(header)
-			//log.Printf("%T, %v\n", value, value)
+			log.Printf("%T, %v\n", value, value)
 			matched := strings.Split(value, "|")
-			//log.Printf("%v, %v\n", matched[0], matched[1])
+			log.Printf("%v, %v\n", matched[0], matched[1])
 			if score, err := strconv.ParseFloat(matched[0], 64); err == nil {
-				/*
-					log.Printf("%T, %v\n", score, score)
-				*/
+				log.Printf("%T, %v\n", score, score)
 				if score > 0 {
-					/*
-						log.Printf("%v", fmt.Sprintf("Header: %v, Value: %v", header, value))
-					*/
-					result := fmt.Sprint("{", "\"ID\":", matched[1], ",\"Score\":", 0, ",\"Keywords\":", "[]", "},")	
-					results += string(result)
+					log.Printf("%v", fmt.Sprintf("Header: %v, Value: %v", header, value))
+					result := fmt.Sprint("{", "\"ID\":", matched[1], ",\"Score\":", score, ",\"Keywords\":", "[\""+matched[2]+"\"]", "},")	
+					results.WriteString(result)
 				}
 			}
 		}
 		w.Header().Set("X-Middleware-Req-Headers", "Parsed")
 	}
-	/*
-		log.Print("\r\nREQUEST HEADERS - END ===================== \r\n")
-		log.Print("\r\nRESPONSE HEADERS - START ===================== \r\n")
-	*/
+
+	log.Print("\r\nREQUEST HEADERS - END ===================== \r\n")
+	log.Print("\r\nRESPONSE HEADERS - START ===================== \r\n")
 
 	for header := range w.Header() {
-		/*
 		log.Printf("%T, %v\n", header, header)
-		*/
 		if header == "X-Kube-Vmx-Matched" {
 			value := w.Header().Get(header)
-			/*
 			log.Printf("%T, %v\n", value, value)
-			*/
 			matched := strings.Split(value, "|")
-			/*
 			log.Printf("%v, %v\n", matched[0], matched[1])
-			*/
 			if score, err := strconv.ParseFloat(matched[0], 64); err == nil {
-				/*
 				log.Printf("%T, %v\n", score, score)
-				*/
 				if score > 0 {
-					/*
-						log.Printf("%v", fmt.Sprintf("Header: %v, Value: %v", header, value))
-					*/
-					result := fmt.Sprint("{", "\"ID\":", matched[1], ",\"Score\":", score, ",\"Keywords\":", "[]", "},")	
-					results += string(result)
+					log.Printf("%v", fmt.Sprintf("Header: %v, Value: %v", header, value))
+					result := fmt.Sprint("{", "\"ID\":", matched[1], ",\"Score\":", score, ",\"Keywords\":", "[\""+matched[2]+"\"]", "},")	
+					results.WriteString(result)
 				}
 			}
 		}
 		w.Header().Set("X-Middleware-Response-Headers", "Parsed")
 	}
-	/*
-		log.Print("\r\nRESPONSE HEADERS - END ===================== \r\n")
-	*/
-
-	if len(results) > 0 {
-		connectFmt := results[0:len(results)-1]
+	log.Print("\r\nRESPONSE HEADERS - END ===================== \r\n")
+	log.Printf("results length: %s", strconv.Itoa(results.Len()))
+	if results.Len() > 0 {
+		log.Printf("results chain: %s", results)
+		connectFmt := results.String()
+		connectFmt = connectFmt[0:len(connectFmt)-1]
+		log.Printf("marker chain identified: %s", connectFmt)
 		s.body = strings.Replace(s.body, "CONNECTME", "["+string(connectFmt)+"]", 1)
 	} else {
 		s.body = strings.Replace(s.body, "CONNECTME", "[]", 1)		
 	}
-	/*
-		log.Printf("marker chain identified: %s", connectFmt)
-		log.Printf("output: %s", s.body)
-		log.Print("\r\nFINAL RESULT - END ===================== \r\n")
-	*/
+	log.Printf("output: %s", s.body)
+	log.Print("\r\nFINAL RESULT - END ===================== \r\n")
 	w.WriteHeader(http.StatusOK)
 	w.Header().Set("X-Middleware-Name", "KubeConnect")
 	w.Header().Set("X-Middleware-Result", "Generated")
@@ -156,13 +130,12 @@ func (s *KubeConnectHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 // This function is optional but handy, used to check input parameters when creating new middlewares
 func New(status int, body, bodyWithHeaders string) (*KubeConnectMiddleware, error) {
 
-	/*
 	log.Print("\r\nBODY FROM NEW - START ===================== \r\n")
 	log.Printf("%T\n", body)
     log.Printf("%s", string(body))
     log.Printf("%s", string(bodyWithHeaders))
 	log.Print("\r\nBODY FROM NEW - END ===================== \r\n")
-	*/
+
 
 	if bodyWithHeaders != "" {
 		if _, _, err := parseBodyWithHeaders(bodyWithHeaders); err != nil {
@@ -176,11 +149,9 @@ func New(status int, body, bodyWithHeaders string) (*KubeConnectMiddleware, erro
 // middleware chain. Note that we need to remember 'next' handler to call
 func (c *KubeConnectMiddleware) NewHandler(next http.Handler) (http.Handler, error) {
 	body := c.Body
-	/*
-		log.Print("\r\nBODY FROM PREVIOUS MIDDLEWARE - START ===================== \r\n")
-	    log.Printf("%s", string(body))
-		log.Print("\r\nBODY FROM PREVIOUS MIDDLEWARE - END ===================== \r\n")
-	*/
+	log.Print("\r\nBODY FROM PREVIOUS MIDDLEWARE - START ===================== \r\n")
+    log.Printf("%s", string(body))
+	log.Print("\r\nBODY FROM PREVIOUS MIDDLEWARE - END ===================== \r\n")
 	headers := make(map[string]string)
 	if c.BodyWithHeaders != "" {
 		// It's already registered so we know there's no error
