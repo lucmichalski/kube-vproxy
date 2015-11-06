@@ -135,9 +135,9 @@ func (s *KubeConnectHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	if len(results) > 0 {
 		connectFmt := results[0:len(results)-1]
-		s.body = strings.Replace(s.body, "RESULTS", "["+string(connectFmt)+"]", 1)
+		s.body = strings.Replace(s.body, "CONNECTME", "["+string(connectFmt)+"]", 1)
 	} else {
-		s.body = strings.Replace(s.body, "RESULTS", "[]", 1)		
+		s.body = strings.Replace(s.body, "CONNECTME", "[]", 1)		
 	}
 	/*
 		log.Printf("marker chain identified: %s", connectFmt)

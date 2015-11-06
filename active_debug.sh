@@ -163,7 +163,7 @@ curl -X POST -H "Content-Type: application/json" http://localhost:8182/v2/fronte
 	     "Type": "kubeConnect",
 		 "Middleware":{
 		    "Status":503,
-		    "BodyWithHeaders": "Content-Type: application/json\n\n{\"Status\":200, \"Results\": [] }"
+		    "BodyWithHeaders": "Content-Type: application/json\n\n{\"Status\":200, \"Results\": 'CONNECTME' }"
 		}
 	}}' | jq .
 
