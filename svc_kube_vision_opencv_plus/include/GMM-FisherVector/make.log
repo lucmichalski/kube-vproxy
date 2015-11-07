@@ -1,0 +1,70 @@
+g++ -DDEBUG -O3 -c fisher.cc
+fisher.cc: In member function 'void Fisher<T>::set_model(gaussian_mixture<T>&) [with T = float]':
+fisher.cc:206:   instantiated from here
+fisher.cc:43: error: cannot convert 'float**' to 'float*' in assignment
+fisher.cc:45: error: cannot convert 'float*' to 'float' in assignment
+fisher.cc:46: error: cannot convert 'float' to 'void*' for argument '1' to 'void* memset(void*, int, size_t)'
+fisher.cc:51: error: cannot convert 'float**' to 'float*' in assignment
+fisher.cc:53: error: cannot convert 'float*' to 'float' in assignment
+fisher.cc:54: error: cannot convert 'float' to 'void*' for argument '1' to 'void* memset(void*, int, size_t)'
+gmm.h:87: error: 'float* gaussian_mixture<float>::coef' is protected
+fisher.cc:62: error: within this context
+gmm.h:87: error: 'float* gaussian_mixture<float>::coef' is protected
+fisher.cc:63: error: within this context
+fisher.cc:206:   instantiated from here
+gmm.h:87: error: 'float** gaussian_mixture<float>::var' is protected
+fisher.cc:72: error: within this context
+gmm.h: In member function 'void Fisher<T>::AddOne(T*) [with T = float]':
+fisher.cc:206:   instantiated from here
+gmm.h:91: error: 'T gaussian_mixture<T>::accumulate_statistics(T*, bool, bool, bool, T*, T**, T**) [with T = float]' is protected
+fisher.cc:104: error: within this context
+fisher.cc: In member function 'void Fisher<T>::Compute(T*) [with T = float]':
+fisher.cc:206:   instantiated from here
+fisher.cc:117: error: invalid operands of types 'int' and 'float*' to binary 'operator*'
+gmm.h:87: error: 'float** gaussian_mixture<float>::mean' is protected
+fisher.cc:127: error: within this context
+gmm.h:87: error: 'float** gaussian_mixture<float>::mean' is protected
+fisher.cc:144: error: within this context
+gmm.h:87: error: 'float** gaussian_mixture<float>::var' is protected
+fisher.cc:145: error: within this context
+fisher.cc: In member function 'void Fisher<T>::Normalize(T*) [with T = float]':
+fisher.cc:206:   instantiated from here
+fisher.cc:196: error: no matching function for call to 'fabs(float&, float)'
+/usr/include/bits/mathcalls.h:182: note: candidates are: double fabs(double)
+/usr/lib/gcc/x86_64-redhat-linux/4.1.2/../../../../include/c++/4.1.2/cmath:226: note:                 float std::fabs(float)
+/usr/lib/gcc/x86_64-redhat-linux/4.1.2/../../../../include/c++/4.1.2/cmath:230: note:                 long double std::fabs(long double)
+fisher.cc: In member function 'void Fisher<T>::set_model(gaussian_mixture<T>&) [with T = double]':
+fisher.cc:207:   instantiated from here
+fisher.cc:43: error: cannot convert 'double**' to 'double*' in assignment
+fisher.cc:45: error: cannot convert 'double*' to 'double' in assignment
+fisher.cc:46: error: cannot convert 'double' to 'void*' for argument '1' to 'void* memset(void*, int, size_t)'
+fisher.cc:51: error: cannot convert 'double**' to 'double*' in assignment
+fisher.cc:53: error: cannot convert 'double*' to 'double' in assignment
+fisher.cc:54: error: cannot convert 'double' to 'void*' for argument '1' to 'void* memset(void*, int, size_t)'
+gmm.h:87: error: 'double* gaussian_mixture<double>::coef' is protected
+fisher.cc:62: error: within this context
+gmm.h:87: error: 'double* gaussian_mixture<double>::coef' is protected
+fisher.cc:63: error: within this context
+fisher.cc:207:   instantiated from here
+gmm.h:87: error: 'double** gaussian_mixture<double>::var' is protected
+fisher.cc:72: error: within this context
+gmm.h: In member function 'void Fisher<T>::AddOne(T*) [with T = double]':
+fisher.cc:207:   instantiated from here
+gmm.h:91: error: 'T gaussian_mixture<T>::accumulate_statistics(T*, bool, bool, bool, T*, T**, T**) [with T = double]' is protected
+fisher.cc:104: error: within this context
+fisher.cc: In member function 'void Fisher<T>::Compute(T*) [with T = double]':
+fisher.cc:207:   instantiated from here
+fisher.cc:117: error: invalid operands of types 'int' and 'double*' to binary 'operator*'
+gmm.h:87: error: 'double** gaussian_mixture<double>::mean' is protected
+fisher.cc:127: error: within this context
+gmm.h:87: error: 'double** gaussian_mixture<double>::mean' is protected
+fisher.cc:144: error: within this context
+gmm.h:87: error: 'double** gaussian_mixture<double>::var' is protected
+fisher.cc:145: error: within this context
+fisher.cc: In member function 'void Fisher<T>::Normalize(T*) [with T = double]':
+fisher.cc:207:   instantiated from here
+fisher.cc:196: error: no matching function for call to 'fabs(double&, double)'
+/usr/include/bits/mathcalls.h:182: note: candidates are: double fabs(double)
+/usr/lib/gcc/x86_64-redhat-linux/4.1.2/../../../../include/c++/4.1.2/cmath:226: note:                 float std::fabs(float)
+/usr/lib/gcc/x86_64-redhat-linux/4.1.2/../../../../include/c++/4.1.2/cmath:230: note:                 long double std::fabs(long double)
+make: *** [fisher.o] Error 1
