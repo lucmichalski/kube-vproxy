@@ -12,7 +12,7 @@ if [ "$(uname)" == "Darwin" ]; then
 	VMX2_HOSTNAME="kube-master.blippar-vision.com"
 	KUBE_LTU_HOSTNAME="http://kube-master.blippar-vision.com"
 elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
-        KUBE_VPROXY_PORT="80"
+    KUBE_VPROXY_PORT="80"
 	KUBE_VPROXY_IP="127.0.0.1"
 	KUBE_LTU_HOSTNAME="http://kube-master.blippar-vision.com"
 	VMX1_HOSTNAME=$KUBE_VPROXY_IP
@@ -110,7 +110,6 @@ curl -s -X POST -H "Content-Type: application/json" http://$KUBE_VPROXY_IP:8182/
 	        \"Discovery\": \"BATCH\",
 	        \"ActiveEngines\": \"vmx2,vmx1\",
 		\"Debug\": 1
-        }
     }
 }" | jq .
 

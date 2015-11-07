@@ -1,0 +1,3 @@
+/Users/lucmichalski/.go/src/github.com/blippar/kube-vproxy/svc_kuve_vision_logos/build/CMakeFiles/uninstall.dir
+/Users/lucmichalski/.go/src/github.com/blippar/kube-vproxy/svc_kuve_vision_logos/build/app/CMakeFiles/find_object_app.dir
+/Users/lucmichalski/.go/src/github.com/blippar/kube-vproxy/svc_kuve_vision_logos/build/src/CMakeFiles/find_object.dir

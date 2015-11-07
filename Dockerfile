@@ -9,29 +9,29 @@ WORKDIR /Users/lucmichalski/.go/src/github.com/blippar/kube-vproxy/
 RUN     ls -l /go && \
     go get github.com/vulcand/vulcand/Godeps/_workspace/src/github.com/vulcand/oxy/utils &&\
     go get github.com/vulcand/vulcand/Godeps/_workspace/src/github.com/codegangsta/cli && \
-        go get github.com/vulcand/vulcand/Godeps/_workspace/src/github.com/coreos/go-etcd/etcd && \
+    go get github.com/vulcand/vulcand/Godeps/_workspace/src/github.com/coreos/go-etcd/etcd && \
     go get github.com/vulcand/vulcand/Godeps/_workspace/src/github.com/mailgun/log && \
-        go get github.com/vulcand/vulcand/vbundle && \
+    go get github.com/vulcand/vulcand/vbundle && \
 #   go get gopkg.in/throttled/throttled.v2/... && \
     go get github.com/rwcarlsen/goexif/exif && \
     # Go routines
     go get github.com/ugorji/go/codec && \
     go get gopkg.in/tomb.v2 && \
-        go get github.com/tools/godep && \
+    go get github.com/tools/godep && \
     go get github.com/trajber/handy && \
 #   go get github.com/gin-gonic/gin && \
 #   go get github.com/hyperboloide/pipe && \
     go get github.com/vulcand/oxy/forward && \
     go get github.com/vulcand/oxy/cbreaker && \ 
-        go get github.com/vulcand/oxy/connlimit && \
-        go get github.com/vulcand/oxy/forward && \
+    go get github.com/vulcand/oxy/connlimit && \
+    go get github.com/vulcand/oxy/forward && \
 #   go get github.com/carbocation/interpose && \
-        go get github.com/vulcand/oxy/memmetrics && \
-        go get github.com/vulcand/oxy/ratelimit && \
-        go get github.com/vulcand/oxy/roundrobin && \
-        go get github.com/vulcand/oxy/stream && \
-        go get github.com/vulcand/oxy/trace && \
-        go get github.com/vulcand/oxy/utils && \
+    go get github.com/vulcand/oxy/memmetrics && \
+    go get github.com/vulcand/oxy/ratelimit && \
+    go get github.com/vulcand/oxy/roundrobin && \
+    go get github.com/vulcand/oxy/stream && \
+    go get github.com/vulcand/oxy/trace && \
+    go get github.com/vulcand/oxy/utils && \
     cd /go/src/ && \
         git clone https://github.com/vulcand/vulcand && \
     cd vulcand && \
