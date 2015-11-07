@@ -2,6 +2,9 @@
 Copyright (c) 2015, Michalski Luc
 */
 
+#include <stdio.h>
+#include <stdlib.h>
+
 #include <QtGui/QApplication>
 #include <QtCore/QCoreApplication>
 #include <QtCore/QTime>
@@ -12,10 +15,15 @@ Copyright (c) 2015, Michalski Luc
 #include "find_object/FindObject.h"
 #include "find_object/JsonWriter.h"
 #include "crow/include/crow.h"
+#include <opencv2/calib3d/calib3d.hpp> // for homography
+#include <opencv2/opencv_modules.hpp>
 
+// OpenCV stuff
 bool running = true;
 
+//using namespace std;
 using namespace crow;
+//using namespace cv;
 
 static const std::string base64_chars =
 "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
@@ -67,144 +75,18 @@ std::string base64_decode(std::string const& encoded_string) {
     return ret;
 }
 
-int Similarity(std::string sceneImgBase64, std::string objectImgBase64) {
-
-	// Decode and Read the scene
-    std::string sceneImgDecoded = base64_decode(sceneImgBase64);
-    std::vector<uchar> data(sceneImgDecoded.begin(), sceneImgDecoded.end());
-	cv::Mat sceneImg = cv::imread(sceneImgDecoded, cv::IMREAD_GRAYSCALE);
-
-	// Decode and Read the object to recognize in the scene
-    std::string objectImgDecoded = base64_decode(objectImgBase64);
-    std::vector<uchar> data(objectImgDecoded.begin(), objectImgDecoded.end());
-	cv::Mat objectImg = cv::imread(objectImgDecoded, cv::IMREAD_GRAYSCALE);
-
-	int value = 0;
-	if(!objectImg.empty() && !sceneImg.empty())
-	{
-		std::vector<cv::KeyPoint> objectKeypoints;
-		std::vector<cv::KeyPoint> sceneKeypoints;
-		cv::Mat objectDescriptors;
-		cv::Mat sceneDescriptors;
-
-#if CV_MAJOR_VERSION < 3
-		////////////////////////////
-		// EXTRACT KEYPOINTS
-		////////////////////////////
-		cv::SIFT sift;
-		sift.detect(objectImg, objectKeypoints);
-		sift.detect(sceneImg, sceneKeypoints);
-
-		////////////////////////////
-		// EXTRACT DESCRIPTORS
-		////////////////////////////
-		sift.compute(objectImg, objectKeypoints, objectDescriptors);
-		sift.compute(sceneImg, sceneKeypoints, sceneDescriptors);
-#else
-		////////////////////////////
-		// EXTRACT KEYPOINTS
-		////////////////////////////
-		cv::Ptr<cv::xfeatures2d::SIFT> sift = cv::xfeatures2d::SIFT::create();
-		sift->detect(objectImg, objectKeypoints);
-		sift->detect(sceneImg, sceneKeypoints);
-
-		////////////////////////////
-		// EXTRACT DESCRIPTORS
-		////////////////////////////
-		sift->compute(objectImg, objectKeypoints, objectDescriptors);
-		sift->compute(sceneImg, sceneKeypoints, sceneDescriptors);
-#endif
-		////////////////////////////
-		// NEAREST NEIGHBOR MATCHING USING FLANN LIBRARY (included in OpenCV)
-		////////////////////////////
-		cv::Mat results;
-		cv::Mat dists;
-		std::vector<std::vector<cv::DMatch> > matches;
-		int k=2; // find the 2 nearest neighbors
-
-		// Create Flann KDTree index
-		cv::flann::Index flannIndex(sceneDescriptors, cv::flann::KDTreeIndexParams(), cvflann::FLANN_DIST_EUCLIDEAN);
-		results = cv::Mat(objectDescriptors.rows, k, CV_32SC1); // Results index
-		dists = cv::Mat(objectDescriptors.rows, k, CV_32FC1); // Distance results are CV_32FC1
-
-		// search (nearest neighbor)
-		flannIndex.knnSearch(objectDescriptors, results, dists, k, cv::flann::SearchParams() );
-
-		////////////////////////////
-		// PROCESS NEAREST NEIGHBOR RESULTS
-		////////////////////////////
-
-		// Find correspondences by NNDR (Nearest Neighbor Distance Ratio)
-		float nndrRatio = 0.6f;
-		std::vector<cv::Point2f> mpts_1, mpts_2; // Used for homography
-		std::vector<int> indexes_1, indexes_2; // Used for homography
-		std::vector<uchar> outlier_mask;  // Used for homography
-		// Check if this descriptor matches with those of the objects
-
-		for(int i=0; i<objectDescriptors.rows; ++i)
-		{
-			// Apply NNDR
-			if(dists.at<float>(i,0) <= nndrRatio * dists.at<float>(i,1))
-			{
-				mpts_1.push_back(objectKeypoints.at(i).pt);
-				indexes_1.push_back(i);
-
-				mpts_2.push_back(sceneKeypoints.at(results.at<int>(i,0)).pt);
-				indexes_2.push_back(results.at<int>(i,0));
-			}
-		}
-
-		if(method == mInliers)
-		{
-			// FIND HOMOGRAPHY
-			unsigned int minInliers = 8;
-			if(mpts_1.size() >= minInliers)
-			{
-				cv::Mat H = findHomography(mpts_1,
-						mpts_2,
-						cv::RANSAC,
-						1.0,
-						outlier_mask);
-				int inliers=0, outliers=0;
-				for(unsigned int k=0; k<mpts_1.size();++k)
-				{
-					if(outlier_mask.at(k))
-					{
-						++inliers;
-					}
-					else
-					{
-						++outliers;
-					}
-				}
-				if(!quiet)
-					printf("Total=%d Inliers=%d Outliers=%d\n", (int)mpts_1.size(), inliers, outliers);
-				value = (inliers*100) / (inliers+outliers);
-			}
-		}
-		else
-		{
-			value = (int)mpts_1.size();
-		}
-	}
-	else
-	{
-		printf("Images are not valid!\n");
-		showUsage();
-	}
-	if(!quiet)
-		printf("Similarity = %d\n", value);
-
-	// Return the value in JSON format
-	return value;
-}
+enum {mTotal, mInliers};
 
 int main(int argc, char* argv[])
 {
 
     crow::SimpleApp api;
 
-	//find_object::ParametersMap customParameters;
+    // Getting the default parameter for find object
+	find_object::ParametersMap parameters = find_object::Settings::getDefaultParameters();
+
+	// Overriding default parameters 
+	find_object::ParametersMap customParameters;
 
     api.route_dynamic("/status")
     ([](){
@@ -241,7 +123,6 @@ int main(int argc, char* argv[])
 		//bool imagesSaved = true;
 
 		// Check for custom parameters:
-		// find_object::ParametersMap parameters = find_object::Settings::getDefaultParameters();
 		//	customParameters[find_object::Settings::kGeneral_vocabularyFixed()] = true;
 		//	customParameters[find_object::Settings::kGeneral_invertedSearch()] = true;
 
@@ -366,4 +247,138 @@ int main(int argc, char* argv[])
         .run();
 
 
+}
+
+int Similarity(std::string sceneImgBase64, std::string objectImgBase64) {
+
+	bool quiet = false;
+	int method = mTotal; //total matches
+
+	// Decode and Read the scene
+    std::string sceneImgDecoded = base64_decode(sceneImgBase64);
+    std::vector<uchar> data(sceneImgDecoded.begin(), sceneImgDecoded.end());
+	cv::Mat sceneImg = cv::imread(sceneImgDecoded, cv::IMREAD_GRAYSCALE);
+
+	// Decode and Read the object to recognize in the scene
+    std::string objectImgDecoded = base64_decode(objectImgBase64);
+    std::vector<uchar> data(objectImgDecoded.begin(), objectImgDecoded.end());
+	cv::Mat objectImg = cv::imread(objectImgDecoded, cv::IMREAD_GRAYSCALE);
+
+	int value = 0;
+	if(!objectImg.empty() && !sceneImg.empty())
+	{
+		std::vector<cv::KeyPoint> objectKeypoints;
+		std::vector<cv::KeyPoint> sceneKeypoints;
+		cv::Mat objectDescriptors;
+		cv::Mat sceneDescriptors;
+
+#if CV_MAJOR_VERSION < 3
+		////////////////////////////
+		// EXTRACT KEYPOINTS
+		////////////////////////////
+		cv::SIFT sift;
+		sift.detect(objectImg, objectKeypoints);
+		sift.detect(sceneImg, sceneKeypoints);
+
+		////////////////////////////
+		// EXTRACT DESCRIPTORS
+		////////////////////////////
+		sift.compute(objectImg, objectKeypoints, objectDescriptors);
+		sift.compute(sceneImg, sceneKeypoints, sceneDescriptors);
+#else
+		////////////////////////////
+		// EXTRACT KEYPOINTS
+		////////////////////////////
+		cv::Ptr<cv::xfeatures2d::SIFT> sift = cv::xfeatures2d::SIFT::create();
+		sift->detect(objectImg, objectKeypoints);
+		sift->detect(sceneImg, sceneKeypoints);
+
+		////////////////////////////
+		// EXTRACT DESCRIPTORS
+		////////////////////////////
+		sift->compute(objectImg, objectKeypoints, objectDescriptors);
+		sift->compute(sceneImg, sceneKeypoints, sceneDescriptors);
+#endif
+		////////////////////////////
+		// NEAREST NEIGHBOR MATCHING USING FLANN LIBRARY (included in OpenCV)
+		////////////////////////////
+		cv::Mat results;
+		cv::Mat dists;
+		std::vector<std::vector<cv::DMatch> > matches;
+		int k=2; // find the 2 nearest neighbors
+
+		// Create Flann KDTree index
+		cv::flann::Index flannIndex(sceneDescriptors, cv::flann::KDTreeIndexParams(), cvflann::FLANN_DIST_EUCLIDEAN);
+		results = cv::Mat(objectDescriptors.rows, k, CV_32SC1); // Results index
+		dists = cv::Mat(objectDescriptors.rows, k, CV_32FC1); // Distance results are CV_32FC1
+
+		// search (nearest neighbor)
+		flannIndex.knnSearch(objectDescriptors, results, dists, k, cv::flann::SearchParams() );
+
+		////////////////////////////
+		// PROCESS NEAREST NEIGHBOR RESULTS
+		////////////////////////////
+
+		// Find correspondences by NNDR (Nearest Neighbor Distance Ratio)
+		float nndrRatio = 0.6f;
+		std::vector<cv::Point2f> mpts_1, mpts_2; // Used for homography
+		std::vector<int> indexes_1, indexes_2; // Used for homography
+		std::vector<uchar> outlier_mask;  // Used for homography
+		// Check if this descriptor matches with those of the objects
+
+		for(int i=0; i<objectDescriptors.rows; ++i)
+		{
+			// Apply NNDR
+			if(dists.at<float>(i,0) <= nndrRatio * dists.at<float>(i,1))
+			{
+				mpts_1.push_back(objectKeypoints.at(i).pt);
+				indexes_1.push_back(i);
+
+				mpts_2.push_back(sceneKeypoints.at(results.at<int>(i,0)).pt);
+				indexes_2.push_back(results.at<int>(i,0));
+			}
+		}
+
+		if(method == mInliers)
+		{
+			// FIND HOMOGRAPHY
+			unsigned int minInliers = 8;
+			if(mpts_1.size() >= minInliers)
+			{
+				cv::Mat H = findHomography(mpts_1,
+						mpts_2,
+						cv::RANSAC,
+						1.0,
+						outlier_mask);
+				int inliers=0, outliers=0;
+				for(unsigned int k=0; k<mpts_1.size();++k)
+				{
+					if(outlier_mask.at(k))
+					{
+						++inliers;
+					}
+					else
+					{
+						++outliers;
+					}
+				}
+				if(!quiet)
+					printf("Total=%d Inliers=%d Outliers=%d\n", (int)mpts_1.size(), inliers, outliers);
+				value = (inliers*100) / (inliers+outliers);
+			}
+		}
+		else
+		{
+			value = (int)mpts_1.size();
+		}
+	}
+	else
+	{
+		printf("Images are not valid!\n");
+	}
+	if(!quiet)
+		printf("Similarity = %d\n", value);
+
+	// Return the value in JSON format
+	return value;
 }
