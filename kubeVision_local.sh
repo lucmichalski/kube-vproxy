@@ -110,12 +110,13 @@ curl -s -X POST -H "Content-Type: application/json" http://$KUBE_VPROXY_IP:8182/
 	        \"Discovery\": \"BATCH\",
 	        \"ActiveEngines\": \"vmx2,vmx1\",
 		\"Debug\": 1
+}
     }
 }" | jq .
 
- curl -X POST -H "Content-Type: application/json" http://$KUBE_VPROXY_IP:8182/v2/frontends/front_kubeFactor/middlewares \
-     -d '{"Middleware": {
-         "Id": "front_kubeFactor",
+ curl -s -X POST -H "Content-Type: application/json" http://$KUBE_VPROXY_IP:8182/v2/frontends/front_kubeFactor/middlewares -d \
+   '{"Middleware": {
+         "Id": "front_kubeFactor_VMX",
          "Priority":2,
 	     "Type": "kubeOCR",
          "Middleware":{
@@ -128,18 +129,18 @@ curl -s -X POST -H "Content-Type: application/json" http://$KUBE_VPROXY_IP:8182/
 	        "Concurrency": 50,
 	        "Transformation": "",
 	        "DetectDarkness": 0,
-	        "Chained": 0,
-			"OcrPreProcessors": "stroke-width-transform=1",
+	        "Chained": 1,
+		"OcrPreProcessors": "stroke-width-transform=1",
 	        "OcrEngine": "engine=tesseract",
 	        "EntitiesExtractor": "kube-aida",
 	        "EntitiesDiscovery": 0,
 	        "Debug": 1
         }
     }
-}'  | jq .
+}' | jq .
 
 
-curl -v -X POST -H "Content-Type: application/json" http://$KUBE_VPROXY_IP:8182/v2/frontends/front_kubeFactor/middlewares \
+curl -s -X POST -H "Content-Type: application/json" http://$KUBE_VPROXY_IP:8182/v2/frontends/front_kubeFactor/middlewares \
      -d '{"Middleware": {
          "Id": "front_kubeFactor_Connect",
          "Priority": 2,

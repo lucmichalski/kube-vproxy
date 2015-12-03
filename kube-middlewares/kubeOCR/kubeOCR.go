@@ -15,6 +15,7 @@ import (
 	"github.com/lepidosteus/golang-http-batch/batch"
 	"github.com/disintegration/imaging"
 	"github.com/vulcand/vulcand/plugin"
+	"github.com/kennygrant/sanitize"
 	"log"
 	"image"
 	"time"
@@ -338,8 +339,10 @@ func (a *KubeOCRHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		if len(body) > 5 {
 			if a.cfg.Debug == 1 {
 				log.Println("Result from: ", url)
-				log.Println("Text extracted:", len(body))
-				log.Println("Cumulated Characters Length (With Spaces):\n", body)
+				body = strings.Replace(body, "\r\n", " ", -1)
+				body = strings.Replace(body, "\n", " ", -1)
+				log.Println("Cumulated Characters Length (With Spaces)", len(body))
+				log.Println("Text extracted:\n", body)
 			}
 			w.Header().Set("X-Kube-OCR-result", string(len(body)))
 		}

@@ -1,0 +1,78 @@
+/*
+* Licensed to the Apache Software Foundation (ASF) under one or more
+* contributor license agreements.  See the NOTICE file distributed with
+* this work for additional information regarding copyright ownership.
+* The ASF licenses this file to You under the Apache License, Version 2.0
+* (the "License"); you may not use this file except in compliance with
+* the License.  You may obtain a copy of the License at
+*
+*     http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+*/
+
+#breadcrumbs { display:none; }
+#bannerRight { margin-right: 375px; }
+#bodyColumn { margin-top: 40px; }
+
+body {
+  font: large/1 "Linux Libertine", Palatino, "Palatino Linotype", "Book Antiqua", Georgia, "Times New Roman", serif; word-spacing: 0.12em; 
+}
+body a:link {
+  color: #74240f; text-decoration: underline;
+}
+body a:visited {
+  color: #74240f; text-decoration: underline;
+}
+body a:hover {
+  text-decoration: underline;
+  color: #888800;
+}
+ul {
+  margin-left: 3em; list-style-type: decimal;
+}
+.main {
+  text-align: left; width: 850px;
+}
+h1 {
+  font-family: Palatino, "Palatino Linotype", "Book Antiqua", Georgia, "Times New Roman", serif; font-size: 35; text-shadow: 0 0 1px #665; margin-bottom: 0em;
+}
+h2 {
+  font-family: Palatino, "Palatino Linotype", "Book Antiqua", Georgia, "Times New Roman", serif; font-size: 22; text-shadow: 0 0 1px #665; margin-bottom: 0em;
+}
+h3 {
+  font-family: Palatino, "Palatino Linotype", "Book Antiqua", Georgia, "Times New Roman", serif; font-size: 17; text-shadow: 0 0 1px #665; margin-bottom: 0em;
+}
+
+pre {
+ width: 95%;
+ margin: 20px 20px 20px 20px;
+ font-family: Consolas, monospace;
+ word-spacing: 0em; 
+ font-size: 13px;
+}
+
+.green {
+ color: #0f7355;
+ width: 95%;
+ margin: 30px 20px 20px 20px;
+ border: 1px solid #0f7355;
+ background: #edf7f4;
+ background-color: #edf7f4;
+}
+
+.green a:link, .green a:active, .green a:visited { color: #0a4d39; }
+.green a:hover { color: #888800; }
+.green h3 {
+  margin-top:5px;
+  padding: 0px 0px 0px 0px;
+  border: 0px;
+  color: #74240f;
+  background-color: #edf7f4;
+  font-weight: bold;
+  font-size: 17px;
+}

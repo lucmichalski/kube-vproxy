@@ -1,0 +1,32 @@
+---
+
+# master-docker
+
+- name: Create /opt/bin/manifests for configs
+  sudo: yes
+  file: >
+    path=/opt/bin/manifests
+    state=directory
+    owner=core
+    group=core
+
+- name: copy master manifest config
+  template: src=kubernetes-master-pod.json.ansible
+            dest=/opt/bin/manifests/master.json
+  sudo: yes
+
+- name: Create hyperkube-docker-master
+  template: src=hyperkube-docker-master.service.ansible
+            dest=/etc/systemd/system/hyperkube-docker-master.service
+  sudo: yes
+  notify:
+    - reload systemd
+    - restart hyperkube-docker-master
+
+- name: Create hyperkube-docker-proxy
+  template: src=hyperkube-docker-proxy.service.ansible
+            dest=/etc/systemd/system/hyperkube-docker-proxy.service
+  sudo: yes
+  notify:
+    - reload systemd
+    - restart hyperkube-docker-proxy

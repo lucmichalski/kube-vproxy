@@ -1,0 +1,29 @@
+[Unit]
+Description=Launch hyperkube node
+EnvironmentFile=/etc/network-environment
+Requires=network-online.target
+After=network-online.target
+After=load-kube-cert.service
+Before=kubernetes-label.service
+
+[Service]
+StandardOuptut={{ kubernetes_systemd_stdout }}
+StandardError={{ kubernetes_systemd_stderr }}
+Restart=always
+RestartSec=5
+ExecStartPre=-/usr/bin/mkdir -p {{kubelet.log_dir}}
+ExecStartPre=-/usr/bin/docker kill kube-node
+ExecStartPre=-/usr/bin/docker rm kube-node
+ExecStart=/usr/bin/docker run \
+  --name kube-node \
+  --net=host \
+  --privileged \
+  -v /var/run/docker.sock:/var/run/docker.sock \
+  -v /srv/kubernetes:/srv/kubernetes \
+  -v {{kubelet.log_dir}}:{{kubelet.log_dir}}
+  {{hyperkube_image}} \
+    /hyperkube kubelet \
+    {% for k,v in kubelet.iteritems() %}
+      --{{k}}={{v}} \
+    {% endfor %}
+    --hostname_override={{ansible_local.kubernetes_node_ip_fact.node_ip_address}}

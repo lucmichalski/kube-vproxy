@@ -1,6 +1,0 @@
-#ifndef FINDOBJECTEXP_H
-#define FINDOBJECTEXP_H
-
-#define FINDOBJECT_EXP
-
-#endif // RTABMAPEXP_H

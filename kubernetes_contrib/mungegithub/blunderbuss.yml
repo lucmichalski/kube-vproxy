@@ -1,0 +1,189 @@
+prefixMap:
+  Godeps:
+    - davidopp
+    - eparis
+    - lavalamp
+    - quinton-hoole
+    - thockin
+
+  build:
+    - ixdy
+    - lavalamp
+    - zmerlynn
+
+  cluster:
+    - brendandburns
+    - davidopp
+    - eparis
+    - roberthbailey
+    - zmerlynn
+    - mikedanese
+
+  cluster/addons/dns:
+    - ArtfulCoder
+    - thockin
+
+  cluster/mesos/docker:
+    - karlkfi
+
+  cmd:
+    - brendandburns
+    - davidopp
+    - dchen1107
+    - lavalamp
+    - thockin
+    - mikedanese
+
+  cmd/kube-controller-manager:
+    - davidopp
+    - lavalamp
+    - mikedanese
+
+  cmd/kubelet:
+    - dchen1107
+    - vishh
+    - yujuhong
+
+  contrib/mesos:
+    - jdef
+    - karlkfi
+
+  docs:
+    - bgrant0607
+    - brendandburns
+    - smarterclayton
+    - thockin
+
+  docs/getting-started-guides/mesos:
+    - jdef
+    - karlkfi
+
+  examples:
+    - bgrant0607
+    - brendandburns
+    - thockin
+    - zmerlynn
+
+  hack:
+    - eparis
+    - ixdy
+    - lavalamp
+    - zmerlynn
+
+  # fall through for things that miss everything else
+  pkg:
+    - bgrant0607
+    - brendandburns
+    - eparis
+    - smarterclayton
+    - thockin
+
+  pkg/admission:
+    - davidopp
+    - derekwaynecarr
+    - erictune
+    - lavalamp
+    - liggitt
+
+  pkg/api:
+    - bgrant0607
+    - erictune
+    - lavalamp
+    - smarterclayton
+    - thockin
+
+  pkg/apiserver:
+    - lavalamp
+    - smarterclayton
+
+  pkg/authentication:
+    - erictune
+    - liggitt
+
+  pkg/client:
+    - deads2k
+    - lavalamp
+    - smarterclayton
+
+  pkg/clientauth:
+    - lavalamp
+
+  pkg/cloudprovider:
+    - davidopp
+    - mikedanese
+
+  pkg/cloudprovider/aws:
+    - justinsb
+
+  pkg/controller:
+    - davidopp
+    - derekwaynecarr
+    - mikedanese
+
+  pkg/conversion:
+    - derekwaynecarr
+    - lavalamp
+
+  pkg/credentialprovider:
+    - erictune
+    - liggitt
+
+  pkg/exapi:
+    - bgrant0607
+    - erictune
+    - lavalamp
+    - smarterclayton
+    - thockin
+
+  pkg/kubectl:
+    - bgrant0607
+    - brendandburns
+    - deads2k
+    - jlowdermilk
+    - smarterclayton
+
+  pkg/kubelet:
+    - dchen1107
+    - vishh
+    - yujuhong
+
+  pkg/master:
+    - davidopp
+    - derekwaynecarr
+    - lavalamp
+    - mikedanese
+
+  pkg/proxy:
+    - ArtfulCoder
+    - thockin
+
+  pkg/registry:
+    - lavalamp
+    - smarterclayton
+
+  pkg/volume:
+    - saad-ali
+    - thockin
+
+  plugin:
+    - brendandburns
+    - davidopp
+    - dchen1107
+    - lavalamp
+    - thockin
+
+  plugin/cmd/kube-scheduler:
+    - davidopp
+
+  plugin/pkg/admission:
+    - derekwaynecarr
+
+  plugin/pkg/auth:
+    - erictune
+    - liggitt
+
+  plugin/pkg/scheduler:
+    - davidopp
+
+  test:
+    - ixdy

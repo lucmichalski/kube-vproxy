@@ -1,9 +1,0 @@
-CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
-
-CPP_LIBRARY(
-  NAME      progress
-  HEADERS   progress.hpp
-  LIB_TYPE  HEADER              
-)
-
-ADD_SUBDIRECTORY(test)
