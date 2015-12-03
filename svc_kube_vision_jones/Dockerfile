@@ -76,7 +76,7 @@ RUN apt-get update && apt-get install -y \
 	zlib1g-dev \
         openssl
 
-RUN curl -# -O https://protobuf.googlecode.com/files/protobuf-2.5.0.tar.gz \
+RUN curl -k -# -O https://protobuf.googlecode.com/files/protobuf-2.5.0.tar.gz \
     && tar -xzvf protobuf-2.5.0.tar.gz \
     && cd protobuf-2.5.0 \
     && ./configure --prefix=/usr \

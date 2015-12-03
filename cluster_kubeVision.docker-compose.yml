@@ -81,6 +81,14 @@ svc_kube_vproxy_etcd_viewer:
   ports:
     - "3335:8080"
 
+svc_kube_vision_kmeansplus:
+  build: svc_kube_vision_kmeansplus
+  links:
+    - svc_kube_discovery_vproxy
+  hostname: svc_kube_vision_kmeansplus
+  ports:
+    - "40013:40013"
+
 #svc_kube_vision_ltu763:
 #  build: svc_kube_vision_ltu763
 #  links:

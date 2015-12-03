@@ -1,0 +1,84 @@
+[submodule "svc_kube_vision_opencvplus/dependencies/nanoflann"]
+	path = svc_kube_vision_opencvplus/dependencies/nanoflann
+	url = https://github.com/jlblancoc/nanoflann
+[submodule "svc_kube_vision_opencvplus/dependencies/libzmq"]
+	path = svc_kube_vision_opencvplus/dependencies/libzmq
+	url = https://github.com/zeromq/libzmq.git
+[submodule "svc_kube_vision_opencvplus/dependencies/nanomsg"]
+	path = svc_kube_vision_opencvplus/dependencies/nanomsg
+	url = https://github.com/nanomsg/nanomsg
+[submodule "svc_kube_vision_opencvplus/dependencies/libmill"]
+	path = svc_kube_vision_opencvplus/dependencies/libmill
+	url = https://github.com/sustrik/libmill
+[submodule "svc_kube_vision_opencvplus/dependencies/h2o"]
+	path = svc_kube_vision_opencvplus/dependencies/h2o
+	url = https://github.com/h2o/h2o
+[submodule "svc_kube_vision_opencvplus/dependencies/bond"]
+	path = svc_kube_vision_opencvplus/dependencies/bond
+	url = https://github.com/Microsoft/bond
+[submodule "svc_kube_vision_opencvplus/dependencies/libsodium"]
+	path = svc_kube_vision_opencvplus/dependencies/libsodium
+	url = https://github.com/jedisct1/libsodium
+[submodule "svc_kube_vision_opencvplus/dependencies/etcd-cpp-api"]
+	path = svc_kube_vision_opencvplus/dependencies/etcd-cpp-api
+	url = https://github.com/nokia/etcd-cpp-api
+[submodule "svc_kube_vision_opencvplus/dependencies/protobuf"]
+	path = svc_kube_vision_opencvplus/dependencies/protobuf
+	url = https://github.com/google/protobuf
+[submodule "svc_kube_vision_opencvplus/dependencies/quasi_invariant-features"]
+	path = svc_kube_vision_opencvplus/dependencies/quasi_invariant-features
+	url = https://github.com/eokeeffe/quasi_invariant-features
+[submodule "svc_kube_vision_opencvplus/dependencies/qhttp"]
+	path = svc_kube_vision_opencvplus/dependencies/qhttp
+	url = https://github.com/azadkuh/qhttp
+[submodule "svc_kube_vision_opencvplus/dependencies/opencv-practical-code"]
+	path = svc_kube_vision_opencvplus/dependencies/opencv-practical-code
+	url = https://github.com/willard-yuan/opencv-practical-code
+[submodule "svc_kube_vision_opencvplus/dependencies/DBoW2"]
+	path = svc_kube_vision_opencvplus/dependencies/DBoW2
+	url = https://github.com/thierrymalon/DBoW2
+[submodule "svc_kube_vision_opencvplus/dependencies/libqtaws"]
+	path = svc_kube_vision_opencvplus/dependencies/libqtaws
+	url = https://github.com/pcolby/libqtaws
+[submodule "svc_kube_vision_opencvplus/dependencies/QtWebService"]
+	path = svc_kube_vision_opencvplus/dependencies/QtWebService
+	url = https://github.com/Nava2/QtWebService
+[submodule "svc_kube_vision_opencvplus/dependencies/DistributedSearch"]
+	path = svc_kube_vision_opencvplus/dependencies/DistributedSearch
+	url = https://github.com/daniel-j-h/DistributedSearch
+[submodule "svc_kube_vision_opencvplus/dependencies/tufao"]
+	path = svc_kube_vision_opencvplus/dependencies/tufao
+	url = https://github.com/vinipsmaker/tufao
+[submodule "svc_kube_vision_opencvplus/dependencies/hiredis"]
+	path = svc_kube_vision_opencvplus/dependencies/hiredis
+	url = https://github.com/redis/hiredis
+[submodule "svc_kube_vision_opencvplus/dependencies/hdf5opencv"]
+	path = svc_kube_vision_opencvplus/dependencies/hdf5opencv
+	url = https://github.com/dimatura/hdf5opencv
+[submodule "svc_kube_vision_opencvplus/dependencies/onbnn"]
+	path = svc_kube_vision_opencvplus/dependencies/onbnn
+	url = https://github.com/regisb/onbnn
+[submodule "svc_kube_vision_opencvplus/dependencies/RotateMeFast"]
+	path = svc_kube_vision_opencvplus/dependencies/RotateMeFast
+	url = https://github.com/ffreling/RotateMeFast
+[submodule "svc_kube_vision_opencvplus/dependencies/filedl"]
+	path = svc_kube_vision_opencvplus/dependencies/filedl
+	url = https://github.com/ffreling/filedl
+[submodule "svc_kube_vision_opencvplus/ui/ArchitectureTree"]
+	path = svc_kube_vision_opencvplus/ui/ArchitectureTree
+	url = https://github.com/marmelab/ArchitectureTree
+[submodule "svc_kube_vision_opencvplus/ui/admin-config"]
+	path = svc_kube_vision_opencvplus/ui/admin-config
+	url = https://github.com/marmelab/admin-config
+[submodule "svc_kube_vision_opencvplus/ui/ng-admin-demo"]
+	path = svc_kube_vision_opencvplus/ui/ng-admin-demo
+	url = https://github.com/marmelab/ng-admin-demo
+[submodule "svc_kube_vision_opencvplus/ui/react-admin"]
+	path = svc_kube_vision_opencvplus/ui/react-admin
+	url = https://github.com/marmelab/react-admin
+[submodule "svc_kube_vision_opencvplus/ui/ng-admin"]
+	path = svc_kube_vision_opencvplus/ui/ng-admin
+	url = https://github.com/marmelab/ng-admin
+[submodule "svc_kube_vision_opencvplus/ui/EventDrops"]
+	path = svc_kube_vision_opencvplus/ui/EventDrops
+	url = https://github.com/marmelab/EventDrops

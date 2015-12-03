@@ -24,6 +24,7 @@ INCLUDE(GNUInstallDirs)
 #######################
 SET(PROJECT_VERSION "0.6.1")
 SET(PROJECT_PREFIX find_object)
+set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/Modules" ${CMAKE_MODULE_PATH})
 
 STRING(REGEX MATCHALL "[0-9]" PROJECT_VERSION_PARTS "${PROJECT_VERSION}")
 LIST(GET PROJECT_VERSION_PARTS 0 PROJECT_VERSION_MAJOR)
@@ -35,9 +36,43 @@ ADD_DEFINITIONS(-DPROJECT_VERSION="${PROJECT_VERSION}")
 ADD_DEFINITIONS(-DPROJECT_NAME="${PROJECT_NAME}")
 
 ####### DEPENDENCIES #######
-FIND_PACKAGE(OpenCV REQUIRED) # tested on 2.3.1
+FIND_PACKAGE(OpenCV 3 REQUIRED) # tested on 2.3.1
+find_package(Boost 1.5 COMPONENTS regex date_time system filesystem thread graph locale random program_options chrono atomic)
 
-SET(FINDOBJECT_QT_VERSION 4 CACHE STRING "Which QT version to use")
+find_package(TBB REQUIRED)
+find_package(Eigen3 REQUIRED)
+find_package(NanoMsg REQUIRED)
+find_package(ZeroMQ REQUIRED)
+find_package(HDF5 REQUIRED)
+find_package(Redis REQUIRED)
+
+INCLUDE(${QT_USE_FILE})
+find_package(Tufao1 REQUIRED)
+
+SET(INCLUDE_DIRS
+        ${CMAKE_CURRENT_SOURCE_DIR}/../include
+        ${CMAKE_CURRENT_SOURCE_DIR}
+        ${OpenCV_INCLUDE_DIRS}
+	${TUFAO_INCLUDE_DIR}
+        ${TBB_INCLUDE_DIRS}
+        ${NANOMSG_INCLUDE_DIR}
+        ${ZEROMQ_INCLUDE_DIRS}
+        ${HDF5_INCLUDE_DIRS}
+        ${HIREDIS_INCLUDE_DIR}
+)
+
+SET(LIBRARIES
+    ${QT_LIBRARIES}
+    ${TUFAO_LIBRARIES}
+    ${HIREDIS_LIBRARIES}
+    ${OpenCV_LIBS}
+    ${TBB_LIBRARIES}
+    ${NANOMSG_LIBRARY}
+    ${ZEROMQ_LIBRARIES}
+    ${HDF5_LIBRARIES}
+)
+
+SET(FINDOBJECT_QT_VERSION 5 CACHE STRING "Which QT version to use")
 IF("${FINDOBJECT_QT_VERSION}" STREQUAL "4")
    FIND_PACKAGE(Qt4 COMPONENTS QtCore QtGui QtNetwork REQUIRED)
 ELSE()

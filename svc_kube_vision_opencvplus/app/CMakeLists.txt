@@ -1,3 +1,22 @@
+ADD_DEFINITIONS(
+    #-std=c++11 # Or -std=c++0x
+    # Other flags
+    -pthread 
+    -fdiagnostics-color=auto 
+    -fmax-errors=1 
+    -std=c++14 
+    -O2 
+    -g 
+    -fno-omit-frame-pointer 
+    -fno-inline
+    -DBOND_COMPACT_BINARY_PROTOCOL
+    -lssl 
+    -lcrypto
+)
+
+set(Boost_USE_STATIC_LIBS OFF) 
+set(Boost_USE_MULTITHREADED ON)  
+set(Boost_USE_STATIC_RUNTIME OFF) 
 
 SET(headers_ui 
 	TcpServerPool.h
@@ -15,13 +34,49 @@ SET(INCLUDE_DIRS
 	${OpenCV_INCLUDE_DIRS}
 )
 
+
+
 IF("${FINDOBJECT_QT_VERSION}" STREQUAL "4")
     INCLUDE(${QT_USE_FILE})
 ENDIF()
 
+find_package(Boost 1.5 COMPONENTS regex date_time system filesystem thread graph locale random program_options chrono atomic)
+find_package(TBB REQUIRED)
+find_package(Eigen3 REQUIRED)
+find_package(NanoMsg REQUIRED)
+find_package(ZeroMQ REQUIRED)
+find_package(HDF5 REQUIRED)
+find_package(Redis REQUIRED)
+find_package(cpprest REQUIRED)
+find_package(Crypto REQUIRED)
+find_package(OpenSSL 1.0.0 REQUIRED)
+
 SET(LIBRARIES
     ${QT_LIBRARIES} 
     ${OpenCV_LIBS} 
+    ${TUFAO_LIBRARIES}
+    ${HIREDIS_LIBRARIES}
+    ${OpenCV_LIBS} 
+    ${TBB_LIBRARIES}
+    ${NANOMSG_LIBRARY}
+    ${ZEROMQ_LIBRARIES}
+    ${HDF5_LIBRARIES}
+    ${Boost_LIBRARIES}
+    ${cpprest_LIBRARIES}
+)
+
+SET(INCLUDE_DIRS
+        ${CMAKE_CURRENT_SOURCE_DIR}/../include
+        ${CMAKE_CURRENT_SOURCE_DIR}
+	${cpprest_LIB_DIR}
+        ${OpenCV_INCLUDE_DIRS}
+ 	${TUFAO_INCLUDE_DIR}
+	${TBB_INCLUDE_DIRS}
+	${Boost_LIBRARY_DIRS}
+        ${NANOMSG_INCLUDE_DIR}
+        ${ZEROMQ_INCLUDE_DIRS}
+	${HDF5_INCLUDE_DIRS}
+	${HIREDIS_INCLUDE_DIR}
 )
 
 #include files
