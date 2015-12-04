@@ -223,3 +223,21 @@
 [submodule "kube-query-expansion/libs/romulus"]
 	path = kube-query-expansion/libs/romulus
 	url = https://github.com/timelinelabs/romulus
+[submodule "svc_kube_vision_opencvplus/dependencies/served"]
+	path = svc_kube_vision_opencvplus/dependencies/served
+	url = https://github.com/datasift/served
+[submodule "svc_kube_vision_opencvplus/dependencies/re2"]
+	path = svc_kube_vision_opencvplus/dependencies/re2
+	url = https://github.com/google/re2
+[submodule "svc_kube_vision_opencvplus/dependencies/gherkin"]
+	path = svc_kube_vision_opencvplus/dependencies/gherkin
+	url = https://github.com/cucumber/gherkin
+[submodule "kube-query-expansion/libs/sarama"]
+	path = kube-query-expansion/libs/sarama
+	url = https://github.com/Shopify/sarama
+[submodule "kube-query-expansion/libs/gabs"]
+	path = kube-query-expansion/libs/gabs
+	url = https://github.com/Jeffail/gabs
+[submodule "kube-query-expansion/libs/go-kafka"]
+	path = kube-query-expansion/libs/go-kafka
+	url = https://github.com/stealthly/go-kafka

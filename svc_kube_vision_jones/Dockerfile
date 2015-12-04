@@ -81,6 +81,8 @@ RUN apt-get update && apt-get install -y \
         qt5-default \
         qttools5-dev-tools
 
+RUN apt-get autoclean && \
+    apt-get autoremove 
 
 RUN curl -k -# -O https://protobuf.googlecode.com/files/protobuf-2.5.0.tar.gz \
     && tar -xzvf protobuf-2.5.0.tar.gz \
@@ -100,12 +102,12 @@ RUN pip install pickledb
 #Download sirius source
 RUN git clone --progress --verbose https://github.com/jhauswald/sirius.git --branch master $SIRIUS_HOME
 
-WORKDIR /tmp
-RUN git clone https://github.com/Itseez/opencv.git
-RUN git clone https://github.com/Itseez/opencv_contrib.git
+WORKDIR /usr/local/src
+RUN git clone --progress --verbose https://github.com/Itseez/opencv.git
+RUN git clone --progress --verbose https://github.com/Itseez/opencv_contrib.git
 
-RUN mkdir /tmp/opencv/build
-WORKDIR /tmp/opencv/build
+RUN mkdir /usr/local/src/opencv/build
+WORKDIR /usr/local/src//opencv/build
 RUN cmake -DBUILD_TIFF=ON -DBUILD_opencv_java=OFF -DWITH_CUDA=OFF -DENABLE_AVX=ON -DWITH_OPENGL=ON -DWITH_OPENCL=ON -DWITH_IPP=OFF -DWITH_TBB=ON -DWITH_EIGEN=ON -DWITH_V4L=ON \
           -DWITH_QT=5 -DBUILD_TESTS=OFF -DBUILD_PERF_TESTS=OFF -DCMAKE_BUILD_TYPE=RELEASE -DCMAKE_INSTALL_PREFIX=$(python3 -c "import sys; print(sys.prefix)") \
           -DOPENCV_EXTRA_MODULES_PATH=/src/opencv_contrib/modules \

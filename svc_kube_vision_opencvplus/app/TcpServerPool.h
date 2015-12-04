@@ -1,9 +1,12 @@
 /*
- * TcpServerPool.h
- *
- *  Created on: Nov 29, 2015
- *      Author: mathieu
- */
+
+	kubeVision - OpenCV (part of the KubeVision)
+	Modified by: Luc Michalski - 2015
+	New features: Web-service and distributed search
+	Based on: Find-Object - Mathieu Labbe - IntRoLab - Universite de Sherbrooke
+	URL: https://github.com/introlab/find-object
+
+*/
 
 #ifndef TCPSERVERPOOL_H_
 #define TCPSERVERPOOL_H_
