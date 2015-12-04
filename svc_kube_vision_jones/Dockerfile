@@ -92,7 +92,7 @@ RUN pip install --upgrade virtualenv
 RUN pip install pickledb
 
 #Download sirius source
-RUN git clone https://github.com/jhauswald/sirius.git $SIRIUS_HOME
+RUN git clone --progress --verbose https://github.com/jhauswald/sirius.git --branch master $SIRIUS_HOME
 
 #Setting up sirius
 WORKDIR $SIRIUS_HOME/sirius-application
@@ -100,6 +100,8 @@ RUN ./get-dependencies.sh
 RUN ./get-kaldi.sh
 RUN ./get-opencv.sh
 RUN ./compile-sirius-servers.sh
+
+
 
 #Automatic Speech Recognition(ASR)
 RUN $SIRIUS_HOME/sirius-application/run-scripts/start-asr-server.sh

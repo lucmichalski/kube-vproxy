@@ -3,6 +3,7 @@ cmake_minimum_required(VERSION 3.3)
 ADD_DEFINITIONS(
     #-std=c++11 # Or -std=c++0x
     # Other flags
+    -stdlib=libstdc++
     -pthread
     -fdiagnostics-color=auto
     -fmax-errors=1

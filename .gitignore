@@ -1,5 +1,6 @@
 build
 *.tar.gz
+kube-assets/logos-scenes/scenes_logos_320x240.tar.gz
 app/kubeDimension/bin/find_object*
 app/kubeDimension/bin/tempVoc.yaml
 *flann.cpp.o
