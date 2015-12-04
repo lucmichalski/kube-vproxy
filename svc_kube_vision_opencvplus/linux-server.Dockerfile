@@ -20,7 +20,10 @@ RUN apt-get update && apt-get install -q -y \
   ca-certificates \
   openssl \
   libffi-dev \
-  libssl-dev
+  libssl-dev \
+  qtdeclarative5-dev \
+  qt5-default \
+  qttools5-dev-tools
 
 RUN cd /tmp && \
   wget http://www.open-mpi.org/software/ompi/v1.10/downloads/openmpi-1.10.0.tar.gz && \
@@ -43,6 +46,23 @@ RUN cd /tmp && \
   cd / && \
   rm -rf /tmp/zeromq-4.1.3 && \
   rm /tmp/zeromq-4.1.3.tar.gz
+
+
+RUN git clone https://github.com/Itseez/opencv.git
+RUN git clone https://github.com/Itseez/opencv_contrib.git
+
+RUN mkdir /src/opencv/build
+WORKDIR /src/opencv/build
+RUN cmake -DBUILD_TIFF=ON -DBUILD_opencv_java=OFF -DWITH_CUDA=OFF -DENABLE_AVX=ON -DWITH_OPENGL=ON -DWITH_OPENCL=ON -DWITH_IPP=OFF -DWITH_TBB=ON -DWITH_EIGEN=ON -DWITH_V4L=ON \
+          -DWITH_QT=5 -DBUILD_TESTS=OFF -DBUILD_PERF_TESTS=OFF -DCMAKE_BUILD_TYPE=RELEASE -DCMAKE_INSTALL_PREFIX=$(python3 -c "import sys; print(sys.prefix)") \
+          -DOPENCV_EXTRA_MODULES_PATH=/src/opencv_contrib/modules \
+          -DPYTHON_EXECUTABLE=$(which python3) \
+          -DPYTHON_INCLUDE_DIR=$(python3 -c "from distutils.sysconfig import get_python_inc; print(get_python_inc())") -DPYTHON_PACKAGES_PATH=$(python3 -c "from distutils.sysconfig import \
+          get_python_lib; print(get_python_lib())") ..
+
+RUN make -j8
+RUN make install
+
 
 RUN mkdir -p /src/app
 WORKDIR /src/app/
@@ -128,10 +148,6 @@ rm Python-3.2.2.tgz && \
 ./configure --enable-shared --prefix=/opt/dionaea --with-computed-gotos --enable-ipv6 LDFLAGS="-Wl,-rpath=/opt/dionaea/lib/ -L/usr/lib/x86_64-linux-gnu/" && \
 make -j8 && \
 make install
-
-WORKDIR /src/
-RUN git clone https://github.com/xianyi/OpenBLAS.git /src/OpenBLAS
-RUN cd /src/OpenBLAS && make NO_AFFINITY=1 USE_OPENMP=1 -j8 && make install
 
 WORKDIR /src/
 RUN git clone https://github.com/Itseez/opencv.git

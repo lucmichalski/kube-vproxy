@@ -184,3 +184,42 @@
 [submodule "svc_kube_vision_opencvplus/dependencies/tensorflow"]
 	path = svc_kube_vision_opencvplus/dependencies/tensorflow
 	url = https://github.com/tensorflow/tensorflow
+[submodule "kube-query-expansion/libs/go.leptonica"]
+	path = kube-query-expansion/libs/go.leptonica
+	url = https://github.com/GeertJohan/go.leptonica
+[submodule "kube-query-expansion/libs/filedl"]
+	path = kube-query-expansion/libs/filedl
+	url = https://github.com/ffreling/filedl
+[submodule "svc_kube_vision_opencvplus/dependencies/caffe2"]
+	path = svc_kube_vision_opencvplus/dependencies/caffe2
+	url = https://github.com/Yangqing/caffe2/
+[submodule "svc_kube_vision_opencvplus/dependencies/caffe-extractor"]
+	path = svc_kube_vision_opencvplus/dependencies/caffe-extractor
+	url = https://github.com/jhauswald/caffe-extractor
+[submodule "svc_kube_vision_opencvplus/dependencies/keras"]
+	path = svc_kube_vision_opencvplus/dependencies/keras
+	url = https://github.com/fchollet/keras
+[submodule "svc_kube_vision_opencvplus/dependencies/caffe"]
+	path = svc_kube_vision_opencvplus/dependencies/caffe
+	url = https://github.com/BVLC/caffe
+[submodule "svc_kube_vision_opencvplus/dependencies/mcrouter"]
+	path = svc_kube_vision_opencvplus/dependencies/mcrouter
+	url = https://github.com/facebook/mcrouter
+[submodule "svc_kube_vision_opencvplus/dependencies/folly"]
+	path = svc_kube_vision_opencvplus/dependencies/folly
+	url = https://github.com/facebook/folly
+[submodule "svc_kube_vision_opencvplus/dependencies/open-voc-sergio"]
+	path = svc_kube_vision_opencvplus/dependencies/open-voc-sergio
+	url = https://github.com/ronghanghu/open-voc-sergio.git
+[submodule "svc_kube_vision_opencvplus/dependencies/multibox"]
+	path = svc_kube_vision_opencvplus/dependencies/multibox
+	url = https://github.com/google/multibox
+[submodule "kube-query-expansion/libs/vulcan-config-builder"]
+	path = kube-query-expansion/libs/vulcan-config-builder
+	url = https://github.com/Financial-Times/vulcan-config-builder
+[submodule "kube-query-expansion/libs/kubernetes-vulcand-router"]
+	path = kube-query-expansion/libs/kubernetes-vulcand-router
+	url = https://github.com/Nordstrom/kubernetes-vulcand-router
+[submodule "kube-query-expansion/libs/romulus"]
+	path = kube-query-expansion/libs/romulus
+	url = https://github.com/timelinelabs/romulus
