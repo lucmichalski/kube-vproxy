@@ -14,9 +14,7 @@ ADD_DEFINITIONS(
     -lcrypto
 )
 
-set(Boost_USE_STATIC_LIBS OFF) 
 set(Boost_USE_MULTITHREADED ON)  
-set(Boost_USE_STATIC_RUNTIME OFF) 
 
 SET(headers_ui 
 	TcpServerPool.h
@@ -27,14 +25,6 @@ IF("${FINDOBJECT_QT_VERSION}" STREQUAL "4")
 ELSE()
     QT5_WRAP_CPP(moc_srcs ${headers_ui})
 ENDIF()
-
-SET(INCLUDE_DIRS
-	${CMAKE_CURRENT_SOURCE_DIR}/../include
-	${CMAKE_CURRENT_SOURCE_DIR}
-	${OpenCV_INCLUDE_DIRS}
-)
-
-
 
 IF("${FINDOBJECT_QT_VERSION}" STREQUAL "4")
     INCLUDE(${QT_USE_FILE})
@@ -48,8 +38,8 @@ find_package(ZeroMQ REQUIRED)
 find_package(HDF5 REQUIRED)
 find_package(Redis REQUIRED)
 find_package(cpprest REQUIRED)
-find_package(Crypto REQUIRED)
-find_package(OpenSSL 1.0.0 REQUIRED)
+#find_package(Crypto REQUIRED)
+find_package(OpenSSL 0.9 REQUIRED)
 
 SET(LIBRARIES
     ${QT_LIBRARIES} 

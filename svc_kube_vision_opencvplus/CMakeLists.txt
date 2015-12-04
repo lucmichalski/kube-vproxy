@@ -1,7 +1,25 @@
-cmake_minimum_required(VERSION 2.8.5)
+cmake_minimum_required(VERSION 3.3)
+
+ADD_DEFINITIONS(
+    #-std=c++11 # Or -std=c++0x
+    # Other flags
+    -pthread
+    -fdiagnostics-color=auto
+    -fmax-errors=1
+    -std=c++14
+    -O2
+    -g
+    -fno-omit-frame-pointer
+    -fno-inline
+    -DBOND_COMPACT_BINARY_PROTOCOL
+    -lssl
+    -lcrypto
+)
 
 # Detect if it is called by catkin
 SET(CATKIN_BUILD ${CATKIN_TOPLEVEL})
+
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/Modules/")
 
 IF(NOT CATKIN_BUILD)
    #Standalone build
@@ -24,7 +42,6 @@ INCLUDE(GNUInstallDirs)
 #######################
 SET(PROJECT_VERSION "0.6.1")
 SET(PROJECT_PREFIX find_object)
-set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/Modules" ${CMAKE_MODULE_PATH})
 
 STRING(REGEX MATCHALL "[0-9]" PROJECT_VERSION_PARTS "${PROJECT_VERSION}")
 LIST(GET PROJECT_VERSION_PARTS 0 PROJECT_VERSION_MAJOR)
@@ -36,41 +53,7 @@ ADD_DEFINITIONS(-DPROJECT_VERSION="${PROJECT_VERSION}")
 ADD_DEFINITIONS(-DPROJECT_NAME="${PROJECT_NAME}")
 
 ####### DEPENDENCIES #######
-FIND_PACKAGE(OpenCV 3 REQUIRED) # tested on 2.3.1
-find_package(Boost 1.5 COMPONENTS regex date_time system filesystem thread graph locale random program_options chrono atomic)
-
-find_package(TBB REQUIRED)
-find_package(Eigen3 REQUIRED)
-find_package(NanoMsg REQUIRED)
-find_package(ZeroMQ REQUIRED)
-find_package(HDF5 REQUIRED)
-find_package(Redis REQUIRED)
-
-INCLUDE(${QT_USE_FILE})
-find_package(Tufao1 REQUIRED)
-
-SET(INCLUDE_DIRS
-        ${CMAKE_CURRENT_SOURCE_DIR}/../include
-        ${CMAKE_CURRENT_SOURCE_DIR}
-        ${OpenCV_INCLUDE_DIRS}
-	${TUFAO_INCLUDE_DIR}
-        ${TBB_INCLUDE_DIRS}
-        ${NANOMSG_INCLUDE_DIR}
-        ${ZEROMQ_INCLUDE_DIRS}
-        ${HDF5_INCLUDE_DIRS}
-        ${HIREDIS_INCLUDE_DIR}
-)
-
-SET(LIBRARIES
-    ${QT_LIBRARIES}
-    ${TUFAO_LIBRARIES}
-    ${HIREDIS_LIBRARIES}
-    ${OpenCV_LIBS}
-    ${TBB_LIBRARIES}
-    ${NANOMSG_LIBRARY}
-    ${ZEROMQ_LIBRARIES}
-    ${HDF5_LIBRARIES}
-)
+FIND_PACKAGE(OpenCV REQUIRED) # tested on 2.3.1
 
 SET(FINDOBJECT_QT_VERSION 5 CACHE STRING "Which QT version to use")
 IF("${FINDOBJECT_QT_VERSION}" STREQUAL "4")
@@ -342,4 +325,3 @@ ELSE()
       DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/launch
    )
 ENDIF()
-

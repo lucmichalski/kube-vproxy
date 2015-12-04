@@ -1,0 +1,1 @@
+cmd='/Users/lucmichalski/.go/src/github.com/blippar/kube-luc/svc_kube_vision_opencvplus/dependencies/qt5Cmake/external/Source/qt5/configure;-opensource;-confirm-license;-release;-static;-optimized-qmake;-no-compile-examples;-qt-zlib;-qt-libpng;-qt-libjpeg;-qt-freetype;-qt-pcre;-qt-xcb;-qt-xkbcommon;-no-directfb;-no-linuxfb'

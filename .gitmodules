@@ -82,3 +82,105 @@
 [submodule "svc_kube_vision_opencvplus/ui/EventDrops"]
 	path = svc_kube_vision_opencvplus/ui/EventDrops
 	url = https://github.com/marmelab/EventDrops
+[submodule "svc_kube_vision_opencvplus/dependencies/qhttpserver"]
+	path = svc_kube_vision_opencvplus/dependencies/qhttpserver
+	url = https://github.com/nikhilm/qhttpserver
+[submodule "mobile_app/libs/coherent-ui-virtual-touch"]
+	path = mobile_app/libs/coherent-ui-virtual-touch
+	url = https://github.com/lmalave/coherent-ui-virtual-touch
+[submodule "mobile_app/libs/unreal-augmented-reality-toolkit"]
+	path = mobile_app/libs/unreal-augmented-reality-toolkit
+	url = https://github.com/lmalave/unreal-augmented-reality-toolkit
+[submodule "mobile_app/libs/CoherentUIMobileOpenSource"]
+	path = mobile_app/libs/CoherentUIMobileOpenSource
+	url = https://github.com/CoherentLabs/CoherentUIMobileOpenSource
+[submodule "mobile_app/libs/CoherentUI_Ogre3D"]
+	path = mobile_app/libs/CoherentUI_Ogre3D
+	url = https://github.com/CoherentLabs/CoherentUI_Ogre3D
+[submodule "mobile_app/libs/CoherentUI_CryEngine3"]
+	path = mobile_app/libs/CoherentUI_CryEngine3
+	url = https://github.com/CoherentLabs/CoherentUI_CryEngine3
+[submodule "mobile_app/libs/Augmented-Reality-on-Qt"]
+	path = mobile_app/libs/Augmented-Reality-on-Qt
+	url = https://github.com/DistinctVision/Augmented-Reality-on-Qt
+[submodule "mobile_app/libs/QScrollEngine"]
+	path = mobile_app/libs/QScrollEngine
+	url = https://github.com/DistinctVision/QScrollEngine
+[submodule "svc_kube_vision_opencvplus/dependencies/OpenSSL-CMake"]
+	path = svc_kube_vision_opencvplus/dependencies/OpenSSL-CMake
+	url = https://github.com/pol51/OpenSSL-CMake
+[submodule "svc_kube_vision_opencvplus/dependencies/snap"]
+	path = svc_kube_vision_opencvplus/dependencies/snap
+	url = https://github.com/cmakesnap/snap
+[submodule "svc_kube_vision_opencvplus/dependencies/smap-stanford"]
+	path = svc_kube_vision_opencvplus/dependencies/smap-stanford
+	url = https://github.com/snap-stanford/snap
+[submodule "svc_kube_vision_opencvplus/dependencies/xgboost"]
+	path = svc_kube_vision_opencvplus/dependencies/xgboost
+	url = https://github.com/dmlc/xgboost
+[submodule "svc_kube_vision_opencvplus/dependencies/qhttpserver2"]
+	path = svc_kube_vision_opencvplus/dependencies/qhttpserver2
+	url = https://github.com/Nava2/qhttpserver
+[submodule "svc_kube_vision_opencvplus/dependencies/qhttpserver.custom"]
+	path = svc_kube_vision_opencvplus/dependencies/qhttpserver.custom
+	url = https://github.com/Nava2/qhttpserver
+[submodule "svc_kube_vision_opencvplus/dependencies/dlib"]
+	path = svc_kube_vision_opencvplus/dependencies/dlib
+	url = https://github.com/davisking/dlib.git
+[submodule "svc_kube_vision_opencvplus/dependencies/DLib"]
+	path = svc_kube_vision_opencvplus/dependencies/DLib
+	url = https://github.com/dorian3d/DLib
+[submodule "svc_kube_vision_opencvplus/dependencies/Dlib.dorian"]
+	path = svc_kube_vision_opencvplus/dependencies/Dlib.dorian
+	url = https://github.com/dorian3d/DLib
+[submodule "svc_kube_vision_opencvplus/dependencies/sirius.custom"]
+	path = svc_kube_vision_opencvplus/dependencies/sirius.custom
+	url = https://github.com/emergingstack/sirius
+[submodule "svc_kube_vision_opencvplus/dependencies/easyexif"]
+	path = svc_kube_vision_opencvplus/dependencies/easyexif
+	url = https://github.com/mayanklahiri/easyexif
+[submodule "svc_kube_vision_opencvplus/dependencies/oiio"]
+	path = svc_kube_vision_opencvplus/dependencies/oiio
+	url = https://github.com/OpenImageIO/oiio
+[submodule "svc_kube_vision_opencvplus/dependencies/tesseract"]
+	path = svc_kube_vision_opencvplus/dependencies/tesseract
+	url = https://github.com/tesseract-ocr/tesseract
+[submodule "svc_kube_vision_opencvplus/dependencies/LibRaw"]
+	path = svc_kube_vision_opencvplus/dependencies/LibRaw
+	url = https://github.com/LibRaw/LibRaw
+[submodule "svc_kube_vision_opencvplus/dependencies/sirius"]
+	path = svc_kube_vision_opencvplus/dependencies/sirius
+	url = https://github.com/claritylab/sirius
+[submodule "svc_kube_vision_opencvplus/dependencies/libjpeg"]
+	path = svc_kube_vision_opencvplus/dependencies/libjpeg
+	url = https://github.com/LuaDist/libjpeg
+[submodule "svc_kube_vision_opencvplus/dependencies/tessdata"]
+	path = svc_kube_vision_opencvplus/dependencies/tessdata
+	url = https://github.com/tesseract-ocr/tessdata
+[submodule "svc_kube_vision_opencvplus/dependencies/langdata"]
+	path = svc_kube_vision_opencvplus/dependencies/langdata
+	url = https://github.com/tesseract-ocr/langdata
+[submodule "svc_kube_vision_opencvplus/dependencies/MITIE"]
+	path = svc_kube_vision_opencvplus/dependencies/MITIE
+	url = https://github.com/mit-nlp/MITIE
+[submodule "svc_kube_vision_opencvplus/dependencies/vtool"]
+	path = svc_kube_vision_opencvplus/dependencies/vtool
+	url = https://github.com/Erotemic/vtool
+[submodule "svc_kube_vision_opencvplus/dependencies/libjson-rpc-cpp"]
+	path = svc_kube_vision_opencvplus/dependencies/libjson-rpc-cpp
+	url = https://github.com/cinemast/libjson-rpc-cpp
+[submodule "svc_kube_vision_opencvplus/dependencies/cpprestsdk"]
+	path = svc_kube_vision_opencvplus/dependencies/cpprestsdk
+	url = https://github.com/Microsoft/cpprestsdk
+[submodule "svc_kube_vision_opencvplus/dependencies/PlistCpp"]
+	path = svc_kube_vision_opencvplus/dependencies/PlistCpp
+	url = https://github.com/Microsoft/PlistCpp
+[submodule "svc_kube_vision_opencvplus/dependencies/leptonica"]
+	path = svc_kube_vision_opencvplus/dependencies/leptonica
+	url = https://github.com/horndude77/leptonica.git
+[submodule "svc_kube_vision_opencvplus/dependencies/zlib"]
+	path = svc_kube_vision_opencvplus/dependencies/zlib
+	url = https://github.com/madler/zlib
+[submodule "svc_kube_vision_opencvplus/dependencies/tensorflow"]
+	path = svc_kube_vision_opencvplus/dependencies/tensorflow
+	url = https://github.com/tensorflow/tensorflow

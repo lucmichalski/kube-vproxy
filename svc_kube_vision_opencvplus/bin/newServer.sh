@@ -2,7 +2,7 @@
 cd ../build
 rm -fR *
 cmake -DCMAKE_BUILD_TYPE=Release .. -Wno-dev
-make -j12
+make -j4
 cd ../bin
 kill `ps -ef | grep find_object | grep -v grep | awk '{print $2}'`
 cd ./tests

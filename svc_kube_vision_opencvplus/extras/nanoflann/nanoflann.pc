@@ -1,0 +1,14 @@
+prefix=/usr/local
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+includedir=${prefix}/include
+
+Name: The ANN nanoflann library
+Description: nanoflann - A C++ header-only library for kd-trees
+URL: http://code.google.com/p/nanoflann/
+Requires: 
+Version: 1.1.9
+Libs:
+Libs.private:
+Cflags: -I${includedir}
+
